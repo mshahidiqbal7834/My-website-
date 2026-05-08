@@ -1,680 +1,832 @@
-<!-- ========================= --><!-- FILE NAME: private.html --><!-- COMPLETE FIREBASE CHAT --><!-- ========================= --><!DOCTYPE html><html lang="en">
-<head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Ultimate Private Chat</title><style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
-body{
-background:#020617;
-color:white;
-height:100vh;
-overflow:hidden;
-}
-
-/* LOGIN */
-
-.login-screen{
-position:fixed;
-inset:0;
-display:flex;
-justify-content:center;
-align-items:center;
-background:#020617;
-z-index:999;
-}
-
-.login-card{
-width:100%;
-max-width:420px;
-background:#0f172a;
-padding:35px;
-border-radius:24px;
-border:1px solid #334155;
-text-align:center;
-}
-
-.login-card h1{
-margin-bottom:15px;
-font-size:32px;
-}
-
-.google-btn{
-width:100%;
-padding:16px;
-border:none;
-border-radius:14px;
-background:#2563eb;
-color:white;
-font-size:16px;
-cursor:pointer;
-}
-
-/* APP */
-
-.app{
-display:none;
-height:100vh;
-grid-template-columns:320px 1fr;
-}
-
-/* SIDEBAR */
-
-.sidebar{
-background:#0f172a;
-border-right:1px solid #1e293b;
-display:flex;
-flex-direction:column;
-}
-
-.profile{
-padding:25px;
-text-align:center;
-border-bottom:1px solid #1e293b;
-}
-
-.profile img{
-width:90px;
-height:90px;
-border-radius:50%;
-margin-bottom:10px;
-border:4px solid #2563eb;
-}
-
-.profile h2{
-margin-bottom:5px;
-}
-
-.profile small{
-color:#94a3b8;
-word-break:break-word;
-}
-
-.menu{
-padding:20px;
-display:flex;
-flex-direction:column;
-gap:12px;
-}
-
-.menu button{
-padding:15px;
-border:none;
-border-radius:12px;
-background:#1e293b;
-color:white;
-cursor:pointer;
-}
-
-/* CHAT AREA */
-
-.chat-area{
-display:flex;
-flex-direction:column;
-height:100vh;
-}
-
-.topbar{
-padding:18px;
-background:#0f172a;
-border-bottom:1px solid #1e293b;
-}
-
-.room-box{
-display:flex;
-gap:10px;
-}
-
-.room-box input{
-flex:1;
-padding:15px;
-border:none;
-border-radius:14px;
-background:#1e293b;
-color:white;
-outline:none;
-}
-
-.room-box button{
-padding:15px 18px;
-border:none;
-border-radius:14px;
-background:#2563eb;
-color:white;
-cursor:pointer;
-}
-
-.chat-box{
-flex:1;
-overflow-y:auto;
-padding:20px;
-background:#020617;
-}
-
-.empty{
-text-align:center;
-margin-top:80px;
-color:#64748b;
-}
-
-.msg-row{
-display:flex;
-margin-bottom:15px;
-}
-
-.mine{
-justify-content:flex-end;
-}
-
-.message{
-max-width:78%;
-background:#1e293b;
-padding:15px;
-border-radius:20px;
-}
-
-.mine .message{
-background:#1d4ed8;
-}
-
-.msg-top{
-display:flex;
-align-items:center;
-gap:10px;
-margin-bottom:10px;
-}
-
-.msg-top img{
-width:42px;
-height:42px;
-border-radius:50%;
-}
-
-.msg-text{
-white-space:pre-wrap;
-line-height:1.6;
-}
-
-.time{
-display:block;
-margin-top:10px;
-font-size:12px;
-opacity:.8;
-}
-
-.actions{
-margin-top:10px;
-display:flex;
-gap:8px;
-}
-
-.actions button{
-padding:8px 10px;
-border:none;
-border-radius:10px;
-color:white;
-cursor:pointer;
-font-size:12px;
-}
-
-.delete-btn{
-background:#dc2626;
-}
-
-.edit-btn{
-background:#f59e0b;
-}
-
-/* BOTTOM */
-
-.bottom{
-padding:18px;
-background:#0f172a;
-border-top:1px solid #1e293b;
-display:flex;
-gap:10px;
-flex-wrap:wrap;
-}
-
-.bottom input{
-flex:1;
-padding:15px;
-border:none;
-border-radius:14px;
-background:#1e293b;
-color:white;
-outline:none;
-}
-
-.bottom button{
-padding:15px 18px;
-border:none;
-border-radius:14px;
-background:#2563eb;
-color:white;
-cursor:pointer;
-}
-
-.recording{
-background:#dc2626 !important;
-}
-
-/* ADMIN */
-
-.admin-panel{
-position:fixed;
-top:20px;
-right:20px;
-width:320px;
-background:#0f172a;
-border:1px solid #334155;
-border-radius:20px;
-padding:20px;
-display:none;
-z-index:100;
-}
-
-.admin-panel textarea{
-width:100%;
-height:120px;
-background:#1e293b;
-border:none;
-border-radius:14px;
-padding:14px;
-color:white;
-margin-bottom:10px;
-resize:none;
-}
-
-.admin-panel button{
-width:100%;
-padding:14px;
-border:none;
-border-radius:12px;
-background:#2563eb;
-color:white;
-margin-top:10px;
-cursor:pointer;
-}
-
-@media(max-width:900px){
-
-.app{
-grid-template-columns:1fr;
-}
-
-.sidebar{
-display:none;
-}
-
-.message{
-max-width:94%;
-}
-
-}
-
-</style></head><body><!-- LOGIN --><div class="login-screen" id="loginScreen"><div class="login-card"><h1>Private Gmail Chat</h1><p>
-Realtime private Firebase chat
-with admin panel.
-</p><button class="google-btn" id="loginBtn">
-Login With Google
-</button></div></div><!-- ADMIN PANEL --><div class="admin-panel" id="adminPanel"><h2>Admin Panel</h2><textarea
-id="announcementInput"
-placeholder="Write announcement..."
-></textarea><button id="announcementBtn">
-Post Announcement
-</button><button id="clearBtn">
-Delete All Messages
-</button></div><!-- APP --><div class="app" id="app"><!-- SIDEBAR --><div class="sidebar"><div class="profile"><img id="myPhoto"><h2 id="myName">
-User
-</h2><small id="myEmail">
-user@gmail.com
-</small></div><div class="menu"><button onclick="toggleAdminPanel()">
-Admin Panel
-</button><button onclick="logoutUser()">
-Logout
-</button></div></div><!-- CHAT --><div class="chat-area"><div class="topbar"><div class="room-box"><input
-type="email"
-id="otherEmail"
-placeholder="Enter other Gmail"
-/>
-
-<button id="openRoomBtn">
-Open Private
-</button></div></div><div class="chat-box" id="chatBox"><div class="empty">
-Open private chat first
-</div></div><div class="bottom"><input
-type="text"
-id="messageInput"
-placeholder="Write message..."
-
-«»
-
-<button id="recordBtn">
-🎤
-</button><button id="sendBtn">
-Send
-</button></div></div></div><script type="module">
-
-import {
-initializeApp
-}
-from
-"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-
-import {
-getAuth,
-GoogleAuthProvider,
-signInWithPopup,
-onAuthStateChanged,
-signOut
-}
-from
-"https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-
-import {
-getFirestore,
-collection,
-addDoc,
-query,
-orderBy,
-onSnapshot,
-deleteDoc,
-doc,
-updateDoc,
-serverTimestamp
-}
-from
-"https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
-const firebaseConfig = {
-
-apiKey:
-"AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
-
-authDomain:
-"wadi-soon-site.firebaseapp.com",
-
-projectId:
-"wadi-soon-site",
-
-storageBucket:
-"wadi-soon-site.firebasestorage.app",
-
-messagingSenderId:
-"306902521128",
-
-appId:
-"1:306902521128:web:13b34b479048240b96ec1d"
-
-};
-
-const ADMIN_EMAIL =
-"mshahidiqbal836@gmail.com";
-
-const app =
-initializeApp(firebaseConfig);
-
-const auth =
-getAuth(app);
-
-const db =
-getFirestore(app);
-
-const provider =
-new GoogleAuthProvider();
-
-const loginScreen =
-document.getElementById("loginScreen");
-
-const appBox =
-document.getElementById("app");
-
-const loginBtn =
-document.getElementById("loginBtn");
-
-const myPhoto =
-document.getElementById("myPhoto");
-
-const myName =
-document.getElementById("myName");
-
-const myEmail =
-document.getElementById("myEmail");
-
-const otherEmail =
-document.getElementById("otherEmail");
-
-const openRoomBtn =
-document.getElementById("openRoomBtn");
-
-const chatBox =
-document.getElementById("chatBox");
-
-const messageInput =
-document.getElementById("messageInput");
-
-const sendBtn =
-document.getElementById("sendBtn");
-
-let currentUser = null;
-let currentRoom = null;
-
-loginBtn.onclick = async()=>{
-
-await signInWithPopup(
-auth,
-provider
-);
-
-};
-
-onAuthStateChanged(auth,(user)=>{
-
-if(user){
-
-currentUser = user;
-
-loginScreen.style.display =
-"none";
-
-appBox.style.display =
-"grid";
-
-myPhoto.src =
-user.photoURL;
-
-myName.innerText =
-user.displayName;
-
-myEmail.innerText =
-user.email;
-
-if(user.email === ADMIN_EMAIL){
-
-document.getElementById(
-"adminPanel"
-).style.display = "block";
-
-}
-
-}else{
-
-loginScreen.style.display =
-"flex";
-
-appBox.style.display =
-"none";
-
-}
-
-});
-
-window.logoutUser = async()=>{
-
-await signOut(auth);
-
-location.reload();
-
-};
-
-openRoomBtn.onclick = ()=>{
-
-const other =
-otherEmail.value.trim();
-
-if(other === ""){
-
-alert("Enter Gmail");
-
-return;
-
-}
-
-currentRoom =
-[currentUser.email,other]
-.sort()
-.join("_")
-.replace(/[.#$[\]]/g,"_");
-
-loadMessages();
-
-};
-
-async function sendMessage(){
-
-if(!currentRoom){
-
-alert("Open private chat first");
-
-return;
-
-}
-
-const text =
-messageInput.value.trim();
-
-if(text === "") return;
-
-await addDoc(
-
-collection(
-db,
-"rooms",
-currentRoom,
-"messages"
-),
-
-{
-
-text:text,
-
-name:
-currentUser.displayName,
-
-email:
-currentUser.email,
-
-photo:
-currentUser.photoURL,
-
-time:
-Date.now(),
-
-createdAt:
-serverTimestamp()
-
-}
-
-);
-
-messageInput.value = "";
-
-}
-
-sendBtn.onclick =
-sendMessage;
-
-function loadMessages(){
-
-const q = query(
-
-collection(
-db,
-"rooms",
-currentRoom,
-"messages"
-),
-
-orderBy(
-"time",
-"asc"
-)
-
-);
-
-onSnapshot(q,(snapshot)=>{
-
-chatBox.innerHTML = "";
-
-snapshot.forEach((docSnap)=>{
-
-const data =
-docSnap.data();
-
-const mine =
-data.email === currentUser.email;
-
-chatBox.innerHTML += `
-
-<div class="msg-row ${mine ? "mine" : ""}">
-
-<div class="message">
-
-<div class="msg-top">
-
-<img src="${data.photo}">
-
-<div>
-
-<b>${data.name}</b><br>
-
-<small>${data.email}</small>
-
-</div>
-
-</div>
-
-<div class="msg-text">
-${data.text}
-</div>
-
-<small class="time">
-
-${new Date(
-data.time
-).toLocaleString()}
-
-</small>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-chatBox.scrollTop =
-chatBox.scrollHeight;
-
-});
-
-}
-
-</script></body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private Gmail Chat</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+    body{
+      background:linear-gradient(135deg,#020617,#0f172a,#111827);
+      color:#fff;
+      height:100vh;
+      overflow:hidden;
+    }
+
+    .login-screen{
+      position:fixed; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      background:#020617;
+      z-index:9999;
+      padding:20px;
+    }
+
+    .login-card{
+      width:100%; max-width:430px;
+      background:rgba(15,23,42,.95);
+      border:1px solid #334155;
+      border-radius:28px;
+      padding:34px;
+      text-align:center;
+      box-shadow:0 20px 50px rgba(0,0,0,.35);
+    }
+
+    .login-card h1{font-size:30px;margin-bottom:12px}
+    .login-card p{color:#94a3b8;line-height:1.6;margin-bottom:20px}
+    .google-btn{
+      width:100%;
+      padding:15px 18px;
+      background:linear-gradient(135deg,#2563eb,#1d4ed8);
+      border:none;
+      border-radius:16px;
+      color:#fff;
+      font-size:16px;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .app{
+      display:none;
+      height:100vh;
+      grid-template-columns:320px 1fr;
+    }
+
+    .sidebar{
+      background:rgba(15,23,42,.95);
+      border-right:1px solid #1e293b;
+      display:flex;
+      flex-direction:column;
+      backdrop-filter:blur(12px);
+    }
+
+    .profile{
+      padding:28px 24px;
+      text-align:center;
+      border-bottom:1px solid #1e293b;
+    }
+
+    .profile img{
+      width:96px;height:96px;border-radius:50%;
+      object-fit:cover;
+      border:4px solid #2563eb;
+      margin-bottom:12px;
+      background:#1e293b;
+    }
+
+    .profile h2{font-size:22px;margin-bottom:6px}
+    .profile small{
+      display:block;
+      color:#94a3b8;
+      word-break:break-word;
+      line-height:1.5;
+    }
+
+    .badge{
+      margin-top:12px;
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#1d4ed8;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .menu{
+      padding:20px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .menu button{
+      padding:14px 16px;
+      border:none;
+      border-radius:14px;
+      background:#1e293b;
+      color:#fff;
+      font-size:15px;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .menu button:hover{background:#334155}
+
+    .chat-area{
+      display:flex;
+      flex-direction:column;
+      height:100vh;
+    }
+
+    .topbar{
+      padding:18px;
+      background:rgba(15,23,42,.95);
+      border-bottom:1px solid #1e293b;
+    }
+
+    .room-box{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+    }
+
+    .room-box input,
+    .bottom input,
+    .admin-panel textarea{
+      width:100%;
+      padding:15px 16px;
+      border:none;
+      outline:none;
+      border-radius:16px;
+      background:#1e293b;
+      color:#fff;
+    }
+
+    .room-box button,
+    .bottom button,
+    .admin-panel button{
+      padding:15px 18px;
+      border:none;
+      border-radius:16px;
+      background:linear-gradient(135deg,#2563eb,#1d4ed8);
+      color:#fff;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .room-info{
+      margin-top:12px;
+      font-size:14px;
+      color:#93c5fd;
+    }
+
+    .announcement-bar{
+      display:none;
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      background:rgba(37,99,235,.18);
+      border:1px solid rgba(96,165,250,.25);
+      color:#dbeafe;
+      line-height:1.5;
+    }
+
+    .chat-box{
+      flex:1;
+      overflow-y:auto;
+      padding:22px;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,.12), transparent 30%),
+        #020617;
+    }
+
+    .empty{
+      text-align:center;
+      margin-top:80px;
+      color:#64748b;
+      line-height:1.8;
+    }
+
+    .msg-row{
+      display:flex;
+      margin-bottom:16px;
+    }
+
+    .mine{justify-content:flex-end}
+
+    .message{
+      width:min(78%,760px);
+      background:#0f172a;
+      border:1px solid #1e293b;
+      padding:14px;
+      border-radius:22px;
+      box-shadow:0 8px 24px rgba(0,0,0,.12);
+    }
+
+    .mine .message{
+      background:linear-gradient(135deg,#1d4ed8,#2563eb);
+      border-color:#2563eb;
+    }
+
+    .msg-top{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      margin-bottom:10px;
+    }
+
+    .msg-top img{
+      width:42px;height:42px;border-radius:50%;object-fit:cover;
+      background:#1e293b;
+    }
+
+    .msg-meta b{display:block}
+    .msg-meta small{color:#cbd5e1}
+    .mine .msg-meta small{color:#dbeafe}
+
+    .msg-text{
+      white-space:pre-wrap;
+      word-break:break-word;
+      line-height:1.7;
+      font-size:15px;
+    }
+
+    .time{
+      display:block;
+      margin-top:10px;
+      font-size:12px;
+      opacity:.85;
+    }
+
+    .actions{
+      margin-top:10px;
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+
+    .actions button{
+      padding:8px 10px;
+      border:none;
+      border-radius:10px;
+      color:#fff;
+      cursor:pointer;
+      font-size:12px;
+      font-weight:700;
+    }
+
+    .edit-btn{background:#f59e0b}
+    .delete-btn{background:#dc2626}
+
+    .bottom{
+      padding:16px 18px;
+      background:rgba(15,23,42,.95);
+      border-top:1px solid #1e293b;
+      display:grid;
+      grid-template-columns:1fr auto auto;
+      gap:10px;
+    }
+
+    .recording{
+      background:linear-gradient(135deg,#ef4444,#b91c1c)!important;
+    }
+
+    .admin-panel{
+      position:fixed;
+      right:20px;
+      top:20px;
+      width:340px;
+      max-width:calc(100vw - 40px);
+      background:#0f172a;
+      border:1px solid #334155;
+      border-radius:24px;
+      padding:20px;
+      display:none;
+      z-index:1000;
+      box-shadow:0 16px 48px rgba(0,0,0,.35);
+    }
+
+    .admin-panel h2{margin-bottom:14px}
+    .admin-panel textarea{
+      height:110px;
+      resize:none;
+      margin-bottom:12px;
+    }
+
+    .admin-panel .danger{
+      background:linear-gradient(135deg,#dc2626,#991b1b);
+    }
+
+    .hint{
+      color:#94a3b8;
+      font-size:13px;
+      line-height:1.5;
+      margin-top:8px;
+    }
+
+    @media(max-width:900px){
+      .app{grid-template-columns:1fr}
+      .sidebar{display:none}
+      .message{width:94%}
+      .bottom{grid-template-columns:1fr auto auto}
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <h1>Private Gmail Chat</h1>
+      <p>Realtime private 1-to-1 Firebase chat with admin controls, edit/delete, announcement and mic input.</p>
+      <button class="google-btn" id="loginBtn">Login with Google</button>
+    </div>
+  </div>
+
+  <div class="admin-panel" id="adminPanel">
+    <h2>Admin Panel</h2>
+    <textarea id="announcementInput" placeholder="Write announcement..."></textarea>
+    <button id="announcementBtn">Post Announcement</button>
+    <button id="clearRoomBtn" class="danger" style="margin-top:10px;">Delete Current Room Messages</button>
+    <p class="hint">Admin: mshahidiqbal836@gmail.com</p>
+  </div>
+
+  <div class="app" id="app">
+    <div class="sidebar">
+      <div class="profile">
+        <img id="myPhoto" alt="Profile"/>
+        <h2 id="myName">User</h2>
+        <small id="myEmail">user@gmail.com</small>
+        <div class="badge" id="roleBadge">Member</div>
+      </div>
+
+      <div class="menu">
+        <button onclick="toggleAdminPanel()">Admin Panel</button>
+        <button onclick="logoutUser()">Logout</button>
+      </div>
+    </div>
+
+    <div class="chat-area">
+      <div class="topbar">
+        <div class="room-box">
+          <input type="email" id="otherEmail" placeholder="Enter other Gmail address" />
+          <button id="openRoomBtn">Open Private</button>
+        </div>
+        <div class="room-info" id="roomInfo">No private room opened.</div>
+        <div class="announcement-bar" id="announcementBar"></div>
+      </div>
+
+      <div class="chat-box" id="chatBox">
+        <div class="empty">Open a private Gmail room first.</div>
+      </div>
+
+      <div class="bottom">
+        <input type="text" id="messageInput" placeholder="Write message..." />
+        <button id="recordBtn" title="Speech to text">🎤</button>
+        <button id="sendBtn">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      addDoc,
+      getDocs,
+      writeBatch,
+      collection,
+      query,
+      orderBy,
+      onSnapshot,
+      deleteDoc,
+      updateDoc,
+      serverTimestamp,
+      limit
+    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
+      authDomain: "wadi-soon-site.firebaseapp.com",
+      projectId: "wadi-soon-site",
+      storageBucket: "wadi-soon-site.firebasestorage.app",
+      messagingSenderId: "306902521128",
+      appId: "1:306902521128:web:13b34b479048240b96ec1d"
+    };
+
+    const ADMIN_EMAIL = "mshahidiqbal836@gmail.com";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    const loginScreen = document.getElementById("loginScreen");
+    const appBox = document.getElementById("app");
+    const loginBtn = document.getElementById("loginBtn");
+
+    const myPhoto = document.getElementById("myPhoto");
+    const myName = document.getElementById("myName");
+    const myEmail = document.getElementById("myEmail");
+    const roleBadge = document.getElementById("roleBadge");
+
+    const otherEmail = document.getElementById("otherEmail");
+    const openRoomBtn = document.getElementById("openRoomBtn");
+    const roomInfo = document.getElementById("roomInfo");
+
+    const chatBox = document.getElementById("chatBox");
+    const messageInput = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const recordBtn = document.getElementById("recordBtn");
+
+    const adminPanel = document.getElementById("adminPanel");
+    const announcementInput = document.getElementById("announcementInput");
+    const announcementBtn = document.getElementById("announcementBtn");
+    const clearRoomBtn = document.getElementById("clearRoomBtn");
+    const announcementBar = document.getElementById("announcementBar");
+
+    let currentUser = null;
+    let currentRoom = null;
+    let currentPartner = null;
+    let unsubscribeMessages = null;
+    let unsubscribeAnnouncements = null;
+
+    function normalizeEmail(email = "") {
+      return email.trim().toLowerCase();
+    }
+
+    function isGmail(email = "") {
+      return normalizeEmail(email).endsWith("@gmail.com");
+    }
+
+    function isAdmin() {
+      return normalizeEmail(currentUser?.email || "") === ADMIN_EMAIL;
+    }
+
+    function roomIdFromEmails(a, b) {
+      return [normalizeEmail(a), normalizeEmail(b)].sort().join("__");
+    }
+
+    function safeText(value = "") {
+      return value == null ? "" : String(value);
+    }
+
+    function avatar(url = "") {
+      return url || "https://ui-avatars.com/api/?name=User&background=1e293b&color=ffffff";
+    }
+
+    function showEmpty(text) {
+      chatBox.innerHTML = `<div class="empty">${text}</div>`;
+    }
+
+    loginBtn.onclick = async () => {
+      try {
+        const res = await signInWithPopup(auth, provider);
+        if (!isGmail(res.user.email)) {
+          alert("Sirf Gmail accounts allow hain.");
+          await signOut(auth);
+        }
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        if (!isGmail(user.email)) {
+          alert("Sirf Gmail accounts allow hain.");
+          signOut(auth);
+          return;
+        }
+
+        currentUser = user;
+        loginScreen.style.display = "none";
+        appBox.style.display = "grid";
+
+        myPhoto.src = avatar(user.photoURL);
+        myName.textContent = user.displayName || "User";
+        myEmail.textContent = normalizeEmail(user.email);
+        roleBadge.textContent = isAdmin() ? "Admin" : "Member";
+        roleBadge.style.background = isAdmin() ? "#dc2626" : "#1d4ed8";
+
+        if (isAdmin()) {
+          adminPanel.style.display = "block";
+        }
+
+        listenAnnouncements();
+      } else {
+        currentUser = null;
+        loginScreen.style.display = "flex";
+        appBox.style.display = "none";
+      }
+    });
+
+    window.logoutUser = async () => {
+      if (unsubscribeMessages) unsubscribeMessages();
+      if (unsubscribeAnnouncements) unsubscribeAnnouncements();
+      await signOut(auth);
+      location.reload();
+    };
+
+    window.toggleAdminPanel = () => {
+      if (!isAdmin()) {
+        alert("Only admin can use this panel.");
+        return;
+      }
+      adminPanel.style.display = adminPanel.style.display === "none" ? "block" : "none";
+    };
+
+    openRoomBtn.onclick = openPrivateRoom;
+    otherEmail.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") openPrivateRoom();
+    });
+
+    async function openPrivateRoom() {
+      const other = normalizeEmail(otherEmail.value);
+
+      if (!other) {
+        alert("Doosra Gmail address likhein.");
+        return;
+      }
+
+      if (!isGmail(other)) {
+        alert("Valid Gmail address likhein.");
+        return;
+      }
+
+      if (other === normalizeEmail(currentUser.email)) {
+        alert("Apne aap ko private room me add nahi kar sakte.");
+        return;
+      }
+
+      currentPartner = other;
+      currentRoom = roomIdFromEmails(currentUser.email, other);
+
+      await setDoc(doc(db, "rooms", currentRoom), {
+        roomId: currentRoom,
+        participants: [normalizeEmail(currentUser.email), other].sort(),
+        createdBy: normalizeEmail(currentUser.email),
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+
+      roomInfo.textContent = `Private room: ${normalizeEmail(currentUser.email)} ↔ ${other}`;
+      loadMessages();
+    }
+
+    async function sendMessage() {
+      if (!currentRoom) {
+        alert("Pehle private room open karein.");
+        return;
+      }
+
+      const text = messageInput.value.trim();
+      if (!text) return;
+
+      try {
+        await addDoc(collection(db, "rooms", currentRoom, "messages"), {
+          roomId: currentRoom,
+          text,
+          senderName: currentUser.displayName || "User",
+          senderEmail: normalizeEmail(currentUser.email),
+          senderPhoto: currentUser.photoURL || "",
+          time: Date.now(),
+          createdAt: serverTimestamp(),
+          edited: false
+        });
+
+        await setDoc(doc(db, "rooms", currentRoom), {
+          roomId: currentRoom,
+          participants: [normalizeEmail(currentUser.email), currentPartner].sort(),
+          lastMessage: text,
+          updatedAt: serverTimestamp()
+        }, { merge: true });
+
+        messageInput.value = "";
+      } catch (err) {
+        alert(err.message);
+      }
+    }
+
+    sendBtn.onclick = sendMessage;
+    messageInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    function loadMessages() {
+      if (!currentRoom) return;
+
+      if (unsubscribeMessages) unsubscribeMessages();
+
+      showEmpty("Loading messages...");
+
+      const q = query(
+        collection(db, "rooms", currentRoom, "messages"),
+        orderBy("createdAt", "asc")
+      );
+
+      unsubscribeMessages = onSnapshot(q, (snapshot) => {
+        chatBox.innerHTML = "";
+
+        if (snapshot.empty) {
+          showEmpty("No messages yet. Start conversation.");
+          return;
+        }
+
+        snapshot.forEach((docSnap) => {
+          const data = docSnap.data();
+          const mine = normalizeEmail(data.senderEmail) === normalizeEmail(currentUser.email);
+
+          const row = document.createElement("div");
+          row.className = `msg-row ${mine ? "mine" : ""}`;
+
+          const card = document.createElement("div");
+          card.className = "message";
+
+          const top = document.createElement("div");
+          top.className = "msg-top";
+
+          const img = document.createElement("img");
+          img.src = avatar(data.senderPhoto);
+          img.alt = data.senderName || "User";
+
+          const meta = document.createElement("div");
+          meta.className = "msg-meta";
+
+          const b = document.createElement("b");
+          b.textContent = safeText(data.senderName || "User");
+
+          const sm = document.createElement("small");
+          sm.textContent = safeText(data.senderEmail || "");
+
+          meta.appendChild(b);
+          meta.appendChild(sm);
+          top.appendChild(img);
+          top.appendChild(meta);
+
+          const text = document.createElement("div");
+          text.className = "msg-text";
+          text.textContent = safeText(data.text || "");
+
+          const time = document.createElement("small");
+          time.className = "time";
+          const editedText = data.edited ? " • edited" : "";
+          time.textContent = `${new Date(data.time || Date.now()).toLocaleString()}${editedText}`;
+
+          card.appendChild(top);
+          card.appendChild(text);
+          card.appendChild(time);
+
+          const canModify = mine || isAdmin();
+          if (canModify) {
+            const actions = document.createElement("div");
+            actions.className = "actions";
+
+            const editBtn = document.createElement("button");
+            editBtn.className = "edit-btn";
+            editBtn.textContent = "Edit";
+            editBtn.onclick = async () => {
+              const newText = prompt("Edit message", data.text || "");
+              if (newText === null) return;
+              const trimmed = newText.trim();
+              if (!trimmed) {
+                alert("Message empty nahi ho sakta.");
+                return;
+              }
+              try {
+                await updateDoc(doc(db, "rooms", currentRoom, "messages", docSnap.id), {
+                  text: trimmed,
+                  edited: true,
+                  updatedAt: serverTimestamp()
+                });
+              } catch (err) {
+                alert(err.message);
+              }
+            };
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "delete-btn";
+            deleteBtn.textContent = "Delete";
+            deleteBtn.onclick = async () => {
+              const ok = confirm("Delete this message?");
+              if (!ok) return;
+              try {
+                await deleteDoc(doc(db, "rooms", currentRoom, "messages", docSnap.id));
+              } catch (err) {
+                alert(err.message);
+              }
+            };
+
+            actions.appendChild(editBtn);
+            actions.appendChild(deleteBtn);
+            card.appendChild(actions);
+          }
+
+          row.appendChild(card);
+          chatBox.appendChild(row);
+        });
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, (error) => {
+        showEmpty("Messages load nahi ho rahe. Rules ya permissions check karein.");
+        console.error(error);
+      });
+    }
+
+    announcementBtn.onclick = async () => {
+      if (!isAdmin()) {
+        alert("Only admin can post announcement.");
+        return;
+      }
+
+      const text = announcementInput.value.trim();
+      if (!text) return;
+
+      try {
+        await addDoc(collection(db, "announcements"), {
+          text,
+          by: normalizeEmail(currentUser.email),
+          time: Date.now(),
+          createdAt: serverTimestamp()
+        });
+        announcementInput.value = "";
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    clearRoomBtn.onclick = async () => {
+      if (!isAdmin()) {
+        alert("Only admin can clear room.");
+        return;
+      }
+
+      if (!currentRoom) {
+        alert("Pehle koi room open karein.");
+        return;
+      }
+
+      const ok = confirm("Current room ke saare messages delete karne hain?");
+      if (!ok) return;
+
+      try {
+        const snap = await getDocs(collection(db, "rooms", currentRoom, "messages"));
+        const batch = writeBatch(db);
+
+        snap.forEach((d) => batch.delete(d.ref));
+        await batch.commit();
+
+        alert("Current room messages deleted.");
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    function listenAnnouncements() {
+      if (unsubscribeAnnouncements) unsubscribeAnnouncements();
+
+      const q = query(collection(db, "announcements"), orderBy("time", "desc"), limit(1));
+
+      unsubscribeAnnouncements = onSnapshot(q, (snapshot) => {
+        if (snapshot.empty) {
+          announcementBar.style.display = "none";
+          announcementBar.textContent = "";
+          return;
+        }
+
+        const data = snapshot.docs[0].data();
+        announcementBar.style.display = "block";
+        announcementBar.textContent = `Announcement: ${data.text}`;
+      });
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    let isRecording = false;
+
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = true;
+      recognition.continuous = false;
+
+      recognition.onstart = () => {
+        isRecording = true;
+        recordBtn.classList.add("recording");
+      };
+
+      recognition.onend = () => {
+        isRecording = false;
+        recordBtn.classList.remove("recording");
+      };
+
+      recognition.onresult = (event) => {
+        let transcript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        messageInput.value = transcript.trim();
+      };
+
+      recordBtn.onclick = () => {
+        if (isRecording) {
+          recognition.stop();
+        } else {
+          recognition.start();
+        }
+      };
+    } else {
+      recordBtn.onclick = () => {
+        alert("Speech recognition is not supported in this browser.");
+      };
+    }
+  </script>
+</body>
 </html>
