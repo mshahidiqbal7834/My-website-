@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Public Chat</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#020617;
+  font-family:'Poppins',sans-serif;
+  color:white;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.chat-container{
+  width:100%;
+  max-width:900px;
+  background:#0f172a;
+  border-radius:25px;
+  overflow:hidden;
+  box-shadow:0 0 30px rgba(0,0,0,0.4);
+}
+
+.chat-header{
+  background:#1e293b;
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.chat-header h1{
+  font-size:28px;
+}
+
+.online{
+  background:#16a34a;
+  padding:8px 14px;
+  border-radius:30px;
+  font-size:14px;
+}
+
+.chat-box{
+  height:500px;
+  overflow-y:auto;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+.message{
+  background:#1e293b;
+  padding:15px;
+  border-radius:18px;
+  animation:fade 0.3s ease;
+}
+
+.message b{
+  color:#60a5fa;
+}
+
+.message small{
+  color:#94a3b8;
+  display:block;
+  margin-top:5px;
+}
+
+.chat-input{
+  display:flex;
+  gap:10px;
+  padding:20px;
+  background:#1e293b;
+}
+
+input{
+  flex:1;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  background:#334155;
+  color:white;
+  font-size:15px;
+}
+
+button{
+  padding:15px 25px;
+  border:none;
+  border-radius:14px;
+  background:#2563eb;
+  color:white;
+  font-size:15px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+button:hover{
+  background:#1d4ed8;
+}
+
+@keyframes fade{
+  from{
+    opacity:0;
+    transform:translateY(10px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@media(max-width:700px){
+
+.chat-box{
+  height:400px;
+}
+
+.chat-input{
+  flex-direction:column;
+}
+
+button{
+  width:100%;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="chat-container">
+
+<div class="chat-header">
+  <h1>Public Chat</h1>
+
+  <div class="online">
+    Online Chat
+  </div>
+</div>
+
+<div class="chat-box" id="chatBox">
+</div>
+
+<div class="chat-input">
+
+<input type="text"
+id="username"
+placeholder="Your name">
+
+<input type="text"
+id="message"
+placeholder="Write message...">
+
+<button onclick="sendMessage()">
+Send
+</button>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import {
+  getDatabase,
+  ref,
+  push,
+  set,
+  onChildAdded
+}
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
+  authDomain: "wadi-soon-site.firebaseapp.com",
+  projectId: "wadi-soon-site",
+  storageBucket: "wadi-soon-site.firebasestorage.app",
+  messagingSenderId: "306902521128",
+  appId: "1:306902521128:web:13b34b479048240b96ec1d",
+  measurementId: "G-HX8J4GC9SQ"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const chatBox = document.getElementById("chatBox");
+
+window.sendMessage = function(){
+
+  let username = document.getElementById("username").value;
+  let message = document.getElementById("message").value;
+
+  if(username === "" || message === ""){
+    alert("Fill all fields");
+    return;
+  }
+
+  const chatRef = push(ref(db,"messages"));
+
+  set(chatRef,{
+    username:username,
+    message:message,
+    time:new Date().toLocaleString()
+  });
+
+  document.getElementById("message").value = "";
+
+}
+
+onChildAdded(ref(db,"messages"), (snapshot) => {
+
+  const data = snapshot.val();
+
+  chatBox.innerHTML += `
+
+  <div class="message">
+    <b>${data.username}</b><br>
+    ${data.message}
+    <small>${data.time}</small>
+  </div>
+
+  `;
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+});
+
+</script>
+
+</body>
+</html>
