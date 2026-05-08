@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Private Gmail Chat</title>
+  <title>Private Gmail Chat - Firestore</title>
 
   <style>
     *{
       margin:0;
       padding:0;
       box-sizing:border-box;
-      font-family:Arial, sans-serif;
+      font-family:Arial,sans-serif;
     }
 
     body{
@@ -30,18 +30,16 @@
       display:flex;
       justify-content:center;
       align-items:center;
-      flex-direction:column;
-      gap:20px;
       z-index:999;
     }
 
     .login-card{
-      background:#0f172a;
-      border:1px solid #1e293b;
-      padding:30px;
-      border-radius:20px;
       width:100%;
       max-width:420px;
+      background:#0f172a;
+      border:1px solid #1e293b;
+      border-radius:22px;
+      padding:30px;
       text-align:center;
       box-shadow:0 0 30px rgba(0,0,0,.35);
     }
@@ -53,8 +51,8 @@
 
     .login-card p{
       color:#94a3b8;
+      line-height:1.6;
       margin-bottom:20px;
-      line-height:1.5;
     }
 
     .google-btn{
@@ -75,37 +73,37 @@
       background:#0f172a;
       border-radius:24px;
       overflow:hidden;
-      box-shadow:0 0 30px rgba(0,0,0,.4);
+      border:1px solid #1e293b;
       display:none;
       flex-direction:column;
-      border:1px solid #1e293b;
+      box-shadow:0 0 30px rgba(0,0,0,.35);
     }
 
     .top{
       background:#111827;
+      border-bottom:1px solid #1e293b;
       padding:14px 18px;
       display:flex;
       justify-content:space-between;
       align-items:center;
-      gap:15px;
-      border-bottom:1px solid #1e293b;
+      gap:12px;
       flex-wrap:wrap;
     }
 
-    .me, .other{
+    .user-block{
       display:flex;
       align-items:center;
       gap:12px;
-      min-width:220px;
+      min-width:230px;
     }
 
-    .me img, .other img{
+    .user-block img{
       width:52px;
       height:52px;
       border-radius:50%;
       object-fit:cover;
-      border:2px solid #334155;
       background:#1e293b;
+      border:2px solid #334155;
     }
 
     .user-info h3{
@@ -116,37 +114,24 @@
 
     .user-info small{
       color:#94a3b8;
-      display:block;
       word-break:break-word;
+      display:block;
     }
 
-    .actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .actions button,
-    .open-btn,
-    .send-btn,
-    .voice-btn{
-      border:none;
-      cursor:pointer;
-      border-radius:12px;
-      color:#fff;
-      background:#2563eb;
-    }
-
-    .actions button{
+    .logout-btn{
       padding:12px 16px;
+      border:none;
+      border-radius:12px;
+      background:#dc2626;
+      color:#fff;
+      cursor:pointer;
     }
 
     .room-bar{
-      background:#0b1220;
       padding:14px 18px;
       display:flex;
       gap:10px;
+      background:#0b1220;
       border-bottom:1px solid #1e293b;
       flex-wrap:wrap;
     }
@@ -162,8 +147,13 @@
       outline:none;
     }
 
-    .open-btn{
+    .room-bar button{
       padding:14px 18px;
+      border:none;
+      border-radius:12px;
+      background:#2563eb;
+      color:#fff;
+      cursor:pointer;
     }
 
     .chat-box{
@@ -174,8 +164,8 @@
     }
 
     .empty{
-      text-align:center;
       color:#94a3b8;
+      text-align:center;
       margin-top:60px;
       line-height:1.8;
     }
@@ -185,20 +175,19 @@
       margin-bottom:14px;
     }
 
-    .msg-row.me-row{
+    .msg-row.mine{
       justify-content:flex-end;
     }
 
     .msg{
       max-width:78%;
-      padding:12px;
-      border-radius:18px;
       background:#1e293b;
-      border:1px solid rgba(255,255,255,.05);
-      box-shadow:0 10px 20px rgba(0,0,0,.15);
+      border-radius:18px;
+      padding:12px;
+      border:1px solid rgba(255,255,255,.06);
     }
 
-    .me-row .msg{
+    .msg-row.mine .msg{
       background:#1d4ed8;
     }
 
@@ -217,31 +206,30 @@
       background:#334155;
     }
 
-    .msg-head .meta{
+    .meta{
       flex:1;
       min-width:0;
     }
 
-    .msg-head .meta b,
-    .msg-head .meta small{
+    .meta b,
+    .meta small{
       display:block;
       word-break:break-word;
     }
 
-    .msg-head .meta small{
+    .meta small{
       color:#dbeafe;
       opacity:.9;
       margin-top:2px;
     }
 
-    .msg-text{
+    .text{
       white-space:pre-wrap;
       word-break:break-word;
       line-height:1.55;
-      margin-top:8px;
     }
 
-    .msg-time{
+    .time{
       display:block;
       margin-top:10px;
       font-size:12px;
@@ -249,22 +237,22 @@
     }
 
     .delete-btn{
-      padding:8px 10px;
-      font-size:12px;
-      background:#dc2626;
-      color:#fff;
       border:none;
+      padding:8px 10px;
       border-radius:10px;
+      background:#ef4444;
+      color:#fff;
       cursor:pointer;
+      font-size:12px;
     }
 
     .bottom{
       padding:14px 18px;
       background:#111827;
+      border-top:1px solid #1e293b;
       display:flex;
       gap:10px;
       align-items:center;
-      border-top:1px solid #1e293b;
       flex-wrap:wrap;
     }
 
@@ -279,20 +267,24 @@
       outline:none;
     }
 
-    .send-btn, .voice-btn{
+    .bottom button{
       padding:15px 18px;
-      min-width:90px;
+      border:none;
+      border-radius:12px;
+      background:#2563eb;
+      color:#fff;
+      cursor:pointer;
     }
 
-    .voice-btn.recording{
-      background:#dc2626;
+    .recording{
+      background:#dc2626 !important;
       animation:pulse 1s infinite;
     }
 
     .status{
       width:100%;
-      font-size:13px;
       color:#93c5fd;
+      font-size:13px;
       margin-top:4px;
     }
 
@@ -310,8 +302,7 @@
 
     @media(max-width:700px){
       .msg{max-width:92%}
-      .top{flex-direction:column; align-items:flex-start}
-      .actions{width:100%}
+      .top{flex-direction:column;align-items:flex-start}
     }
   </style>
 </head>
@@ -322,7 +313,7 @@
       <h1>Private Gmail Chat</h1>
       <p>
         Sirf Google login ke baad private 1-to-1 chat.<br>
-        Name, photo, email, time, delete aur voice note sab included hai.
+        Name, photo, Gmail, time, delete aur voice note system included hai.
       </p>
       <button class="google-btn" id="googleLoginBtn">Login With Google</button>
     </div>
@@ -330,42 +321,40 @@
 
   <div class="container" id="app">
     <div class="top">
-      <div class="me">
+      <div class="user-block">
         <img id="myPhoto" alt="me">
         <div class="user-info">
           <h3 id="myName">Your Name</h3>
-          <small id="myEmail">your@email.com</small>
+          <small id="myEmail">your@gmail.com</small>
         </div>
       </div>
 
-      <div class="other">
+      <div class="user-block">
         <img id="otherPhoto" alt="other">
         <div class="user-info">
-          <h3 id="otherName">No chat selected</h3>
-          <small id="otherEmail">Enter other Gmail and open chat</small>
+          <h3 id="otherName">No private chat open</h3>
+          <small id="otherEmail">Dusre bande ki Gmail dalo</small>
         </div>
       </div>
 
-      <div class="actions">
-        <button id="logoutBtn">Logout</button>
-      </div>
+      <button class="logout-btn" id="logoutBtn">Logout</button>
     </div>
 
     <div class="room-bar">
-      <input type="email" id="recipientEmail" placeholder="Other person's Gmail address" />
-      <button class="open-btn" id="openChatBtn">Open Private Chat</button>
+      <input type="email" id="recipientEmail" placeholder="Other person's Gmail address">
+      <button id="openChatBtn">Open Private Chat</button>
     </div>
 
     <div class="chat-box" id="chatBox">
       <div class="empty">
-        Login ho gaya to dusre bande ki Gmail likho aur chat open karo.
+        Login ke baad dusre bande ki Gmail likho aur private room open karo.
       </div>
     </div>
 
     <div class="bottom">
-      <input type="text" id="messageInput" placeholder="Write message..." />
-      <button class="voice-btn" id="recordBtn">🎤 Record</button>
-      <button class="send-btn" id="sendBtn">Send</button>
+      <input type="text" id="messageInput" placeholder="Write message...">
+      <button id="recordBtn">🎤 Record</button>
+      <button id="sendBtn">Send</button>
       <div class="status" id="statusText">Ready</div>
     </div>
   </div>
@@ -381,20 +370,23 @@
     } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
     import {
-      getDatabase,
-      ref,
-      push,
-      set,
-      get,
-      onValue,
-      remove
-    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      collection,
+      addDoc,
+      onSnapshot,
+      query,
+      orderBy,
+      deleteDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
       authDomain: "wadi-soon-site.firebaseapp.com",
       projectId: "wadi-soon-site",
-      databaseURL: "https://wadi-soon-site-default-rtdb.firebaseio.com",
       storageBucket: "wadi-soon-site.firebasestorage.app",
       messagingSenderId: "306902521128",
       appId: "1:306902521128:web:13b34b479048240b96ec1d",
@@ -403,7 +395,7 @@
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-    const db = getDatabase(app);
+    const db = getFirestore(app);
     const provider = new GoogleAuthProvider();
 
     const loginScreen = document.getElementById("loginScreen");
@@ -419,7 +411,7 @@
     const otherName = document.getElementById("otherName");
     const otherEmail = document.getElementById("otherEmail");
 
-    const recipientEmailInput = document.getElementById("recipientEmail");
+    const recipientEmail = document.getElementById("recipientEmail");
     const openChatBtn = document.getElementById("openChatBtn");
 
     const chatBox = document.getElementById("chatBox");
@@ -427,16 +419,6 @@
     const sendBtn = document.getElementById("sendBtn");
     const recordBtn = document.getElementById("recordBtn");
     const statusText = document.getElementById("statusText");
-
-    let currentUser = null;
-    let currentRoomId = null;
-    let currentOtherEmail = null;
-    let unsubscribeMessages = null;
-    let unsubscribeMeta = null;
-
-    let mediaRecorder = null;
-    let audioChunks = [];
-    let recordingStream = null;
 
     const DEFAULT_AVATAR =
       "data:image/svg+xml;utf8," +
@@ -446,7 +428,34 @@
         <circle cx="40" cy="30" r="16" fill="#94a3b8"/>
         <rect x="18" y="50" width="44" height="18" rx="9" fill="#94a3b8"/>
       </svg>
-    `);
+      `);
+
+    let currentUser = null;
+    let currentRoomId = null;
+    let currentOtherEmail = null;
+    let unsubscribeRoom = null;
+    let unsubscribeMessages = null;
+
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordingStream = null;
+
+    function safeEmail(email = "") {
+      return email.trim().toLowerCase();
+    }
+
+    function emailKey(email = "") {
+      return safeEmail(email).replace(/[.#$[\]/]/g, "_");
+    }
+
+    function isGmail(email = "") {
+      return /^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(email.trim());
+    }
+
+    function makeRoomId(email1, email2) {
+      const arr = [safeEmail(email1), safeEmail(email2)].sort();
+      return emailKey(arr[0]) + "__" + emailKey(arr[1]);
+    }
 
     function escapeHtml(text = "") {
       return text
@@ -457,30 +466,13 @@
         .replaceAll("'", "&#039;");
     }
 
-    function safeEmail(email = "") {
-      return email.trim().toLowerCase();
-    }
-
-    function keyEmail(email = "") {
-      return safeEmail(email).replace(/[.#$[\]/]/g, "_");
-    }
-
-    function isGmail(email = "") {
-      return /^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(email.trim());
-    }
-
-    function makeRoomId(email1, email2) {
-      const list = [safeEmail(email1), safeEmail(email2)].sort();
-      return "room_" + keyEmail(list[0]) + "__" + keyEmail(list[1]);
-    }
-
-    function formatTime(ts) {
-      if (!ts) return "";
-      return new Date(ts).toLocaleString();
-    }
-
     function setStatus(text) {
       statusText.innerText = text;
+    }
+
+    function formatTime(ms) {
+      if (!ms) return "";
+      return new Date(ms).toLocaleString();
     }
 
     function showApp(user) {
@@ -495,26 +487,18 @@
     function showLoggedOut() {
       loginScreen.style.display = "flex";
       appBox.style.display = "none";
-      chatBox.innerHTML = `
-        <div class="empty">
-          Login ke baad private chat open karo.
-        </div>
-      `;
-      currentRoomId = null;
-      currentOtherEmail = null;
     }
 
-    function renderOtherProfile(meta) {
+    function renderOtherProfile(roomData) {
       if (!currentOtherEmail) {
-        otherName.innerText = "No chat selected";
-        otherEmail.innerText = "Enter other Gmail and open chat";
+        otherName.innerText = "No private chat open";
+        otherEmail.innerText = "Dusre bande ki Gmail dalo";
         otherPhoto.src = DEFAULT_AVATAR;
         return;
       }
 
-      const profiles = meta?.profiles || {};
-      const otherKey = keyEmail(currentOtherEmail);
-      const other = profiles[otherKey];
+      const profiles = roomData?.profiles || {};
+      const other = profiles[emailKey(currentOtherEmail)];
 
       if (other) {
         otherName.innerText = other.name || "Private User";
@@ -533,32 +517,36 @@
         return;
       }
 
-      const other = safeEmail(recipientEmailInput.value);
+      const other = safeEmail(recipientEmail.value);
 
       if (!isGmail(currentUser.email || "")) {
-        alert("Aap Google/Gmail account se login karo");
+        alert("Google/Gmail account se login karo");
         return;
       }
 
       if (!isGmail(other)) {
-        alert("Sirf valid Gmail address likho");
+        alert("Valid Gmail address likho");
         return;
       }
 
       if (safeEmail(currentUser.email) === other) {
-        alert("Apni hi Gmail se private chat open nahi kar sakte");
+        alert("Apni hi Gmail ke sath private chat nahi khol sakte");
         return;
       }
 
       currentOtherEmail = other;
       currentRoomId = makeRoomId(currentUser.email, other);
 
-      const metaRef = ref(db, `privateChats/${currentRoomId}/meta`);
-      const snap = await get(metaRef);
-      const oldMeta = snap.exists() ? snap.val() : {};
+      const roomRef = doc(db, "rooms", currentRoomId);
+      const roomSnap = await getDoc(roomRef);
 
-      const profiles = oldMeta.profiles || {};
-      profiles[keyEmail(currentUser.email)] = {
+      let existing = {};
+      if (roomSnap.exists()) {
+        existing = roomSnap.data();
+      }
+
+      const profiles = existing.profiles || {};
+      profiles[emailKey(currentUser.email)] = {
         uid: currentUser.uid,
         name: currentUser.displayName || "",
         email: currentUser.email || "",
@@ -566,17 +554,14 @@
         updatedAt: Date.now()
       };
 
-      const users = [safeEmail(currentUser.email), other].sort();
+      const participants = [safeEmail(currentUser.email), other].sort();
 
-      const newMeta = {
-        emailA: users[0],
-        emailB: users[1],
-        createdAt: oldMeta.createdAt || Date.now(),
-        updatedAt: Date.now(),
-        profiles
-      };
-
-      await set(metaRef, newMeta);
+      await setDoc(roomRef, {
+        participants,
+        profiles,
+        createdAt: existing.createdAt || Date.now(),
+        updatedAt: Date.now()
+      }, { merge: true });
 
       loadRoom();
       setStatus("Private chat opened");
@@ -585,21 +570,21 @@
     function loadRoom() {
       if (!currentRoomId) return;
 
+      if (unsubscribeRoom) unsubscribeRoom();
       if (unsubscribeMessages) unsubscribeMessages();
-      if (unsubscribeMeta) unsubscribeMeta();
 
-      const metaRef = ref(db, `privateChats/${currentRoomId}/meta`);
-      const messagesRef = ref(db, `privateChats/${currentRoomId}/messages`);
-
-      unsubscribeMeta = onValue(metaRef, (snapshot) => {
-        const meta = snapshot.val() || {};
-        renderOtherProfile(meta);
+      const roomRef = doc(db, "rooms", currentRoomId);
+      unsubscribeRoom = onSnapshot(roomRef, (snap) => {
+        if (snap.exists()) {
+          renderOtherProfile(snap.data());
+        }
       });
 
-      unsubscribeMessages = onValue(messagesRef, (snapshot) => {
-        const data = snapshot.val();
+      const messagesRef = collection(db, "rooms", currentRoomId, "messages");
+      const q = query(messagesRef, orderBy("createdAtMs", "asc"));
 
-        if (!data) {
+      unsubscribeMessages = onSnapshot(q, (snapshot) => {
+        if (snapshot.empty) {
           chatBox.innerHTML = `
             <div class="empty">
               Abhi tak koi message nahi.<br>
@@ -609,44 +594,38 @@
           return;
         }
 
-        const list = Object.entries(data).sort((a, b) => {
-          const aTime = a[1]?.createdAt || 0;
-          const bTime = b[1]?.createdAt || 0;
-          return aTime - bTime;
-        });
-
         let html = "";
 
-        list.forEach(([id, item]) => {
-          const mine = item.email === currentUser.email;
-          const rowClass = mine ? "msg-row me-row" : "msg-row";
-
-          const textPart = item.type === "text"
-            ? `<div class="msg-text">${escapeHtml(item.text || "")}</div>`
-            : "";
-
-          const audioPart = item.type === "audio" && item.audio
-            ? `<audio controls src="${item.audio}"></audio>`
-            : "";
-
-          const deleteBtn = mine
-            ? `<button class="delete-btn" data-id="${id}">Delete</button>`
-            : "";
+        snapshot.forEach((docSnap) => {
+          const item = docSnap.data();
+          const id = docSnap.id;
+          const mine = item.senderEmail === currentUser.email;
 
           html += `
-            <div class="${rowClass}">
+            <div class="msg-row ${mine ? "mine" : ""}">
               <div class="msg">
                 <div class="msg-head">
                   <img src="${item.photo || DEFAULT_AVATAR}" alt="dp">
                   <div class="meta">
                     <b>${escapeHtml(item.name || "User")}</b>
-                    <small>${escapeHtml(item.email || "")}</small>
+                    <small>${escapeHtml(item.senderEmail || "")}</small>
                   </div>
-                  ${deleteBtn}
+                  ${mine ? `<button class="delete-btn" data-id="${id}">Delete</button>` : ""}
                 </div>
-                ${textPart}
-                ${audioPart}
-                <small class="msg-time">${formatTime(item.createdAt)}</small>
+
+                ${
+                  item.type === "text"
+                    ? `<div class="text">${escapeHtml(item.text || "")}</div>`
+                    : ""
+                }
+
+                ${
+                  item.type === "audio" && item.audio
+                    ? `<audio controls src="${item.audio}"></audio>`
+                    : ""
+                }
+
+                <small class="time">${formatTime(item.createdAtMs)}</small>
               </div>
             </div>
           `;
@@ -656,13 +635,13 @@
         chatBox.scrollTop = chatBox.scrollHeight;
 
         document.querySelectorAll(".delete-btn").forEach((btn) => {
-          btn.addEventListener("click", async () => {
+          btn.onclick = async () => {
             const id = btn.getAttribute("data-id");
             if (!id) return;
             const ok = confirm("Apna message delete karna hai?");
             if (!ok) return;
-            await remove(ref(db, `privateChats/${currentRoomId}/messages/${id}`));
-          });
+            await deleteDoc(doc(db, "rooms", currentRoomId, "messages", id));
+          };
         });
       });
     }
@@ -681,16 +660,15 @@
       const text = messageInput.value.trim();
       if (!text) return;
 
-      const msgRef = push(ref(db, `privateChats/${currentRoomId}/messages`));
-
-      await set(msgRef, {
-        uid: currentUser.uid,
-        name: currentUser.displayName || "",
-        email: currentUser.email || "",
-        photo: currentUser.photoURL || "",
+      await addDoc(collection(db, "rooms", currentRoomId, "messages"), {
         type: "text",
         text,
-        createdAt: Date.now()
+        senderUid: currentUser.uid,
+        senderEmail: currentUser.email,
+        name: currentUser.displayName || "",
+        photo: currentUser.photoURL || "",
+        createdAt: serverTimestamp(),
+        createdAtMs: Date.now()
       });
 
       messageInput.value = "";
@@ -725,27 +703,27 @@
           try {
             const blob = new Blob(audioChunks, { type: "audio/webm" });
 
-            if (blob.size > 700000) {
-              setStatus("Voice note bohat badi hai, chhoti record karo");
+            if (blob.size > 800000) {
+              setStatus("Voice note bohat badi hai, 10-15 sec me rakho");
               return;
             }
 
-            const audioBase64 = await blobToDataURL(blob);
-            const msgRef = push(ref(db, `privateChats/${currentRoomId}/messages`));
+            const base64Audio = await blobToDataURL(blob);
 
-            await set(msgRef, {
-              uid: currentUser.uid,
-              name: currentUser.displayName || "",
-              email: currentUser.email || "",
-              photo: currentUser.photoURL || "",
+            await addDoc(collection(db, "rooms", currentRoomId, "messages"), {
               type: "audio",
-              audio: audioBase64,
-              createdAt: Date.now()
+              audio: base64Audio,
+              senderUid: currentUser.uid,
+              senderEmail: currentUser.email,
+              name: currentUser.displayName || "",
+              photo: currentUser.photoURL || "",
+              createdAt: serverTimestamp(),
+              createdAtMs: Date.now()
             });
 
             setStatus("Voice note sent");
-          } catch (err) {
-            console.error(err);
+          } catch (e) {
+            console.error(e);
             setStatus("Voice send error");
           }
         };
@@ -754,8 +732,8 @@
         recordBtn.classList.add("recording");
         recordBtn.innerText = "⏹ Stop";
         setStatus("Recording...");
-      } catch (err) {
-        console.error(err);
+      } catch (e) {
+        console.error(e);
         alert("Microphone permission allow karo");
       }
     }
@@ -794,8 +772,8 @@
     googleLoginBtn.addEventListener("click", async () => {
       try {
         await signInWithPopup(auth, provider);
-      } catch (err) {
-        console.error(err);
+      } catch (e) {
+        console.error(e);
         alert("Login error");
       }
     });
@@ -804,8 +782,8 @@
       try {
         await signOut(auth);
         location.reload();
-      } catch (err) {
-        console.error(err);
+      } catch (e) {
+        console.error(e);
       }
     });
 
@@ -814,9 +792,7 @@
     recordBtn.addEventListener("click", toggleRecording);
 
     messageInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        sendTextMessage();
-      }
+      if (e.key === "Enter") sendTextMessage();
     });
 
     onAuthStateChanged(auth, (user) => {
