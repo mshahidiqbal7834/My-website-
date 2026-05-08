@@ -74,6 +74,10 @@ input{
   margin-top:10px;
 }
 
+.logout-btn{
+  background:#dc2626;
+}
+
 </style>
 </head>
 
@@ -82,6 +86,12 @@ input{
 <div class="container">
 
 <h1>Admin Panel</h1>
+
+<div class="card">
+<h2>Admin Info</h2>
+<div id="adminInfo">Checking admin...</div>
+<button class="logout-btn" onclick="logout()">Logout</button>
+</div>
 
 <div class="card">
 
@@ -111,12 +121,8 @@ Clear All Messages
 
 <h2>Recent Messages</h2>
 
-<div class="message-box">
-User : Hello Everyone
-</div>
-
-<div class="message-box">
-User : Welcome To Chat
+<div id="messagesContainer">
+Loading messages...
 </div>
 
 </div>
@@ -129,13 +135,26 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 
 import {
-  getDatabase,
-  ref,
-  remove,
-  push,
-  set
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+  signOut
 }
-from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  deleteDoc,
+  doc,
+  query,
+  orderBy,
+  onSnapshot
+}
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
 
@@ -155,46 +174,137 @@ const firebaseConfig = {
 
 };
 
+const ADMIN_EMAIL = "yourgmail@gmail.com";
+
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+const provider = new GoogleAuthProvider();
 
-const db = getDatabase(app);
+const adminInfo = document.getElementById("adminInfo");
+const messagesContainer = document.getElementById("messagesContainer");
 
-window.clearChat = function(){
+let currentUser = null;
 
-  remove(ref(db,"messages"))
-  .then(() => {
+onAuthStateChanged(auth, async(user)=>{
 
-    alert("All messages deleted");
+  if(!user){
 
-  });
+    try{
+      await signInWithPopup(auth,provider);
+    }catch(e){
+      alert("Login error");
+    }
 
+    return;
+  }
+
+  currentUser = user;
+
+  if(user.email !== ADMIN_EMAIL){
+    alert("Access denied");
+    location.href = "index.html";
+    return;
+  }
+
+  adminInfo.innerHTML = `
+    <b>${user.displayName}</b><br>
+    ${user.email}
+  `;
+
+  loadMessages();
+
+});
+
+window.logout = async function(){
+  await signOut(auth);
+  location.reload();
 }
 
-window.sendAnnouncement = function(){
+window.sendAnnouncement = async function(){
 
   let text =
   document.getElementById("announcement").value;
 
   if(text === ""){
-
     alert("Write something");
     return;
-
   }
 
-  const announcementRef =
-  push(ref(db,"announcements"));
-
-  set(announcementRef,{
-
+  await addDoc(collection(db,"announcements"),{
     text:text,
-    time:new Date().toLocaleString()
-
+    time:new Date().toLocaleString(),
+    createdAt:Date.now()
   });
 
   alert("Announcement Posted");
 
   document.getElementById("announcement").value = "";
+
+}
+
+window.clearChat = async function(){
+
+  const ok = confirm("Delete all messages?");
+
+  if(!ok) return;
+
+  const rooms = await getDocs(collection(db,"rooms"));
+
+  for(const room of rooms.docs){
+
+    const msgs =
+    await getDocs(collection(db,"rooms",room.id,"messages"));
+
+    for(const msg of msgs.docs){
+      await deleteDoc(msg.ref);
+    }
+  }
+
+  alert("All messages deleted");
+
+}
+
+async function loadMessages(){
+
+  const rooms = await getDocs(collection(db,"rooms"));
+
+  let html = "";
+
+  for(const room of rooms.docs){
+
+    const q = query(
+      collection(db,"rooms",room.id,"messages"),
+      orderBy("createdAtMs","desc")
+    );
+
+    onSnapshot(q,(snapshot)=>{
+
+      html = "";
+
+      snapshot.forEach((docSnap)=>{
+
+        const data = docSnap.data();
+
+        html += `
+          <div class="message-box">
+            <b>${data.name || "User"}</b><br>
+            ${data.senderEmail || ""}<br><br>
+            ${data.text || "Voice Message"}
+          </div>
+        `;
+
+      });
+
+      if(html === ""){
+        html = "No messages";
+      }
+
+      messagesContainer.innerHTML = html;
+
+    });
+
+  }
 
 }
 
