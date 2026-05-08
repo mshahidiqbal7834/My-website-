@@ -3,147 +3,128 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Private Chat Room</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Private Inbox</title>
 
 <style>
 
 *{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
+margin:0;
+padding:0;
+box-sizing:border-box;
 }
 
 body{
-  background:#020617;
-  font-family:'Poppins',sans-serif;
-  color:white;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
+background:#020617;
+font-family:Arial;
+color:white;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
-.chat-container{
-  width:100%;
-  max-width:900px;
-  background:#0f172a;
-  border-radius:25px;
-  overflow:hidden;
-  box-shadow:0 0 30px rgba(0,0,0,0.4);
+.container{
+width:100%;
+max-width:900px;
+height:95vh;
+background:#0f172a;
+border-radius:25px;
+overflow:hidden;
+box-shadow:0 0 30px rgba(0,0,0,0.4);
+display:flex;
+flex-direction:column;
 }
 
-.chat-header{
-  background:#1e293b;
-  padding:20px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+.top{
+background:#1e293b;
+padding:15px;
+display:flex;
+align-items:center;
+justify-content:space-between;
 }
 
-.chat-header h1{
-  font-size:28px;
+.profile{
+display:flex;
+align-items:center;
+gap:12px;
 }
 
-.private-badge{
-  background:#dc2626;
-  padding:8px 16px;
-  border-radius:30px;
-  font-size:14px;
+.profile img{
+width:55px;
+height:55px;
+border-radius:50%;
 }
 
-.room-box{
-  padding:20px;
-  background:#111827;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
-
-.room-box input{
-  flex:1;
+.menu button{
+width:45px;
+height:45px;
+border:none;
+border-radius:50%;
+background:#2563eb;
+color:white;
+font-size:20px;
+cursor:pointer;
 }
 
 .chat-box{
-  height:450px;
-  overflow-y:auto;
-  padding:20px;
-  display:flex;
-  flex-direction:column;
-  gap:15px;
+flex:1;
+padding:20px;
+overflow-y:auto;
 }
 
 .message{
-  background:#1e293b;
-  padding:15px;
-  border-radius:18px;
+background:#1e293b;
+padding:15px;
+border-radius:18px;
+margin-bottom:15px;
 }
 
-.message b{
-  color:#60a5fa;
+.message img{
+width:40px;
+height:40px;
+border-radius:50%;
+margin-bottom:10px;
 }
 
-.message small{
-  display:block;
-  margin-top:5px;
-  color:#94a3b8;
-}
-
-.chat-input{
-  display:flex;
-  gap:10px;
-  padding:20px;
-  background:#1e293b;
-  flex-wrap:wrap;
+.bottom{
+padding:15px;
+background:#1e293b;
+display:flex;
+gap:10px;
 }
 
 input{
-  padding:15px;
-  border:none;
-  border-radius:14px;
-  background:#334155;
-  color:white;
-  font-size:15px;
-}
-
-#username,
-#message{
-  flex:1 1 100%;
+flex:1;
+padding:15px;
+border:none;
+border-radius:12px;
+background:#334155;
+color:white;
 }
 
 button{
-  padding:14px 22px;
-  border:none;
-  border-radius:14px;
-  background:#2563eb;
-  color:white;
-  font-size:15px;
-  cursor:pointer;
+padding:15px 22px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:white;
+cursor:pointer;
 }
 
-button:hover{
-  background:#1d4ed8;
+.login-screen{
+position:fixed;
+inset:0;
+background:#020617;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+gap:20px;
+z-index:999;
 }
 
-@media(max-width:700px){
-
-.chat-box{
-  height:380px;
-}
-
-.room-box,
-.chat-input{
-  flex-direction:column;
-}
-
-button{
-  width:100%;
-}
-
+.login-screen button{
+width:250px;
 }
 
 </style>
@@ -151,45 +132,36 @@ button{
 
 <body>
 
-<div class="chat-container">
-
-<div class="chat-header">
-  <h1>Private Chat</h1>
-
-  <div class="private-badge">
-    Private Room
-  </div>
-</div>
-
-<div class="room-box">
-
-<input type="text"
-id="roomId"
-placeholder="Enter Private Room ID">
-
-<button onclick="joinRoom()">
-Join Room
+<div class="login-screen" id="loginScreen">
+<h1>Private Chat Login</h1>
+<button onclick="googleLogin()">
+Login With Google
 </button>
+</div>
+
+<div class="container">
+
+<div class="top">
+
+<div class="profile">
+<img id="userPhoto">
+<div>
+<h3 id="userName"></h3>
+<small id="userEmail"></small>
+</div>
+</div>
+
+<div class="menu">
+<button onclick="logout()">⎋</button>
+</div>
 
 </div>
 
-<div class="chat-box" id="chatBox">
-</div>
+<div class="chat-box" id="chatBox"></div>
 
-<div class="chat-input">
-
-<input type="text"
-id="username"
-placeholder="Your Name">
-
-<input type="text"
-id="message"
-placeholder="Write private message...">
-
-<button onclick="sendMessage()">
-Send Message
-</button>
-
+<div class="bottom">
+<input type="text" id="message" placeholder="Write message...">
+<button onclick="sendMessage()">Send</button>
 </div>
 
 </div>
@@ -200,88 +172,109 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 
 import {
-  getDatabase,
-  ref,
-  push,
-  set,
-  onChildAdded
+getAuth,
+GoogleAuthProvider,
+signInWithPopup,
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+import {
+getDatabase,
+ref,
+push,
+set,
+onChildAdded
 }
 from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
-  authDomain: "wadi-soon-site.firebaseapp.com",
-  projectId: "wadi-soon-site",
-  storageBucket: "wadi-soon-site.firebasestorage.app",
-  messagingSenderId: "306902521128",
-  appId: "1:306902521128:web:13b34b479048240b96ec1d",
-  measurementId: "G-HX8J4GC9SQ"
+apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
+authDomain: "wadi-soon-site.firebaseapp.com",
+projectId: "wadi-soon-site",
+storageBucket: "wadi-soon-site.firebasestorage.app",
+messagingSenderId: "306902521128",
+appId: "1:306902521128:web:13b34b479048240b96ec1d",
+measurementId: "G-HX8J4GC9SQ"
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getDatabase(app);
+const provider = new GoogleAuthProvider();
 
-const chatBox = document.getElementById("chatBox");
+let currentUser;
 
-let currentRoom = "";
+window.googleLogin = function(){
 
-window.joinRoom = function(){
-
-  currentRoom = document.getElementById("roomId").value;
-
-  if(currentRoom === ""){
-    alert("Enter Room ID");
-    return;
-  }
-
-  chatBox.innerHTML = "";
-
-  onChildAdded(ref(db,"privateRooms/" + currentRoom), (snapshot) => {
-
-    const data = snapshot.val();
-
-    chatBox.innerHTML += `
-
-    <div class="message">
-      <b>${data.username}</b><br>
-      ${data.message}
-      <small>${data.time}</small>
-    </div>
-
-    `;
-
-    chatBox.scrollTop = chatBox.scrollHeight;
-
-  });
-
-  alert("Private Room Joined");
+signInWithPopup(auth,provider);
 
 }
 
+onAuthStateChanged(auth,(user)=>{
+
+if(user){
+
+currentUser = user;
+
+document.getElementById("loginScreen").style.display = "none";
+
+document.getElementById("userName").innerText = user.displayName;
+document.getElementById("userEmail").innerText = user.email;
+document.getElementById("userPhoto").src = user.photoURL;
+
+loadMessages();
+
+}
+
+});
+
 window.sendMessage = function(){
 
-  let username = document.getElementById("username").value;
-  let message = document.getElementById("message").value;
+let msg = document.getElementById("message").value;
 
-  if(currentRoom === ""){
-    alert("Join Room First");
-    return;
-  }
+if(msg === "") return;
 
-  if(username === "" || message === ""){
-    alert("Fill all fields");
-    return;
-  }
+const chatRef = push(ref(db,"privateMessages/" + currentUser.uid));
 
-  const msgRef = push(ref(db,"privateRooms/" + currentRoom));
+set(chatRef,{
+name:currentUser.displayName,
+email:currentUser.email,
+photo:currentUser.photoURL,
+message:msg,
+time:new Date().toLocaleString()
+});
 
-  set(msgRef,{
-    username:username,
-    message:message,
-    time:new Date().toLocaleString()
-  });
+document.getElementById("message").value = "";
 
-  document.getElementById("message").value = "";
+}
+
+function loadMessages(){
+
+onChildAdded(ref(db,"privateMessages/" + currentUser.uid),(snapshot)=>{
+
+let data = snapshot.val();
+
+chatBox.innerHTML += `
+<div class="message">
+<img src="${data.photo}">
+<b>${data.name}</b><br><br>
+${data.message}<br><br>
+<small>${data.time}</small>
+</div>
+`;
+
+chatBox.scrollTop = chatBox.scrollHeight;
+
+});
+
+}
+
+window.logout = function(){
+
+signOut(auth);
+location.reload();
 
 }
 
