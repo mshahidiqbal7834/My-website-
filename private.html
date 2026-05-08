@@ -1,11 +1,27 @@
+<!-- ========================= -->
+<!-- ULTIMATE PRIVATE CHAT -->
+<!-- COMPLETE SINGLE FILE -->
+<!-- ========================= -->
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Future Private Chat</title>
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Ultimate Private Firebase Chat
+</title>
 
 <style>
+
+/* ========================= */
+/* RESET */
+/* ========================= */
 
 *{
 margin:0;
@@ -15,474 +31,863 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:#020617;
-color:white;
+
+background:
+linear-gradient(
+135deg,
+#020617,
+#071126,
+#0f172a
+);
+
 height:100vh;
 overflow:hidden;
+color:white;
+
 }
 
+/* ========================= */
 /* LOGIN */
+/* ========================= */
 
 .login-screen{
+
 position:fixed;
 inset:0;
+
 display:flex;
 justify-content:center;
 align-items:center;
-background:
-linear-gradient(135deg,#020617,#0f172a,#1e293b);
+
+padding:20px;
+
 z-index:999;
+
+background:
+linear-gradient(
+135deg,
+#020617,
+#0f172a,
+#111827
+);
+
 }
 
 .login-card{
+
 width:100%;
 max-width:420px;
+
+background:
+rgba(15,23,42,.95);
+
+border:
+1px solid #334155;
+
+border-radius:30px;
+
 padding:35px;
-border-radius:25px;
-background:rgba(15,23,42,.95);
-border:1px solid #334155;
-backdrop-filter:blur(20px);
+
 text-align:center;
+
 box-shadow:
-0 0 40px rgba(37,99,235,.4);
+0 0 50px
+rgba(37,99,235,.4);
+
+backdrop-filter:blur(20px);
+
 }
 
 .login-card h1{
-font-size:35px;
+
+font-size:38px;
+
 margin-bottom:15px;
-background:linear-gradient(to right,#60a5fa,#2563eb);
+
+background:
+linear-gradient(
+to right,
+#60a5fa,
+#2563eb
+);
+
 -webkit-background-clip:text;
 -webkit-text-fill-color:transparent;
+
 }
 
 .login-card p{
-line-height:1.7;
+
+line-height:1.8;
+
 color:#94a3b8;
+
 margin-bottom:25px;
+
 }
 
 .google-btn{
+
 width:100%;
+
 padding:16px;
+
 border:none;
-border-radius:14px;
+
+border-radius:16px;
+
 background:#2563eb;
+
 color:white;
+
 font-size:17px;
+
 cursor:pointer;
+
 transition:.3s;
+
 }
 
 .google-btn:hover{
-transform:translateY(-3px);
+
+transform:translateY(-2px);
+
 background:#1d4ed8;
+
 }
 
+/* ========================= */
 /* APP */
+/* ========================= */
 
 .app{
+
 display:none;
+
 height:100vh;
-grid-template-columns:320px 1fr;
+
+grid-template-columns:
+320px 1fr;
+
 }
 
+/* ========================= */
 /* SIDEBAR */
+/* ========================= */
 
 .sidebar{
+
 background:#0f172a;
-border-right:1px solid #1e293b;
+
+border-right:
+1px solid #1e293b;
+
 display:flex;
 flex-direction:column;
+
 }
 
 .profile{
-padding:20px;
-border-bottom:1px solid #1e293b;
+
+padding:25px;
+
 text-align:center;
+
+border-bottom:
+1px solid #1e293b;
+
 }
 
 .profile img{
-width:90px;
-height:90px;
+
+width:100px;
+height:100px;
+
 border-radius:50%;
-border:3px solid #2563eb;
+
 object-fit:cover;
-margin-bottom:12px;
+
+border:
+4px solid #2563eb;
+
+margin-bottom:15px;
+
 }
 
 .profile h2{
-font-size:22px;
-margin-bottom:5px;
+
+font-size:24px;
+
+margin-bottom:6px;
+
 }
 
 .profile small{
+
 color:#94a3b8;
+
 word-break:break-word;
+
+display:block;
+
 }
 
-.sidebar-menu{
+.sidebar-buttons{
+
 padding:20px;
+
 display:flex;
 flex-direction:column;
-gap:12px;
+
+gap:14px;
+
 }
 
-.sidebar-menu button{
-padding:14px;
+.sidebar-buttons button{
+
+padding:15px;
+
 border:none;
+
 border-radius:14px;
+
 background:#1e293b;
+
 color:white;
-cursor:pointer;
-transition:.3s;
+
 font-size:15px;
+
+cursor:pointer;
+
+transition:.3s;
+
 }
 
-.sidebar-menu button:hover{
+.sidebar-buttons button:hover{
+
 background:#2563eb;
+
 transform:translateX(4px);
+
 }
 
+/* ========================= */
 /* CHAT AREA */
+/* ========================= */
 
 .chat-area{
+
 display:flex;
 flex-direction:column;
+
 height:100vh;
+
 }
 
+/* ========================= */
+/* ANNOUNCEMENT */
+/* ========================= */
+
+.announcement{
+
+padding:14px;
+
+background:#1d4ed8;
+
+text-align:center;
+
+font-size:14px;
+
+display:none;
+
+}
+
+/* ========================= */
 /* TOPBAR */
+/* ========================= */
 
 .topbar{
-padding:18px 20px;
+
+padding:18px;
+
 background:#0f172a;
-border-bottom:1px solid #1e293b;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-flex-wrap:wrap;
+
+border-bottom:
+1px solid #1e293b;
+
 }
 
 .room-box{
+
 display:flex;
+
 gap:10px;
-flex:1;
+
+width:100%;
+
 }
 
 .room-box input{
+
 flex:1;
-padding:14px;
+
+padding:16px;
+
 border:none;
-border-radius:12px;
+
+border-radius:14px;
+
 background:#1e293b;
+
 color:white;
+
 outline:none;
+
+font-size:15px;
+
 }
 
 .room-box button{
-padding:14px 18px;
+
+padding:16px 20px;
+
 border:none;
-border-radius:12px;
+
+border-radius:14px;
+
 background:#2563eb;
+
 color:white;
+
 cursor:pointer;
+
 }
 
+/* ========================= */
 /* CHAT */
+/* ========================= */
 
 .chat-box{
+
 flex:1;
+
 overflow-y:auto;
+
 padding:20px;
+
 background:
-radial-gradient(circle at top,#0f172a,#020617);
+linear-gradient(
+to bottom,
+#020617,
+#071126
+);
+
 }
 
 .empty{
+
 text-align:center;
+
 margin-top:100px;
+
 color:#64748b;
+
 line-height:1.8;
+
 }
 
 .msg-row{
+
 display:flex;
+
 margin-bottom:16px;
+
 }
 
 .mine{
+
 justify-content:flex-end;
+
 }
 
 .message{
+
 max-width:78%;
-padding:14px;
-border-radius:20px;
+
 background:#1e293b;
-border:1px solid rgba(255,255,255,.05);
-animation:fade .3s ease;
+
+padding:15px;
+
+border-radius:22px;
+
+border:
+1px solid
+rgba(255,255,255,.05);
+
+animation:fade .25s ease;
+
 }
 
 .mine .message{
+
 background:#1d4ed8;
+
 }
 
 .msg-top{
+
 display:flex;
+
 align-items:center;
+
 gap:10px;
+
 margin-bottom:10px;
+
 }
 
 .msg-top img{
+
 width:45px;
 height:45px;
+
 border-radius:50%;
+
 object-fit:cover;
+
 }
 
 .msg-info{
+
 flex:1;
+
 min-width:0;
+
 }
 
 .msg-info b,
 .msg-info small{
+
 display:block;
+
 word-break:break-word;
+
 }
 
 .msg-info small{
-color:#cbd5e1;
+
 margin-top:3px;
+
+color:#cbd5e1;
+
 }
 
 .msg-text{
-line-height:1.7;
+
 white-space:pre-wrap;
+
 word-break:break-word;
+
+line-height:1.7;
+
 }
 
 .time{
+
 display:block;
+
 margin-top:10px;
+
 font-size:12px;
-opacity:.8;
+
+opacity:.85;
+
 }
 
-.action-btns{
+.actions{
+
 display:flex;
+
 gap:8px;
+
 margin-top:12px;
+
 flex-wrap:wrap;
+
+}
+
+.actions button{
+
+padding:8px 10px;
+
+border:none;
+
+border-radius:10px;
+
+color:white;
+
+cursor:pointer;
+
+font-size:12px;
+
 }
 
 .delete-btn{
-padding:8px 10px;
-border:none;
-border-radius:10px;
+
 background:#dc2626;
-color:white;
-cursor:pointer;
-font-size:12px;
+
 }
 
 .edit-btn{
-padding:8px 10px;
-border:none;
-border-radius:10px;
+
 background:#f59e0b;
-color:white;
-cursor:pointer;
-font-size:12px;
+
 }
 
+audio{
+
+width:100%;
+
+margin-top:10px;
+
+border-radius:10px;
+
+}
+
+/* ========================= */
 /* BOTTOM */
+/* ========================= */
 
 .bottom{
+
 padding:18px;
+
 background:#0f172a;
-border-top:1px solid #1e293b;
+
+border-top:
+1px solid #1e293b;
+
 display:flex;
+
 gap:10px;
+
 align-items:center;
+
 flex-wrap:wrap;
+
 }
 
 .bottom input{
+
 flex:1;
+
 padding:16px;
+
 border:none;
+
 border-radius:14px;
+
 background:#1e293b;
+
 color:white;
+
 outline:none;
+
 min-width:200px;
+
 }
 
 .bottom button{
-padding:16px 18px;
+
+padding:16px 20px;
+
 border:none;
+
 border-radius:14px;
+
 background:#2563eb;
+
 color:white;
+
 cursor:pointer;
+
 }
 
 .recording{
+
 background:#dc2626 !important;
+
 animation:pulse 1s infinite;
+
 }
 
 .status{
+
 width:100%;
+
 font-size:13px;
+
 color:#93c5fd;
+
 margin-top:5px;
+
 }
 
-/* AUDIO */
-
-audio{
-width:100%;
-margin-top:10px;
-border-radius:12px;
-}
-
+/* ========================= */
 /* ADMIN */
+/* ========================= */
 
 .admin-panel{
+
 position:fixed;
+
 top:20px;
 right:20px;
+
 width:320px;
+
+max-height:85vh;
+
+overflow:auto;
+
 background:#0f172a;
-border:1px solid #334155;
-border-radius:20px;
+
+border:
+1px solid #334155;
+
+border-radius:24px;
+
 padding:20px;
+
 display:none;
+
 z-index:100;
-box-shadow:0 0 30px rgba(0,0,0,.4);
+
+box-shadow:
+0 0 40px
+rgba(0,0,0,.45);
+
 }
 
 .admin-panel h2{
+
 margin-bottom:15px;
+
 }
 
 .admin-panel textarea{
+
 width:100%;
-height:100px;
+
+height:120px;
+
 background:#1e293b;
+
 border:none;
-border-radius:12px;
-padding:12px;
+
+border-radius:14px;
+
+padding:14px;
+
 color:white;
+
 resize:none;
+
 margin-bottom:12px;
+
 }
 
 .admin-panel button{
+
 width:100%;
+
+padding:14px;
+
+border:none;
+
+border-radius:14px;
+
+background:#2563eb;
+
+color:white;
+
 margin-top:10px;
+
+cursor:pointer;
+
 }
 
-/* ANNOUNCEMENT */
+.admin-panel .danger{
 
-.announcement{
-padding:12px 20px;
-background:#1d4ed8;
-text-align:center;
-font-size:14px;
-display:none;
+background:#dc2626;
+
 }
 
+/* ========================= */
 /* ANIMATION */
+/* ========================= */
 
 @keyframes pulse{
-0%{transform:scale(1)}
-50%{transform:scale(1.03)}
-100%{transform:scale(1)}
+
+0%{
+transform:scale(1);
+}
+
+50%{
+transform:scale(1.03);
+}
+
+100%{
+transform:scale(1);
+}
+
 }
 
 @keyframes fade{
+
 from{
 opacity:0;
 transform:translateY(10px);
 }
+
 to{
 opacity:1;
 transform:translateY(0);
 }
+
 }
 
+/* ========================= */
 /* MOBILE */
+/* ========================= */
 
 @media(max-width:900px){
 
 .app{
+
 grid-template-columns:1fr;
+
 }
 
 .sidebar{
+
 display:none;
+
 }
 
 .message{
-max-width:92%;
+
+max-width:94%;
+
+}
+
+.admin-panel{
+
+top:15px;
+left:15px;
+right:15px;
+
+width:auto;
+
 }
 
 }
 
 </style>
+
 </head>
 
 <body>
 
-<div class="login-screen" id="loginScreen">
+<!-- ========================= -->
+<!-- LOGIN -->
+<!-- ========================= -->
+
+<div class="login-screen"
+id="loginScreen">
 
 <div class="login-card">
 
-<h1>Future Chat</h1>
+<h1>
+Future Chat
+</h1>
 
 <p>
-Realtime Firebase AI Style Private Chat System
-with Voice Notes, Delete, Admin Panel,
-Announcements and Modern UI.
+
+Realtime Private Firebase Chat
+with Admin Panel,
+Voice Notes,
+Delete,
+Edit,
+Announcement
+and Premium UI.
+
 </p>
 
-<button class="google-btn" id="loginBtn">
+<button
+class="google-btn"
+id="loginBtn">
+
 Login With Google
+
 </button>
 
 </div>
 
 </div>
 
-<div class="announcement" id="announcementBar">
-No announcement
+<!-- ========================= -->
+<!-- ANNOUNCEMENT -->
+<!-- ========================= -->
+
+<div class="announcement"
+id="announcementBar">
+
+No Announcement
+
 </div>
 
-<div class="admin-panel" id="adminPanel">
+<!-- ========================= -->
+<!-- ADMIN PANEL -->
+<!-- ========================= -->
 
-<h2>Admin Panel</h2>
+<div class="admin-panel"
+id="adminPanel">
+
+<h2>
+Admin Panel
+</h2>
 
 <textarea
 id="announcementInput"
 placeholder="Write announcement..."
 ></textarea>
 
-<button id="postAnnouncementBtn">
+<button
+id="postAnnouncementBtn">
+
 Post Announcement
+
 </button>
 
-<button id="clearMessagesBtn">
+<button
+class="danger"
+id="clearMessagesBtn">
+
 Delete All Messages
+
 </button>
 
 </div>
 
-<div class="app" id="app">
+<!-- ========================= -->
+<!-- APP -->
+<!-- ========================= -->
+
+<div class="app"
+id="app">
+
+<!-- SIDEBAR -->
 
 <div class="sidebar">
 
@@ -500,19 +905,27 @@ user@gmail.com
 
 </div>
 
-<div class="sidebar-menu">
+<div class="sidebar-buttons">
 
-<button onclick="toggleAdminPanel()">
+<button
+onclick="toggleAdminPanel()">
+
 Admin Panel
+
 </button>
 
-<button onclick="logout()">
+<button
+onclick="logoutUser()">
+
 Logout
+
 </button>
 
 </div>
 
 </div>
+
+<!-- CHAT AREA -->
 
 <div class="chat-area">
 
@@ -526,18 +939,25 @@ id="otherEmail"
 placeholder="Enter other Gmail"
 />
 
-<button id="openRoomBtn">
+<button
+id="openRoomBtn">
+
 Open Private
+
 </button>
 
 </div>
 
 </div>
 
-<div class="chat-box" id="chatBox">
+<div class="chat-box"
+id="chatBox">
 
 <div class="empty">
-Open private room and start chatting.
+
+Open private room
+and start chatting.
+
 </div>
 
 </div>
@@ -558,63 +978,110 @@ placeholder="Write message..."
 Send
 </button>
 
-<div class="status" id="statusText">
+<div class="status"
+id="statusText">
+
 Ready
-</div>
 
 </div>
 
 </div>
 
 </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- SCRIPT -->
+<!-- ========================= -->
 
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import {
+initializeApp
+}
+
+from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 
 import {
+
 getAuth,
+
 GoogleAuthProvider,
+
 signInWithPopup,
+
 onAuthStateChanged,
+
 signOut
+
 }
-from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 import {
+
 getFirestore,
+
 collection,
+
 addDoc,
+
 query,
+
 orderBy,
+
 onSnapshot,
+
 deleteDoc,
+
 doc,
+
 updateDoc,
+
 serverTimestamp,
+
 getDocs
+
 }
-from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+from
+"https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+/* ========================= */
+/* FIREBASE */
+/* ========================= */
 
 const firebaseConfig = {
 
-apiKey:"AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
+apiKey:
+"AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
 
-authDomain:"wadi-soon-site.firebaseapp.com",
+authDomain:
+"wadi-soon-site.firebaseapp.com",
 
-projectId:"wadi-soon-site",
+projectId:
+"wadi-soon-site",
 
-storageBucket:"wadi-soon-site.firebasestorage.app",
+storageBucket:
+"wadi-soon-site.firebasestorage.app",
 
-messagingSenderId:"306902521128",
+messagingSenderId:
+"306902521128",
 
-appId:"1:306902521128:web:13b34b479048240b96ec1d"
+appId:
+"1:306902521128:web:13b34b479048240b96ec1d"
 
 };
 
 const ADMIN_EMAIL =
 "mshahidiqbal836@gmail.com";
+
+/* ========================= */
+/* INIT */
+/* ========================= */
 
 const app =
 initializeApp(firebaseConfig);
@@ -627,6 +1094,10 @@ getFirestore(app);
 
 const provider =
 new GoogleAuthProvider();
+
+/* ========================= */
+/* ELEMENTS */
+/* ========================= */
 
 const loginScreen =
 document.getElementById("loginScreen");
@@ -676,6 +1147,10 @@ document.getElementById("announcementInput");
 const announcementBar =
 document.getElementById("announcementBar");
 
+/* ========================= */
+/* VARIABLES */
+/* ========================= */
+
 let currentUser = null;
 
 let currentRoom = null;
@@ -684,28 +1159,48 @@ let mediaRecorder = null;
 
 let audioChunks = [];
 
+/* ========================= */
+/* HELPERS */
+/* ========================= */
+
 function setStatus(text){
+
 statusText.innerText = text;
+
 }
 
 function safeEmail(email=""){
+
 return email
 .trim()
 .toLowerCase()
 .replace(/[.#$[\]]/g,"_");
+
 }
 
-function roomId(a,b){
-return [a,b]
+function makeRoom(a,b){
+
+return [
+safeEmail(a),
+safeEmail(b)
+]
 .sort()
 .join("_");
+
 }
+
+/* ========================= */
+/* LOGIN */
+/* ========================= */
 
 loginBtn.onclick = async()=>{
 
 try{
 
-await signInWithPopup(auth,provider);
+await signInWithPopup(
+auth,
+provider
+);
 
 }catch(e){
 
@@ -717,19 +1212,24 @@ console.log(e);
 
 };
 
+/* ========================= */
+/* AUTH */
+/* ========================= */
+
 onAuthStateChanged(auth,(user)=>{
 
 if(user){
 
 currentUser = user;
 
-loginScreen.style.display = "none";
+loginScreen.style.display =
+"none";
 
-appBox.style.display = "grid";
+appBox.style.display =
+"grid";
 
 myPhoto.src =
-user.photoURL ||
-"https://via.placeholder.com/80";
+user.photoURL;
 
 myName.innerText =
 user.displayName;
@@ -737,9 +1237,12 @@ user.displayName;
 myEmail.innerText =
 user.email;
 
-if(user.email === ADMIN_EMAIL){
+if(
+user.email === ADMIN_EMAIL
+){
 
-adminPanel.style.display = "block";
+adminPanel.style.display =
+"block";
 
 }
 
@@ -747,15 +1250,21 @@ loadAnnouncements();
 
 }else{
 
-loginScreen.style.display = "flex";
+loginScreen.style.display =
+"flex";
 
-appBox.style.display = "none";
+appBox.style.display =
+"none";
 
 }
 
 });
 
-window.logout = async()=>{
+/* ========================= */
+/* LOGOUT */
+/* ========================= */
+
+window.logoutUser = async()=>{
 
 await signOut(auth);
 
@@ -763,19 +1272,32 @@ location.reload();
 
 };
 
+/* ========================= */
+/* ADMIN TOGGLE */
+/* ========================= */
+
 window.toggleAdminPanel = ()=>{
 
-if(adminPanel.style.display === "none"){
+if(
+adminPanel.style.display
+=== "none"
+){
 
-adminPanel.style.display = "block";
+adminPanel.style.display =
+"block";
 
 }else{
 
-adminPanel.style.display = "none";
+adminPanel.style.display =
+"none";
 
 }
 
 };
+
+/* ========================= */
+/* OPEN ROOM */
+/* ========================= */
 
 openRoomBtn.onclick = ()=>{
 
@@ -791,20 +1313,30 @@ return;
 }
 
 currentRoom =
-roomId(
-safeEmail(currentUser.email),
-safeEmail(other)
+makeRoom(
+currentUser.email,
+other
 );
 
 loadMessages();
 
-setStatus("Private room opened");
+setStatus(
+"Private Room Opened"
+);
 
 };
 
-sendBtn.onclick = sendMessage;
+/* ========================= */
+/* SEND MESSAGE */
+/* ========================= */
 
-messageInput.addEventListener("keydown",(e)=>{
+sendBtn.onclick =
+sendMessage;
+
+messageInput
+.addEventListener(
+"keydown",
+(e)=>{
 
 if(e.key === "Enter"){
 
@@ -823,29 +1355,41 @@ if(text === "") return;
 
 if(!currentRoom){
 
-alert("Open room first");
+alert("Open Private Chat");
 
 return;
 
 }
 
 await addDoc(
-collection(db,"rooms",currentRoom,"messages"),
+
+collection(
+db,
+"rooms",
+currentRoom,
+"messages"
+),
+
 {
 
 type:"text",
 
 text:text,
 
-name:currentUser.displayName,
+name:
+currentUser.displayName,
 
-email:currentUser.email,
+email:
+currentUser.email,
 
-photo:currentUser.photoURL || "",
+photo:
+currentUser.photoURL,
 
-time:Date.now(),
+time:
+Date.now(),
 
-createdAt:serverTimestamp()
+createdAt:
+serverTimestamp()
 
 }
 
@@ -853,9 +1397,15 @@ createdAt:serverTimestamp()
 
 messageInput.value = "";
 
-setStatus("Message Sent");
+setStatus(
+"Message Sent"
+);
 
 }
+
+/* ========================= */
+/* LOAD MESSAGES */
+/* ========================= */
 
 function loadMessages(){
 
@@ -868,7 +1418,10 @@ currentRoom,
 "messages"
 ),
 
-orderBy("time","asc")
+orderBy(
+"time",
+"asc"
+)
 
 );
 
@@ -879,9 +1432,13 @@ chatBox.innerHTML = "";
 if(snapshot.empty){
 
 chatBox.innerHTML = `
+
 <div class="empty">
-No messages yet.
+
+No Messages Yet
+
 </div>
+
 `;
 
 return;
@@ -890,10 +1447,12 @@ return;
 
 snapshot.forEach((docSnap)=>{
 
-const data = docSnap.data();
+const data =
+docSnap.data();
 
 const mine =
-data.email === currentUser.email;
+data.email
+=== currentUser.email;
 
 chatBox.innerHTML += `
 
@@ -904,15 +1463,18 @@ chatBox.innerHTML += `
 <div class="msg-top">
 
 <img src="${
-data.photo ||
-'https://via.placeholder.com/40'
+data.photo
 }">
 
 <div class="msg-info">
 
-<b>${data.name}</b>
+<b>
+${data.name}
+</b>
 
-<small>${data.email}</small>
+<small>
+${data.email}
+</small>
 
 </div>
 
@@ -921,25 +1483,36 @@ data.photo ||
 ${
 data.type === "text"
 ?
+
 `<div class="msg-text">
 ${data.text}
 </div>`
+
 :
-`<audio controls src="${data.audio}">
+
+`<audio
+controls
+src="${data.audio}">
 </audio>`
+
 }
 
 <small class="time">
-${new Date(data.time).toLocaleString()}
+
+${new Date(
+data.time
+).toLocaleString()}
+
 </small>
 
-<div class="action-btns">
+<div class="actions">
 
 <button
 class="delete-btn"
-onclick="deleteMessage('${docSnap.id}')"
->
+onclick="deleteMessage('${docSnap.id}')">
+
 Delete
+
 </button>
 
 <button
@@ -947,9 +1520,10 @@ class="edit-btn"
 onclick="editMessage(
 '${docSnap.id}',
 \`${data.text || ""}\`
-)"
->
+)">
+
 Edit
+
 </button>
 
 </div>
@@ -969,9 +1543,12 @@ chatBox.scrollHeight;
 
 }
 
-window.deleteMessage = async(id)=>{
+/* ========================= */
+/* DELETE */
+/* ========================= */
 
-if(!currentRoom) return;
+window.deleteMessage =
+async(id)=>{
 
 await deleteDoc(
 
@@ -987,10 +1564,18 @@ id
 
 };
 
-window.editMessage = async(id,oldText)=>{
+/* ========================= */
+/* EDIT */
+/* ========================= */
+
+window.editMessage =
+async(id,oldText)=>{
 
 const newText =
-prompt("Edit Message",oldText);
+prompt(
+"Edit Message",
+oldText
+);
 
 if(!newText) return;
 
@@ -1005,18 +1590,25 @@ id
 ),
 
 {
+
 text:newText
+
 }
 
 );
 
 };
 
-recordBtn.onclick = async()=>{
+/* ========================= */
+/* VOICE */
+/* ========================= */
+
+recordBtn.onclick =
+async()=>{
 
 if(!currentRoom){
 
-alert("Open room first");
+alert("Open Room First");
 
 return;
 
@@ -1024,7 +1616,8 @@ return;
 
 if(
 !mediaRecorder ||
-mediaRecorder.state === "inactive"
+mediaRecorder.state
+=== "inactive"
 ){
 
 startRecording();
@@ -1040,52 +1633,71 @@ stopRecording();
 async function startRecording(){
 
 const stream =
-await navigator.mediaDevices
-.getUserMedia({audio:true});
+await navigator
+.mediaDevices
+.getUserMedia({
+audio:true
+});
 
 mediaRecorder =
 new MediaRecorder(stream);
 
 audioChunks = [];
 
-mediaRecorder.ondataavailable = e=>{
+mediaRecorder
+.ondataavailable =
+e=>{
 
-audioChunks.push(e.data);
+audioChunks.push(
+e.data
+);
 
 };
 
-mediaRecorder.onstop = async()=>{
+mediaRecorder.onstop =
+async()=>{
 
 const blob =
-new Blob(audioChunks,{
+new Blob(
+audioChunks,
+{
 type:"audio/webm"
-});
+}
+);
 
 const reader =
 new FileReader();
 
-reader.onloadend = async()=>{
+reader.onloadend =
+async()=>{
 
 await addDoc(
+
 collection(
 db,
 "rooms",
 currentRoom,
 "messages"
 ),
+
 {
 
 type:"audio",
 
-audio:reader.result,
+audio:
+reader.result,
 
-name:currentUser.displayName,
+name:
+currentUser.displayName,
 
-email:currentUser.email,
+email:
+currentUser.email,
 
-photo:currentUser.photoURL || "",
+photo:
+currentUser.photoURL,
 
-time:Date.now()
+time:
+Date.now()
 
 }
 
@@ -1093,17 +1705,24 @@ time:Date.now()
 
 };
 
-reader.readAsDataURL(blob);
+reader.readAsDataURL(
+blob
+);
 
 };
 
 mediaRecorder.start();
 
-recordBtn.classList.add("recording");
+recordBtn.classList.add(
+"recording"
+);
 
-recordBtn.innerText = "⏹";
+recordBtn.innerText =
+"⏹";
 
-setStatus("Recording...");
+setStatus(
+"Recording..."
+);
 
 }
 
@@ -1111,20 +1730,33 @@ function stopRecording(){
 
 mediaRecorder.stop();
 
-recordBtn.classList.remove("recording");
+recordBtn.classList.remove(
+"recording"
+);
 
-recordBtn.innerText = "🎤";
+recordBtn.innerText =
+"🎤";
 
-setStatus("Voice Note Sent");
+setStatus(
+"Voice Sent"
+);
 
 }
 
+/* ========================= */
+/* ANNOUNCEMENT */
+/* ========================= */
+
 document
-.getElementById("postAnnouncementBtn")
+.getElementById(
+"postAnnouncementBtn"
+)
+
 .onclick = async()=>{
 
 if(
-currentUser.email !== ADMIN_EMAIL
+currentUser.email
+!== ADMIN_EMAIL
 ){
 
 return;
@@ -1132,12 +1764,19 @@ return;
 }
 
 const text =
-announcementInput.value.trim();
+announcementInput
+.value
+.trim();
 
 if(text === "") return;
 
 await addDoc(
-collection(db,"announcements"),
+
+collection(
+db,
+"announcements"
+),
+
 {
 
 text:text,
@@ -1148,9 +1787,12 @@ time:Date.now()
 
 );
 
-announcementInput.value = "";
+announcementInput.value =
+"";
 
-alert("Announcement Posted");
+alert(
+"Announcement Posted"
+);
 
 };
 
@@ -1158,20 +1800,28 @@ function loadAnnouncements(){
 
 const q = query(
 
-collection(db,"announcements"),
+collection(
+db,
+"announcements"
+),
 
-orderBy("time","desc")
+orderBy(
+"time",
+"desc"
+)
 
 );
 
 onSnapshot(q,(snapshot)=>{
 
-if(snapshot.empty) return;
+if(snapshot.empty)
+return;
 
 const data =
 snapshot.docs[0].data();
 
-announcementBar.style.display =
+announcementBar
+.style.display =
 "block";
 
 announcementBar.innerText =
@@ -1181,12 +1831,20 @@ data.text;
 
 }
 
+/* ========================= */
+/* DELETE ALL */
+/* ========================= */
+
 document
-.getElementById("clearMessagesBtn")
+.getElementById(
+"clearMessagesBtn"
+)
+
 .onclick = async()=>{
 
 if(
-currentUser.email !== ADMIN_EMAIL
+currentUser.email
+!== ADMIN_EMAIL
 ){
 
 return;
@@ -1194,36 +1852,53 @@ return;
 }
 
 const ok =
-confirm("Delete all messages?");
+confirm(
+"Delete all messages?"
+);
 
 if(!ok) return;
 
 const rooms =
 await getDocs(
-collection(db,"rooms")
+collection(
+db,
+"rooms"
+)
 );
 
-for(const room of rooms.docs){
+for(
+const room
+of rooms.docs
+){
 
 const msgs =
 await getDocs(
+
 collection(
 db,
 "rooms",
 room.id,
 "messages"
 )
+
 );
 
-for(const msg of msgs.docs){
+for(
+const msg
+of msgs.docs
+){
 
-await deleteDoc(msg.ref);
+await deleteDoc(
+msg.ref
+);
 
 }
 
 }
 
-alert("All Messages Deleted");
+alert(
+"All Messages Deleted"
+);
 
 };
 
