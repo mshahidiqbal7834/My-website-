@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Public Chat</title>
+<title>Private Chat Room</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -49,15 +49,27 @@ body{
   font-size:28px;
 }
 
-.online{
-  background:#16a34a;
-  padding:8px 14px;
+.private-badge{
+  background:#dc2626;
+  padding:8px 16px;
   border-radius:30px;
   font-size:14px;
 }
 
+.room-box{
+  padding:20px;
+  background:#111827;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.room-box input{
+  flex:1;
+}
+
 .chat-box{
-  height:500px;
+  height:450px;
   overflow-y:auto;
   padding:20px;
   display:flex;
@@ -69,7 +81,6 @@ body{
   background:#1e293b;
   padding:15px;
   border-radius:18px;
-  animation:fade 0.3s ease;
 }
 
 .message b{
@@ -77,9 +88,9 @@ body{
 }
 
 .message small{
-  color:#94a3b8;
   display:block;
   margin-top:5px;
+  color:#94a3b8;
 }
 
 .chat-input{
@@ -87,10 +98,10 @@ body{
   gap:10px;
   padding:20px;
   background:#1e293b;
+  flex-wrap:wrap;
 }
 
 input{
-  flex:1;
   padding:15px;
   border:none;
   border-radius:14px;
@@ -99,39 +110,32 @@ input{
   font-size:15px;
 }
 
+#username,
+#message{
+  flex:1 1 100%;
+}
+
 button{
-  padding:15px 25px;
+  padding:14px 22px;
   border:none;
   border-radius:14px;
   background:#2563eb;
   color:white;
   font-size:15px;
   cursor:pointer;
-  transition:0.3s;
 }
 
 button:hover{
   background:#1d4ed8;
 }
 
-@keyframes fade{
-  from{
-    opacity:0;
-    transform:translateY(10px);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-
 @media(max-width:700px){
 
 .chat-box{
-  height:400px;
+  height:380px;
 }
 
+.room-box,
 .chat-input{
   flex-direction:column;
 }
@@ -150,11 +154,23 @@ button{
 <div class="chat-container">
 
 <div class="chat-header">
-  <h1>Public Chat</h1>
+  <h1>Private Chat</h1>
 
-  <div class="online">
-    Online Chat
+  <div class="private-badge">
+    Private Room
   </div>
+</div>
+
+<div class="room-box">
+
+<input type="text"
+id="roomId"
+placeholder="Enter Private Room ID">
+
+<button onclick="joinRoom()">
+Join Room
+</button>
+
 </div>
 
 <div class="chat-box" id="chatBox">
@@ -164,14 +180,14 @@ button{
 
 <input type="text"
 id="username"
-placeholder="Your name">
+placeholder="Your Name">
 
 <input type="text"
 id="message"
-placeholder="Write message...">
+placeholder="Write private message...">
 
 <button onclick="sendMessage()">
-Send
+Send Message
 </button>
 
 </div>
@@ -207,19 +223,59 @@ const db = getDatabase(app);
 
 const chatBox = document.getElementById("chatBox");
 
+let currentRoom = "";
+
+window.joinRoom = function(){
+
+  currentRoom = document.getElementById("roomId").value;
+
+  if(currentRoom === ""){
+    alert("Enter Room ID");
+    return;
+  }
+
+  chatBox.innerHTML = "";
+
+  onChildAdded(ref(db,"privateRooms/" + currentRoom), (snapshot) => {
+
+    const data = snapshot.val();
+
+    chatBox.innerHTML += `
+
+    <div class="message">
+      <b>${data.username}</b><br>
+      ${data.message}
+      <small>${data.time}</small>
+    </div>
+
+    `;
+
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+  });
+
+  alert("Private Room Joined");
+
+}
+
 window.sendMessage = function(){
 
   let username = document.getElementById("username").value;
   let message = document.getElementById("message").value;
+
+  if(currentRoom === ""){
+    alert("Join Room First");
+    return;
+  }
 
   if(username === "" || message === ""){
     alert("Fill all fields");
     return;
   }
 
-  const chatRef = push(ref(db,"messages"));
+  const msgRef = push(ref(db,"privateRooms/" + currentRoom));
 
-  set(chatRef,{
+  set(msgRef,{
     username:username,
     message:message,
     time:new Date().toLocaleString()
@@ -228,24 +284,6 @@ window.sendMessage = function(){
   document.getElementById("message").value = "";
 
 }
-
-onChildAdded(ref(db,"messages"), (snapshot) => {
-
-  const data = snapshot.val();
-
-  chatBox.innerHTML += `
-
-  <div class="message">
-    <b>${data.username}</b><br>
-    ${data.message}
-    <small>${data.time}</small>
-  </div>
-
-  `;
-
-  chatBox.scrollTop = chatBox.scrollHeight;
-
-});
 
 </script>
 
