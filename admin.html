@@ -6,6 +6,7 @@
 <title>Admin Panel</title>
 
 <style>
+
 *{
   margin:0;
   padding:0;
@@ -19,14 +20,14 @@ body{
   padding:20px;
 }
 
-h1{
-  text-align:center;
-  margin-bottom:25px;
-}
-
 .container{
   max-width:900px;
   margin:auto;
+}
+
+h1{
+  text-align:center;
+  margin-bottom:25px;
 }
 
 .card{
@@ -72,6 +73,7 @@ input{
   border-radius:10px;
   margin-top:10px;
 }
+
 </style>
 </head>
 
@@ -82,55 +84,118 @@ input{
 <h1>Admin Panel</h1>
 
 <div class="card">
-  <h2>Announcements</h2>
 
-  <input type="text" id="announcement"
-  placeholder="Write announcement...">
+<h2>Announcement</h2>
 
-  <button onclick="sendAnnouncement()">
-    Post Announcement
-  </button>
+<input type="text"
+id="announcement"
+placeholder="Write announcement...">
+
+<button onclick="sendAnnouncement()">
+Post Announcement
+</button>
+
 </div>
 
 <div class="card">
-  <h2>Chat Controls</h2>
 
-  <button onclick="clearChat()">
-    Clear All Messages
-  </button>
+<h2>Chat Controls</h2>
+
+<button onclick="clearChat()">
+Clear All Messages
+</button>
+
 </div>
 
 <div class="card">
-  <h2>Recent Messages</h2>
 
-  <div class="message-box">
-    User: Hello Everyone
-  </div>
+<h2>Recent Messages</h2>
 
-  <div class="message-box">
-    User: Welcome To Chat
-  </div>
+<div class="message-box">
+User : Hello Everyone
+</div>
 
+<div class="message-box">
+User : Welcome To Chat
 </div>
 
 </div>
 
-<script>
+</div>
 
-function clearChat(){
-  alert("All messages cleared");
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import {
+  getDatabase,
+  ref,
+  remove,
+  push,
+  set
+}
+from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+
+const firebaseConfig = {
+
+  apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
+
+  authDomain: "wadi-soon-site.firebaseapp.com",
+
+  projectId: "wadi-soon-site",
+
+  storageBucket: "wadi-soon-site.firebasestorage.app",
+
+  messagingSenderId: "306902521128",
+
+  appId: "1:306902521128:web:13b34b479048240b96ec1d",
+
+  measurementId: "G-HX8J4GC9SQ"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getDatabase(app);
+
+window.clearChat = function(){
+
+  remove(ref(db,"messages"))
+  .then(() => {
+
+    alert("All messages deleted");
+
+  });
+
 }
 
-function sendAnnouncement(){
+window.sendAnnouncement = function(){
+
   let text =
   document.getElementById("announcement").value;
 
   if(text === ""){
+
     alert("Write something");
     return;
+
   }
 
-  alert("Announcement Posted: " + text);
+  const announcementRef =
+  push(ref(db,"announcements"));
+
+  set(announcementRef,{
+
+    text:text,
+    time:new Date().toLocaleString()
+
+  });
+
+  alert("Announcement Posted");
+
+  document.getElementById("announcement").value = "";
+
 }
 
 </script>
