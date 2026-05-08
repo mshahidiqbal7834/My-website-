@@ -1,284 +1,832 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Private Inbox</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Private Gmail Chat</title>
 
-<style>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
+    body{
+      background:#020617;
+      color:#fff;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
 
-body{
-background:#020617;
-font-family:Arial;
-color:white;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-}
+    .login-screen{
+      position:fixed;
+      inset:0;
+      background:#020617;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      flex-direction:column;
+      gap:20px;
+      z-index:999;
+    }
 
-.container{
-width:100%;
-max-width:900px;
-height:95vh;
-background:#0f172a;
-border-radius:25px;
-overflow:hidden;
-box-shadow:0 0 30px rgba(0,0,0,0.4);
-display:flex;
-flex-direction:column;
-}
+    .login-card{
+      background:#0f172a;
+      border:1px solid #1e293b;
+      padding:30px;
+      border-radius:20px;
+      width:100%;
+      max-width:420px;
+      text-align:center;
+      box-shadow:0 0 30px rgba(0,0,0,.35);
+    }
 
-.top{
-background:#1e293b;
-padding:15px;
-display:flex;
-align-items:center;
-justify-content:space-between;
-}
+    .login-card h1{
+      margin-bottom:10px;
+      font-size:28px;
+    }
 
-.profile{
-display:flex;
-align-items:center;
-gap:12px;
-}
+    .login-card p{
+      color:#94a3b8;
+      margin-bottom:20px;
+      line-height:1.5;
+    }
 
-.profile img{
-width:55px;
-height:55px;
-border-radius:50%;
-}
+    .google-btn{
+      width:100%;
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      background:#2563eb;
+      color:#fff;
+      font-size:16px;
+      cursor:pointer;
+    }
 
-.menu button{
-width:45px;
-height:45px;
-border:none;
-border-radius:50%;
-background:#2563eb;
-color:white;
-font-size:20px;
-cursor:pointer;
-}
+    .container{
+      width:100%;
+      max-width:980px;
+      height:95vh;
+      background:#0f172a;
+      border-radius:24px;
+      overflow:hidden;
+      box-shadow:0 0 30px rgba(0,0,0,.4);
+      display:none;
+      flex-direction:column;
+      border:1px solid #1e293b;
+    }
 
-.chat-box{
-flex:1;
-padding:20px;
-overflow-y:auto;
-}
+    .top{
+      background:#111827;
+      padding:14px 18px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      border-bottom:1px solid #1e293b;
+      flex-wrap:wrap;
+    }
 
-.message{
-background:#1e293b;
-padding:15px;
-border-radius:18px;
-margin-bottom:15px;
-}
+    .me, .other{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      min-width:220px;
+    }
 
-.message img{
-width:40px;
-height:40px;
-border-radius:50%;
-margin-bottom:10px;
-}
+    .me img, .other img{
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      object-fit:cover;
+      border:2px solid #334155;
+      background:#1e293b;
+    }
 
-.bottom{
-padding:15px;
-background:#1e293b;
-display:flex;
-gap:10px;
-}
+    .user-info h3{
+      font-size:16px;
+      margin-bottom:4px;
+      word-break:break-word;
+    }
 
-input{
-flex:1;
-padding:15px;
-border:none;
-border-radius:12px;
-background:#334155;
-color:white;
-}
+    .user-info small{
+      color:#94a3b8;
+      display:block;
+      word-break:break-word;
+    }
 
-button{
-padding:15px 22px;
-border:none;
-border-radius:12px;
-background:#2563eb;
-color:white;
-cursor:pointer;
-}
+    .actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+    }
 
-.login-screen{
-position:fixed;
-inset:0;
-background:#020617;
-display:flex;
-justify-content:center;
-align-items:center;
-flex-direction:column;
-gap:20px;
-z-index:999;
-}
+    .actions button,
+    .open-btn,
+    .send-btn,
+    .voice-btn{
+      border:none;
+      cursor:pointer;
+      border-radius:12px;
+      color:#fff;
+      background:#2563eb;
+    }
 
-.login-screen button{
-width:250px;
-}
+    .actions button{
+      padding:12px 16px;
+    }
 
-</style>
+    .room-bar{
+      background:#0b1220;
+      padding:14px 18px;
+      display:flex;
+      gap:10px;
+      border-bottom:1px solid #1e293b;
+      flex-wrap:wrap;
+    }
+
+    .room-bar input{
+      flex:1;
+      min-width:220px;
+      padding:14px;
+      border:none;
+      border-radius:12px;
+      background:#1e293b;
+      color:#fff;
+      outline:none;
+    }
+
+    .open-btn{
+      padding:14px 18px;
+    }
+
+    .chat-box{
+      flex:1;
+      overflow-y:auto;
+      padding:18px;
+      background:linear-gradient(to bottom,#0f172a,#0b1120);
+    }
+
+    .empty{
+      text-align:center;
+      color:#94a3b8;
+      margin-top:60px;
+      line-height:1.8;
+    }
+
+    .msg-row{
+      display:flex;
+      margin-bottom:14px;
+    }
+
+    .msg-row.me-row{
+      justify-content:flex-end;
+    }
+
+    .msg{
+      max-width:78%;
+      padding:12px;
+      border-radius:18px;
+      background:#1e293b;
+      border:1px solid rgba(255,255,255,.05);
+      box-shadow:0 10px 20px rgba(0,0,0,.15);
+    }
+
+    .me-row .msg{
+      background:#1d4ed8;
+    }
+
+    .msg-head{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:8px;
+    }
+
+    .msg-head img{
+      width:38px;
+      height:38px;
+      border-radius:50%;
+      object-fit:cover;
+      background:#334155;
+    }
+
+    .msg-head .meta{
+      flex:1;
+      min-width:0;
+    }
+
+    .msg-head .meta b,
+    .msg-head .meta small{
+      display:block;
+      word-break:break-word;
+    }
+
+    .msg-head .meta small{
+      color:#dbeafe;
+      opacity:.9;
+      margin-top:2px;
+    }
+
+    .msg-text{
+      white-space:pre-wrap;
+      word-break:break-word;
+      line-height:1.55;
+      margin-top:8px;
+    }
+
+    .msg-time{
+      display:block;
+      margin-top:10px;
+      font-size:12px;
+      opacity:.9;
+    }
+
+    .delete-btn{
+      padding:8px 10px;
+      font-size:12px;
+      background:#dc2626;
+      color:#fff;
+      border:none;
+      border-radius:10px;
+      cursor:pointer;
+    }
+
+    .bottom{
+      padding:14px 18px;
+      background:#111827;
+      display:flex;
+      gap:10px;
+      align-items:center;
+      border-top:1px solid #1e293b;
+      flex-wrap:wrap;
+    }
+
+    .bottom input{
+      flex:1;
+      min-width:200px;
+      padding:15px;
+      border:none;
+      border-radius:12px;
+      background:#1e293b;
+      color:#fff;
+      outline:none;
+    }
+
+    .send-btn, .voice-btn{
+      padding:15px 18px;
+      min-width:90px;
+    }
+
+    .voice-btn.recording{
+      background:#dc2626;
+      animation:pulse 1s infinite;
+    }
+
+    .status{
+      width:100%;
+      font-size:13px;
+      color:#93c5fd;
+      margin-top:4px;
+    }
+
+    audio{
+      width:100%;
+      margin-top:8px;
+      border-radius:10px;
+    }
+
+    @keyframes pulse{
+      0%{transform:scale(1)}
+      50%{transform:scale(1.04)}
+      100%{transform:scale(1)}
+    }
+
+    @media(max-width:700px){
+      .msg{max-width:92%}
+      .top{flex-direction:column; align-items:flex-start}
+      .actions{width:100%}
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="login-screen" id="loginScreen">
-<h1>Private Chat Login</h1>
-<button onclick="googleLogin()">
-Login With Google
-</button>
-</div>
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <h1>Private Gmail Chat</h1>
+      <p>
+        Sirf Google login ke baad private 1-to-1 chat.<br>
+        Name, photo, email, time, delete aur voice note sab included hai.
+      </p>
+      <button class="google-btn" id="googleLoginBtn">Login With Google</button>
+    </div>
+  </div>
 
-<div class="container">
+  <div class="container" id="app">
+    <div class="top">
+      <div class="me">
+        <img id="myPhoto" alt="me">
+        <div class="user-info">
+          <h3 id="myName">Your Name</h3>
+          <small id="myEmail">your@email.com</small>
+        </div>
+      </div>
 
-<div class="top">
+      <div class="other">
+        <img id="otherPhoto" alt="other">
+        <div class="user-info">
+          <h3 id="otherName">No chat selected</h3>
+          <small id="otherEmail">Enter other Gmail and open chat</small>
+        </div>
+      </div>
 
-<div class="profile">
-<img id="userPhoto">
-<div>
-<h3 id="userName"></h3>
-<small id="userEmail"></small>
-</div>
-</div>
+      <div class="actions">
+        <button id="logoutBtn">Logout</button>
+      </div>
+    </div>
 
-<div class="menu">
-<button onclick="logout()">⎋</button>
-</div>
+    <div class="room-bar">
+      <input type="email" id="recipientEmail" placeholder="Other person's Gmail address" />
+      <button class="open-btn" id="openChatBtn">Open Private Chat</button>
+    </div>
 
-</div>
+    <div class="chat-box" id="chatBox">
+      <div class="empty">
+        Login ho gaya to dusre bande ki Gmail likho aur chat open karo.
+      </div>
+    </div>
 
-<div class="chat-box" id="chatBox"></div>
+    <div class="bottom">
+      <input type="text" id="messageInput" placeholder="Write message..." />
+      <button class="voice-btn" id="recordBtn">🎤 Record</button>
+      <button class="send-btn" id="sendBtn">Send</button>
+      <div class="status" id="statusText">Ready</div>
+    </div>
+  </div>
 
-<div class="bottom">
-<input type="text" id="message" placeholder="Write message...">
-<button onclick="sendMessage()">Send</button>
-</div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    import {
+      getAuth,
+      GoogleAuthProvider,
+      signInWithPopup,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
-</div>
+    import {
+      getDatabase,
+      ref,
+      push,
+      set,
+      get,
+      onValue,
+      remove
+    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
 
-<script type="module">
+    const firebaseConfig = {
+      apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
+      authDomain: "wadi-soon-site.firebaseapp.com",
+      projectId: "wadi-soon-site",
+      databaseURL: "https://wadi-soon-site-default-rtdb.firebaseio.com",
+      storageBucket: "wadi-soon-site.firebasestorage.app",
+      messagingSenderId: "306902521128",
+      appId: "1:306902521128:web:13b34b479048240b96ec1d",
+      measurementId: "G-HX8J4GC9SQ"
+    };
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const provider = new GoogleAuthProvider();
 
-import {
-getAuth,
-GoogleAuthProvider,
-signInWithPopup,
-onAuthStateChanged,
-signOut
-}
-from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+    const loginScreen = document.getElementById("loginScreen");
+    const appBox = document.getElementById("app");
+    const googleLoginBtn = document.getElementById("googleLoginBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
 
-import {
-getDatabase,
-ref,
-push,
-set,
-onChildAdded
-}
-from "https://www.gstatic.com/firebasejs/12.13.0/firebase-database.js";
+    const myPhoto = document.getElementById("myPhoto");
+    const myName = document.getElementById("myName");
+    const myEmail = document.getElementById("myEmail");
 
-const firebaseConfig = {
-apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
-authDomain: "wadi-soon-site.firebaseapp.com",
-projectId: "wadi-soon-site",
-storageBucket: "wadi-soon-site.firebasestorage.app",
-messagingSenderId: "306902521128",
-appId: "1:306902521128:web:13b34b479048240b96ec1d",
-measurementId: "G-HX8J4GC9SQ"
-};
+    const otherPhoto = document.getElementById("otherPhoto");
+    const otherName = document.getElementById("otherName");
+    const otherEmail = document.getElementById("otherEmail");
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-const provider = new GoogleAuthProvider();
+    const recipientEmailInput = document.getElementById("recipientEmail");
+    const openChatBtn = document.getElementById("openChatBtn");
 
-let currentUser;
+    const chatBox = document.getElementById("chatBox");
+    const messageInput = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
+    const recordBtn = document.getElementById("recordBtn");
+    const statusText = document.getElementById("statusText");
 
-window.googleLogin = function(){
+    let currentUser = null;
+    let currentRoomId = null;
+    let currentOtherEmail = null;
+    let unsubscribeMessages = null;
+    let unsubscribeMeta = null;
 
-signInWithPopup(auth,provider);
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let recordingStream = null;
 
-}
+    const DEFAULT_AVATAR =
+      "data:image/svg+xml;utf8," +
+      encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+        <rect width="100%" height="100%" fill="#1e293b"/>
+        <circle cx="40" cy="30" r="16" fill="#94a3b8"/>
+        <rect x="18" y="50" width="44" height="18" rx="9" fill="#94a3b8"/>
+      </svg>
+    `);
 
-onAuthStateChanged(auth,(user)=>{
+    function escapeHtml(text = "") {
+      return text
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
 
-if(user){
+    function safeEmail(email = "") {
+      return email.trim().toLowerCase();
+    }
 
-currentUser = user;
+    function keyEmail(email = "") {
+      return safeEmail(email).replace(/[.#$[\]/]/g, "_");
+    }
 
-document.getElementById("loginScreen").style.display = "none";
+    function isGmail(email = "") {
+      return /^[a-zA-Z0-9._%+-]+@gmail\.com$/i.test(email.trim());
+    }
 
-document.getElementById("userName").innerText = user.displayName;
-document.getElementById("userEmail").innerText = user.email;
-document.getElementById("userPhoto").src = user.photoURL;
+    function makeRoomId(email1, email2) {
+      const list = [safeEmail(email1), safeEmail(email2)].sort();
+      return "room_" + keyEmail(list[0]) + "__" + keyEmail(list[1]);
+    }
 
-loadMessages();
+    function formatTime(ts) {
+      if (!ts) return "";
+      return new Date(ts).toLocaleString();
+    }
 
-}
+    function setStatus(text) {
+      statusText.innerText = text;
+    }
 
-});
+    function showApp(user) {
+      loginScreen.style.display = "none";
+      appBox.style.display = "flex";
 
-window.sendMessage = function(){
+      myName.innerText = user.displayName || "No Name";
+      myEmail.innerText = user.email || "";
+      myPhoto.src = user.photoURL || DEFAULT_AVATAR;
+    }
 
-let msg = document.getElementById("message").value;
+    function showLoggedOut() {
+      loginScreen.style.display = "flex";
+      appBox.style.display = "none";
+      chatBox.innerHTML = `
+        <div class="empty">
+          Login ke baad private chat open karo.
+        </div>
+      `;
+      currentRoomId = null;
+      currentOtherEmail = null;
+    }
 
-if(msg === "") return;
+    function renderOtherProfile(meta) {
+      if (!currentOtherEmail) {
+        otherName.innerText = "No chat selected";
+        otherEmail.innerText = "Enter other Gmail and open chat";
+        otherPhoto.src = DEFAULT_AVATAR;
+        return;
+      }
 
-const chatRef = push(ref(db,"privateMessages/" + currentUser.uid));
+      const profiles = meta?.profiles || {};
+      const otherKey = keyEmail(currentOtherEmail);
+      const other = profiles[otherKey];
 
-set(chatRef,{
-name:currentUser.displayName,
-email:currentUser.email,
-photo:currentUser.photoURL,
-message:msg,
-time:new Date().toLocaleString()
-});
+      if (other) {
+        otherName.innerText = other.name || "Private User";
+        otherEmail.innerText = other.email || currentOtherEmail;
+        otherPhoto.src = other.photo || DEFAULT_AVATAR;
+      } else {
+        otherName.innerText = "Private User";
+        otherEmail.innerText = currentOtherEmail;
+        otherPhoto.src = DEFAULT_AVATAR;
+      }
+    }
 
-document.getElementById("message").value = "";
+    async function openPrivateChat() {
+      if (!currentUser) {
+        alert("Pehle login karo");
+        return;
+      }
 
-}
+      const other = safeEmail(recipientEmailInput.value);
 
-function loadMessages(){
+      if (!isGmail(currentUser.email || "")) {
+        alert("Aap Google/Gmail account se login karo");
+        return;
+      }
 
-onChildAdded(ref(db,"privateMessages/" + currentUser.uid),(snapshot)=>{
+      if (!isGmail(other)) {
+        alert("Sirf valid Gmail address likho");
+        return;
+      }
 
-let data = snapshot.val();
+      if (safeEmail(currentUser.email) === other) {
+        alert("Apni hi Gmail se private chat open nahi kar sakte");
+        return;
+      }
 
-chatBox.innerHTML += `
-<div class="message">
-<img src="${data.photo}">
-<b>${data.name}</b><br><br>
-${data.message}<br><br>
-<small>${data.time}</small>
-</div>
-`;
+      currentOtherEmail = other;
+      currentRoomId = makeRoomId(currentUser.email, other);
 
-chatBox.scrollTop = chatBox.scrollHeight;
+      const metaRef = ref(db, `privateChats/${currentRoomId}/meta`);
+      const snap = await get(metaRef);
+      const oldMeta = snap.exists() ? snap.val() : {};
 
-});
+      const profiles = oldMeta.profiles || {};
+      profiles[keyEmail(currentUser.email)] = {
+        uid: currentUser.uid,
+        name: currentUser.displayName || "",
+        email: currentUser.email || "",
+        photo: currentUser.photoURL || "",
+        updatedAt: Date.now()
+      };
 
-}
+      const users = [safeEmail(currentUser.email), other].sort();
 
-window.logout = function(){
+      const newMeta = {
+        emailA: users[0],
+        emailB: users[1],
+        createdAt: oldMeta.createdAt || Date.now(),
+        updatedAt: Date.now(),
+        profiles
+      };
 
-signOut(auth);
-location.reload();
+      await set(metaRef, newMeta);
 
-}
+      loadRoom();
+      setStatus("Private chat opened");
+    }
 
-</script>
+    function loadRoom() {
+      if (!currentRoomId) return;
 
+      if (unsubscribeMessages) unsubscribeMessages();
+      if (unsubscribeMeta) unsubscribeMeta();
+
+      const metaRef = ref(db, `privateChats/${currentRoomId}/meta`);
+      const messagesRef = ref(db, `privateChats/${currentRoomId}/messages`);
+
+      unsubscribeMeta = onValue(metaRef, (snapshot) => {
+        const meta = snapshot.val() || {};
+        renderOtherProfile(meta);
+      });
+
+      unsubscribeMessages = onValue(messagesRef, (snapshot) => {
+        const data = snapshot.val();
+
+        if (!data) {
+          chatBox.innerHTML = `
+            <div class="empty">
+              Abhi tak koi message nahi.<br>
+              Neeche se text ya voice note bhejo.
+            </div>
+          `;
+          return;
+        }
+
+        const list = Object.entries(data).sort((a, b) => {
+          const aTime = a[1]?.createdAt || 0;
+          const bTime = b[1]?.createdAt || 0;
+          return aTime - bTime;
+        });
+
+        let html = "";
+
+        list.forEach(([id, item]) => {
+          const mine = item.email === currentUser.email;
+          const rowClass = mine ? "msg-row me-row" : "msg-row";
+
+          const textPart = item.type === "text"
+            ? `<div class="msg-text">${escapeHtml(item.text || "")}</div>`
+            : "";
+
+          const audioPart = item.type === "audio" && item.audio
+            ? `<audio controls src="${item.audio}"></audio>`
+            : "";
+
+          const deleteBtn = mine
+            ? `<button class="delete-btn" data-id="${id}">Delete</button>`
+            : "";
+
+          html += `
+            <div class="${rowClass}">
+              <div class="msg">
+                <div class="msg-head">
+                  <img src="${item.photo || DEFAULT_AVATAR}" alt="dp">
+                  <div class="meta">
+                    <b>${escapeHtml(item.name || "User")}</b>
+                    <small>${escapeHtml(item.email || "")}</small>
+                  </div>
+                  ${deleteBtn}
+                </div>
+                ${textPart}
+                ${audioPart}
+                <small class="msg-time">${formatTime(item.createdAt)}</small>
+              </div>
+            </div>
+          `;
+        });
+
+        chatBox.innerHTML = html;
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        document.querySelectorAll(".delete-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const id = btn.getAttribute("data-id");
+            if (!id) return;
+            const ok = confirm("Apna message delete karna hai?");
+            if (!ok) return;
+            await remove(ref(db, `privateChats/${currentRoomId}/messages/${id}`));
+          });
+        });
+      });
+    }
+
+    async function sendTextMessage() {
+      if (!currentUser) {
+        alert("Pehle login karo");
+        return;
+      }
+
+      if (!currentRoomId) {
+        alert("Pehle private chat open karo");
+        return;
+      }
+
+      const text = messageInput.value.trim();
+      if (!text) return;
+
+      const msgRef = push(ref(db, `privateChats/${currentRoomId}/messages`));
+
+      await set(msgRef, {
+        uid: currentUser.uid,
+        name: currentUser.displayName || "",
+        email: currentUser.email || "",
+        photo: currentUser.photoURL || "",
+        type: "text",
+        text,
+        createdAt: Date.now()
+      });
+
+      messageInput.value = "";
+      setStatus("Message sent");
+    }
+
+    function blobToDataURL(blob) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+    }
+
+    async function startRecording() {
+      if (!currentRoomId) {
+        alert("Pehle private chat open karo");
+        return;
+      }
+
+      try {
+        recordingStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        audioChunks = [];
+        mediaRecorder = new MediaRecorder(recordingStream);
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) audioChunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = async () => {
+          try {
+            const blob = new Blob(audioChunks, { type: "audio/webm" });
+
+            if (blob.size > 700000) {
+              setStatus("Voice note bohat badi hai, chhoti record karo");
+              return;
+            }
+
+            const audioBase64 = await blobToDataURL(blob);
+            const msgRef = push(ref(db, `privateChats/${currentRoomId}/messages`));
+
+            await set(msgRef, {
+              uid: currentUser.uid,
+              name: currentUser.displayName || "",
+              email: currentUser.email || "",
+              photo: currentUser.photoURL || "",
+              type: "audio",
+              audio: audioBase64,
+              createdAt: Date.now()
+            });
+
+            setStatus("Voice note sent");
+          } catch (err) {
+            console.error(err);
+            setStatus("Voice send error");
+          }
+        };
+
+        mediaRecorder.start();
+        recordBtn.classList.add("recording");
+        recordBtn.innerText = "⏹ Stop";
+        setStatus("Recording...");
+      } catch (err) {
+        console.error(err);
+        alert("Microphone permission allow karo");
+      }
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        mediaRecorder.stop();
+      }
+
+      if (recordingStream) {
+        recordingStream.getTracks().forEach(track => track.stop());
+      }
+
+      recordBtn.classList.remove("recording");
+      recordBtn.innerText = "🎤 Record";
+    }
+
+    async function toggleRecording() {
+      if (!currentUser) {
+        alert("Pehle login karo");
+        return;
+      }
+
+      if (!currentRoomId) {
+        alert("Pehle private chat open karo");
+        return;
+      }
+
+      if (!mediaRecorder || mediaRecorder.state === "inactive") {
+        await startRecording();
+      } else {
+        stopRecording();
+      }
+    }
+
+    googleLoginBtn.addEventListener("click", async () => {
+      try {
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        console.error(err);
+        alert("Login error");
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut(auth);
+        location.reload();
+      } catch (err) {
+        console.error(err);
+      }
+    });
+
+    openChatBtn.addEventListener("click", openPrivateChat);
+    sendBtn.addEventListener("click", sendTextMessage);
+    recordBtn.addEventListener("click", toggleRecording);
+
+    messageInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        sendTextMessage();
+      }
+    });
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUser = user;
+        showApp(user);
+      } else {
+        showLoggedOut();
+      }
+    });
+  </script>
 </body>
 </html>
