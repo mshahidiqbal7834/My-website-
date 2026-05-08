@@ -1,27 +1,6 @@
-<!-- ========================= -->
-<!-- ULTIMATE PRIVATE CHAT -->
-<!-- COMPLETE SINGLE FILE -->
-<!-- ========================= -->
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>
-Ultimate Private Firebase Chat
-</title>
-
-<style>
-
-/* ========================= */
-/* RESET */
-/* ========================= */
+<!-- ========================= --><!-- FILE NAME: private.html --><!-- COMPLETE FIREBASE CHAT --><!-- ========================= --><!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Ultimate Private Chat</title><style>
 
 *{
 margin:0;
@@ -31,1028 +10,386 @@ font-family:Arial,sans-serif;
 }
 
 body{
-
-background:
-linear-gradient(
-135deg,
-#020617,
-#071126,
-#0f172a
-);
-
+background:#020617;
+color:white;
 height:100vh;
 overflow:hidden;
-color:white;
-
 }
 
-/* ========================= */
 /* LOGIN */
-/* ========================= */
 
 .login-screen{
-
 position:fixed;
 inset:0;
-
 display:flex;
 justify-content:center;
 align-items:center;
-
-padding:20px;
-
+background:#020617;
 z-index:999;
-
-background:
-linear-gradient(
-135deg,
-#020617,
-#0f172a,
-#111827
-);
-
 }
 
 .login-card{
-
 width:100%;
 max-width:420px;
-
-background:
-rgba(15,23,42,.95);
-
-border:
-1px solid #334155;
-
-border-radius:30px;
-
+background:#0f172a;
 padding:35px;
-
+border-radius:24px;
+border:1px solid #334155;
 text-align:center;
-
-box-shadow:
-0 0 50px
-rgba(37,99,235,.4);
-
-backdrop-filter:blur(20px);
-
 }
 
 .login-card h1{
-
-font-size:38px;
-
 margin-bottom:15px;
-
-background:
-linear-gradient(
-to right,
-#60a5fa,
-#2563eb
-);
-
--webkit-background-clip:text;
--webkit-text-fill-color:transparent;
-
-}
-
-.login-card p{
-
-line-height:1.8;
-
-color:#94a3b8;
-
-margin-bottom:25px;
-
+font-size:32px;
 }
 
 .google-btn{
-
 width:100%;
-
 padding:16px;
-
 border:none;
-
-border-radius:16px;
-
+border-radius:14px;
 background:#2563eb;
-
 color:white;
-
-font-size:17px;
-
+font-size:16px;
 cursor:pointer;
-
-transition:.3s;
-
 }
 
-.google-btn:hover{
-
-transform:translateY(-2px);
-
-background:#1d4ed8;
-
-}
-
-/* ========================= */
 /* APP */
-/* ========================= */
 
 .app{
-
 display:none;
-
 height:100vh;
-
-grid-template-columns:
-320px 1fr;
-
+grid-template-columns:320px 1fr;
 }
 
-/* ========================= */
 /* SIDEBAR */
-/* ========================= */
 
 .sidebar{
-
 background:#0f172a;
-
-border-right:
-1px solid #1e293b;
-
+border-right:1px solid #1e293b;
 display:flex;
 flex-direction:column;
-
 }
 
 .profile{
-
 padding:25px;
-
 text-align:center;
-
-border-bottom:
-1px solid #1e293b;
-
+border-bottom:1px solid #1e293b;
 }
 
 .profile img{
-
-width:100px;
-height:100px;
-
+width:90px;
+height:90px;
 border-radius:50%;
-
-object-fit:cover;
-
-border:
-4px solid #2563eb;
-
-margin-bottom:15px;
-
+margin-bottom:10px;
+border:4px solid #2563eb;
 }
 
 .profile h2{
-
-font-size:24px;
-
-margin-bottom:6px;
-
+margin-bottom:5px;
 }
 
 .profile small{
-
 color:#94a3b8;
-
 word-break:break-word;
-
-display:block;
-
 }
 
-.sidebar-buttons{
-
+.menu{
 padding:20px;
-
 display:flex;
 flex-direction:column;
-
-gap:14px;
-
+gap:12px;
 }
 
-.sidebar-buttons button{
-
+.menu button{
 padding:15px;
-
 border:none;
-
-border-radius:14px;
-
+border-radius:12px;
 background:#1e293b;
-
 color:white;
-
-font-size:15px;
-
 cursor:pointer;
-
-transition:.3s;
-
 }
 
-.sidebar-buttons button:hover{
-
-background:#2563eb;
-
-transform:translateX(4px);
-
-}
-
-/* ========================= */
 /* CHAT AREA */
-/* ========================= */
 
 .chat-area{
-
 display:flex;
 flex-direction:column;
-
 height:100vh;
-
 }
-
-/* ========================= */
-/* ANNOUNCEMENT */
-/* ========================= */
-
-.announcement{
-
-padding:14px;
-
-background:#1d4ed8;
-
-text-align:center;
-
-font-size:14px;
-
-display:none;
-
-}
-
-/* ========================= */
-/* TOPBAR */
-/* ========================= */
 
 .topbar{
-
 padding:18px;
-
 background:#0f172a;
-
-border-bottom:
-1px solid #1e293b;
-
+border-bottom:1px solid #1e293b;
 }
 
 .room-box{
-
 display:flex;
-
 gap:10px;
-
-width:100%;
-
 }
 
 .room-box input{
-
 flex:1;
-
-padding:16px;
-
+padding:15px;
 border:none;
-
 border-radius:14px;
-
 background:#1e293b;
-
 color:white;
-
 outline:none;
-
-font-size:15px;
-
 }
 
 .room-box button{
-
-padding:16px 20px;
-
+padding:15px 18px;
 border:none;
-
 border-radius:14px;
-
 background:#2563eb;
-
 color:white;
-
 cursor:pointer;
-
 }
 
-/* ========================= */
-/* CHAT */
-/* ========================= */
-
 .chat-box{
-
 flex:1;
-
 overflow-y:auto;
-
 padding:20px;
-
-background:
-linear-gradient(
-to bottom,
-#020617,
-#071126
-);
-
+background:#020617;
 }
 
 .empty{
-
 text-align:center;
-
-margin-top:100px;
-
+margin-top:80px;
 color:#64748b;
-
-line-height:1.8;
-
 }
 
 .msg-row{
-
 display:flex;
-
-margin-bottom:16px;
-
+margin-bottom:15px;
 }
 
 .mine{
-
 justify-content:flex-end;
-
 }
 
 .message{
-
 max-width:78%;
-
 background:#1e293b;
-
 padding:15px;
-
-border-radius:22px;
-
-border:
-1px solid
-rgba(255,255,255,.05);
-
-animation:fade .25s ease;
-
+border-radius:20px;
 }
 
 .mine .message{
-
 background:#1d4ed8;
-
 }
 
 .msg-top{
-
 display:flex;
-
 align-items:center;
-
 gap:10px;
-
 margin-bottom:10px;
-
 }
 
 .msg-top img{
-
-width:45px;
-height:45px;
-
+width:42px;
+height:42px;
 border-radius:50%;
-
-object-fit:cover;
-
-}
-
-.msg-info{
-
-flex:1;
-
-min-width:0;
-
-}
-
-.msg-info b,
-.msg-info small{
-
-display:block;
-
-word-break:break-word;
-
-}
-
-.msg-info small{
-
-margin-top:3px;
-
-color:#cbd5e1;
-
 }
 
 .msg-text{
-
 white-space:pre-wrap;
-
-word-break:break-word;
-
-line-height:1.7;
-
+line-height:1.6;
 }
 
 .time{
-
 display:block;
-
 margin-top:10px;
-
 font-size:12px;
-
-opacity:.85;
-
+opacity:.8;
 }
 
 .actions{
-
+margin-top:10px;
 display:flex;
-
 gap:8px;
-
-margin-top:12px;
-
-flex-wrap:wrap;
-
 }
 
 .actions button{
-
 padding:8px 10px;
-
 border:none;
-
 border-radius:10px;
-
 color:white;
-
 cursor:pointer;
-
 font-size:12px;
-
 }
 
 .delete-btn{
-
 background:#dc2626;
-
 }
 
 .edit-btn{
-
 background:#f59e0b;
-
 }
 
-audio{
-
-width:100%;
-
-margin-top:10px;
-
-border-radius:10px;
-
-}
-
-/* ========================= */
 /* BOTTOM */
-/* ========================= */
 
 .bottom{
-
 padding:18px;
-
 background:#0f172a;
-
-border-top:
-1px solid #1e293b;
-
+border-top:1px solid #1e293b;
 display:flex;
-
 gap:10px;
-
-align-items:center;
-
 flex-wrap:wrap;
-
 }
 
 .bottom input{
-
 flex:1;
-
-padding:16px;
-
+padding:15px;
 border:none;
-
 border-radius:14px;
-
 background:#1e293b;
-
 color:white;
-
 outline:none;
-
-min-width:200px;
-
 }
 
 .bottom button{
-
-padding:16px 20px;
-
+padding:15px 18px;
 border:none;
-
 border-radius:14px;
-
 background:#2563eb;
-
 color:white;
-
 cursor:pointer;
-
 }
 
 .recording{
-
 background:#dc2626 !important;
-
-animation:pulse 1s infinite;
-
 }
 
-.status{
-
-width:100%;
-
-font-size:13px;
-
-color:#93c5fd;
-
-margin-top:5px;
-
-}
-
-/* ========================= */
 /* ADMIN */
-/* ========================= */
 
 .admin-panel{
-
 position:fixed;
-
 top:20px;
 right:20px;
-
 width:320px;
-
-max-height:85vh;
-
-overflow:auto;
-
 background:#0f172a;
-
-border:
-1px solid #334155;
-
-border-radius:24px;
-
+border:1px solid #334155;
+border-radius:20px;
 padding:20px;
-
 display:none;
-
 z-index:100;
-
-box-shadow:
-0 0 40px
-rgba(0,0,0,.45);
-
-}
-
-.admin-panel h2{
-
-margin-bottom:15px;
-
 }
 
 .admin-panel textarea{
-
 width:100%;
-
 height:120px;
-
 background:#1e293b;
-
 border:none;
-
 border-radius:14px;
-
 padding:14px;
-
 color:white;
-
+margin-bottom:10px;
 resize:none;
-
-margin-bottom:12px;
-
 }
 
 .admin-panel button{
-
 width:100%;
-
 padding:14px;
-
 border:none;
-
-border-radius:14px;
-
+border-radius:12px;
 background:#2563eb;
-
 color:white;
-
 margin-top:10px;
-
 cursor:pointer;
-
 }
-
-.admin-panel .danger{
-
-background:#dc2626;
-
-}
-
-/* ========================= */
-/* ANIMATION */
-/* ========================= */
-
-@keyframes pulse{
-
-0%{
-transform:scale(1);
-}
-
-50%{
-transform:scale(1.03);
-}
-
-100%{
-transform:scale(1);
-}
-
-}
-
-@keyframes fade{
-
-from{
-opacity:0;
-transform:translateY(10px);
-}
-
-to{
-opacity:1;
-transform:translateY(0);
-}
-
-}
-
-/* ========================= */
-/* MOBILE */
-/* ========================= */
 
 @media(max-width:900px){
 
 .app{
-
 grid-template-columns:1fr;
-
 }
 
 .sidebar{
-
 display:none;
-
 }
 
 .message{
-
 max-width:94%;
-
-}
-
-.admin-panel{
-
-top:15px;
-left:15px;
-right:15px;
-
-width:auto;
-
 }
 
 }
 
-</style>
-
-</head>
-
-<body>
-
-<!-- ========================= -->
-<!-- LOGIN -->
-<!-- ========================= -->
-
-<div class="login-screen"
-id="loginScreen">
-
-<div class="login-card">
-
-<h1>
-Future Chat
-</h1>
-
-<p>
-
-Realtime Private Firebase Chat
-with Admin Panel,
-Voice Notes,
-Delete,
-Edit,
-Announcement
-and Premium UI.
-
-</p>
-
-<button
-class="google-btn"
-id="loginBtn">
-
+</style></head><body><!-- LOGIN --><div class="login-screen" id="loginScreen"><div class="login-card"><h1>Private Gmail Chat</h1><p>
+Realtime private Firebase chat
+with admin panel.
+</p><button class="google-btn" id="loginBtn">
 Login With Google
-
-</button>
-
-</div>
-
-</div>
-
-<!-- ========================= -->
-<!-- ANNOUNCEMENT -->
-<!-- ========================= -->
-
-<div class="announcement"
-id="announcementBar">
-
-No Announcement
-
-</div>
-
-<!-- ========================= -->
-<!-- ADMIN PANEL -->
-<!-- ========================= -->
-
-<div class="admin-panel"
-id="adminPanel">
-
-<h2>
-Admin Panel
-</h2>
-
-<textarea
+</button></div></div><!-- ADMIN PANEL --><div class="admin-panel" id="adminPanel"><h2>Admin Panel</h2><textarea
 id="announcementInput"
 placeholder="Write announcement..."
-></textarea>
-
-<button
-id="postAnnouncementBtn">
-
+></textarea><button id="announcementBtn">
 Post Announcement
-
-</button>
-
-<button
-class="danger"
-id="clearMessagesBtn">
-
+</button><button id="clearBtn">
 Delete All Messages
-
-</button>
-
-</div>
-
-<!-- ========================= -->
-<!-- APP -->
-<!-- ========================= -->
-
-<div class="app"
-id="app">
-
-<!-- SIDEBAR -->
-
-<div class="sidebar">
-
-<div class="profile">
-
-<img id="myPhoto">
-
-<h2 id="myName">
+</button></div><!-- APP --><div class="app" id="app"><!-- SIDEBAR --><div class="sidebar"><div class="profile"><img id="myPhoto"><h2 id="myName">
 User
-</h2>
-
-<small id="myEmail">
+</h2><small id="myEmail">
 user@gmail.com
-</small>
-
-</div>
-
-<div class="sidebar-buttons">
-
-<button
-onclick="toggleAdminPanel()">
-
+</small></div><div class="menu"><button onclick="toggleAdminPanel()">
 Admin Panel
-
-</button>
-
-<button
-onclick="logoutUser()">
-
+</button><button onclick="logoutUser()">
 Logout
-
-</button>
-
-</div>
-
-</div>
-
-<!-- CHAT AREA -->
-
-<div class="chat-area">
-
-<div class="topbar">
-
-<div class="room-box">
-
-<input
+</button></div></div><!-- CHAT --><div class="chat-area"><div class="topbar"><div class="room-box"><input
 type="email"
 id="otherEmail"
 placeholder="Enter other Gmail"
 />
 
-<button
-id="openRoomBtn">
-
+<button id="openRoomBtn">
 Open Private
-
-</button>
-
-</div>
-
-</div>
-
-<div class="chat-box"
-id="chatBox">
-
-<div class="empty">
-
-Open private room
-and start chatting.
-
-</div>
-
-</div>
-
-<div class="bottom">
-
-<input
+</button></div></div><div class="chat-box" id="chatBox"><div class="empty">
+Open private chat first
+</div></div><div class="bottom"><input
 type="text"
 id="messageInput"
 placeholder="Write message..."
->
+
+«»
 
 <button id="recordBtn">
 🎤
-</button>
-
-<button id="sendBtn">
+</button><button id="sendBtn">
 Send
-</button>
-
-<div class="status"
-id="statusText">
-
-Ready
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- ========================= -->
-<!-- SCRIPT -->
-<!-- ========================= -->
-
-<script type="module">
+</button></div></div></div><script type="module">
 
 import {
 initializeApp
 }
-
 from
 "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
 
 import {
-
 getAuth,
-
 GoogleAuthProvider,
-
 signInWithPopup,
-
 onAuthStateChanged,
-
 signOut
-
 }
-
 from
 "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
 import {
-
 getFirestore,
-
 collection,
-
 addDoc,
-
 query,
-
 orderBy,
-
 onSnapshot,
-
 deleteDoc,
-
 doc,
-
 updateDoc,
-
-serverTimestamp,
-
-getDocs
-
+serverTimestamp
 }
-
 from
 "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
-/* ========================= */
-/* FIREBASE */
-/* ========================= */
 
 const firebaseConfig = {
 
@@ -1079,10 +416,6 @@ appId:
 const ADMIN_EMAIL =
 "mshahidiqbal836@gmail.com";
 
-/* ========================= */
-/* INIT */
-/* ========================= */
-
 const app =
 initializeApp(firebaseConfig);
 
@@ -1094,10 +427,6 @@ getFirestore(app);
 
 const provider =
 new GoogleAuthProvider();
-
-/* ========================= */
-/* ELEMENTS */
-/* ========================= */
 
 const loginScreen =
 document.getElementById("loginScreen");
@@ -1132,89 +461,17 @@ document.getElementById("messageInput");
 const sendBtn =
 document.getElementById("sendBtn");
 
-const recordBtn =
-document.getElementById("recordBtn");
-
-const statusText =
-document.getElementById("statusText");
-
-const adminPanel =
-document.getElementById("adminPanel");
-
-const announcementInput =
-document.getElementById("announcementInput");
-
-const announcementBar =
-document.getElementById("announcementBar");
-
-/* ========================= */
-/* VARIABLES */
-/* ========================= */
-
 let currentUser = null;
-
 let currentRoom = null;
 
-let mediaRecorder = null;
-
-let audioChunks = [];
-
-/* ========================= */
-/* HELPERS */
-/* ========================= */
-
-function setStatus(text){
-
-statusText.innerText = text;
-
-}
-
-function safeEmail(email=""){
-
-return email
-.trim()
-.toLowerCase()
-.replace(/[.#$[\]]/g,"_");
-
-}
-
-function makeRoom(a,b){
-
-return [
-safeEmail(a),
-safeEmail(b)
-]
-.sort()
-.join("_");
-
-}
-
-/* ========================= */
-/* LOGIN */
-/* ========================= */
-
 loginBtn.onclick = async()=>{
-
-try{
 
 await signInWithPopup(
 auth,
 provider
 );
 
-}catch(e){
-
-alert("Login Error");
-
-console.log(e);
-
-}
-
 };
-
-/* ========================= */
-/* AUTH */
-/* ========================= */
 
 onAuthStateChanged(auth,(user)=>{
 
@@ -1237,16 +494,13 @@ user.displayName;
 myEmail.innerText =
 user.email;
 
-if(
-user.email === ADMIN_EMAIL
-){
+if(user.email === ADMIN_EMAIL){
 
-adminPanel.style.display =
-"block";
+document.getElementById(
+"adminPanel"
+).style.display = "block";
 
 }
-
-loadAnnouncements();
 
 }else{
 
@@ -1260,10 +514,6 @@ appBox.style.display =
 
 });
 
-/* ========================= */
-/* LOGOUT */
-/* ========================= */
-
 window.logoutUser = async()=>{
 
 await signOut(auth);
@@ -1271,33 +521,6 @@ await signOut(auth);
 location.reload();
 
 };
-
-/* ========================= */
-/* ADMIN TOGGLE */
-/* ========================= */
-
-window.toggleAdminPanel = ()=>{
-
-if(
-adminPanel.style.display
-=== "none"
-){
-
-adminPanel.style.display =
-"block";
-
-}else{
-
-adminPanel.style.display =
-"none";
-
-}
-
-};
-
-/* ========================= */
-/* OPEN ROOM */
-/* ========================= */
 
 openRoomBtn.onclick = ()=>{
 
@@ -1313,53 +536,29 @@ return;
 }
 
 currentRoom =
-makeRoom(
-currentUser.email,
-other
-);
+[currentUser.email,other]
+.sort()
+.join("_")
+.replace(/[.#$[\]]/g,"_");
 
 loadMessages();
 
-setStatus(
-"Private Room Opened"
-);
-
 };
 
-/* ========================= */
-/* SEND MESSAGE */
-/* ========================= */
+async function sendMessage(){
 
-sendBtn.onclick =
-sendMessage;
+if(!currentRoom){
 
-messageInput
-.addEventListener(
-"keydown",
-(e)=>{
+alert("Open private chat first");
 
-if(e.key === "Enter"){
-
-sendMessage();
+return;
 
 }
-
-});
-
-async function sendMessage(){
 
 const text =
 messageInput.value.trim();
 
 if(text === "") return;
-
-if(!currentRoom){
-
-alert("Open Private Chat");
-
-return;
-
-}
 
 await addDoc(
 
@@ -1371,8 +570,6 @@ currentRoom,
 ),
 
 {
-
-type:"text",
 
 text:text,
 
@@ -1397,15 +594,10 @@ serverTimestamp()
 
 messageInput.value = "";
 
-setStatus(
-"Message Sent"
-);
-
 }
 
-/* ========================= */
-/* LOAD MESSAGES */
-/* ========================= */
+sendBtn.onclick =
+sendMessage;
 
 function loadMessages(){
 
@@ -1429,30 +621,13 @@ onSnapshot(q,(snapshot)=>{
 
 chatBox.innerHTML = "";
 
-if(snapshot.empty){
-
-chatBox.innerHTML = `
-
-<div class="empty">
-
-No Messages Yet
-
-</div>
-
-`;
-
-return;
-
-}
-
 snapshot.forEach((docSnap)=>{
 
 const data =
 docSnap.data();
 
 const mine =
-data.email
-=== currentUser.email;
+data.email === currentUser.email;
 
 chatBox.innerHTML += `
 
@@ -1462,40 +637,21 @@ chatBox.innerHTML += `
 
 <div class="msg-top">
 
-<img src="${
-data.photo
-}">
+<img src="${data.photo}">
 
-<div class="msg-info">
+<div>
 
-<b>
-${data.name}
-</b>
+<b>${data.name}</b><br>
 
-<small>
-${data.email}
-</small>
+<small>${data.email}</small>
 
 </div>
 
 </div>
 
-${
-data.type === "text"
-?
-
-`<div class="msg-text">
+<div class="msg-text">
 ${data.text}
-</div>`
-
-:
-
-`<audio
-controls
-src="${data.audio}">
-</audio>`
-
-}
+</div>
 
 <small class="time">
 
@@ -1504,29 +660,6 @@ data.time
 ).toLocaleString()}
 
 </small>
-
-<div class="actions">
-
-<button
-class="delete-btn"
-onclick="deleteMessage('${docSnap.id}')">
-
-Delete
-
-</button>
-
-<button
-class="edit-btn"
-onclick="editMessage(
-'${docSnap.id}',
-\`${data.text || ""}\`
-)">
-
-Edit
-
-</button>
-
-</div>
 
 </div>
 
@@ -1543,366 +676,5 @@ chatBox.scrollHeight;
 
 }
 
-/* ========================= */
-/* DELETE */
-/* ========================= */
-
-window.deleteMessage =
-async(id)=>{
-
-await deleteDoc(
-
-doc(
-db,
-"rooms",
-currentRoom,
-"messages",
-id
-)
-
-);
-
-};
-
-/* ========================= */
-/* EDIT */
-/* ========================= */
-
-window.editMessage =
-async(id,oldText)=>{
-
-const newText =
-prompt(
-"Edit Message",
-oldText
-);
-
-if(!newText) return;
-
-await updateDoc(
-
-doc(
-db,
-"rooms",
-currentRoom,
-"messages",
-id
-),
-
-{
-
-text:newText
-
-}
-
-);
-
-};
-
-/* ========================= */
-/* VOICE */
-/* ========================= */
-
-recordBtn.onclick =
-async()=>{
-
-if(!currentRoom){
-
-alert("Open Room First");
-
-return;
-
-}
-
-if(
-!mediaRecorder ||
-mediaRecorder.state
-=== "inactive"
-){
-
-startRecording();
-
-}else{
-
-stopRecording();
-
-}
-
-};
-
-async function startRecording(){
-
-const stream =
-await navigator
-.mediaDevices
-.getUserMedia({
-audio:true
-});
-
-mediaRecorder =
-new MediaRecorder(stream);
-
-audioChunks = [];
-
-mediaRecorder
-.ondataavailable =
-e=>{
-
-audioChunks.push(
-e.data
-);
-
-};
-
-mediaRecorder.onstop =
-async()=>{
-
-const blob =
-new Blob(
-audioChunks,
-{
-type:"audio/webm"
-}
-);
-
-const reader =
-new FileReader();
-
-reader.onloadend =
-async()=>{
-
-await addDoc(
-
-collection(
-db,
-"rooms",
-currentRoom,
-"messages"
-),
-
-{
-
-type:"audio",
-
-audio:
-reader.result,
-
-name:
-currentUser.displayName,
-
-email:
-currentUser.email,
-
-photo:
-currentUser.photoURL,
-
-time:
-Date.now()
-
-}
-
-);
-
-};
-
-reader.readAsDataURL(
-blob
-);
-
-};
-
-mediaRecorder.start();
-
-recordBtn.classList.add(
-"recording"
-);
-
-recordBtn.innerText =
-"⏹";
-
-setStatus(
-"Recording..."
-);
-
-}
-
-function stopRecording(){
-
-mediaRecorder.stop();
-
-recordBtn.classList.remove(
-"recording"
-);
-
-recordBtn.innerText =
-"🎤";
-
-setStatus(
-"Voice Sent"
-);
-
-}
-
-/* ========================= */
-/* ANNOUNCEMENT */
-/* ========================= */
-
-document
-.getElementById(
-"postAnnouncementBtn"
-)
-
-.onclick = async()=>{
-
-if(
-currentUser.email
-!== ADMIN_EMAIL
-){
-
-return;
-
-}
-
-const text =
-announcementInput
-.value
-.trim();
-
-if(text === "") return;
-
-await addDoc(
-
-collection(
-db,
-"announcements"
-),
-
-{
-
-text:text,
-
-time:Date.now()
-
-}
-
-);
-
-announcementInput.value =
-"";
-
-alert(
-"Announcement Posted"
-);
-
-};
-
-function loadAnnouncements(){
-
-const q = query(
-
-collection(
-db,
-"announcements"
-),
-
-orderBy(
-"time",
-"desc"
-)
-
-);
-
-onSnapshot(q,(snapshot)=>{
-
-if(snapshot.empty)
-return;
-
-const data =
-snapshot.docs[0].data();
-
-announcementBar
-.style.display =
-"block";
-
-announcementBar.innerText =
-data.text;
-
-});
-
-}
-
-/* ========================= */
-/* DELETE ALL */
-/* ========================= */
-
-document
-.getElementById(
-"clearMessagesBtn"
-)
-
-.onclick = async()=>{
-
-if(
-currentUser.email
-!== ADMIN_EMAIL
-){
-
-return;
-
-}
-
-const ok =
-confirm(
-"Delete all messages?"
-);
-
-if(!ok) return;
-
-const rooms =
-await getDocs(
-collection(
-db,
-"rooms"
-)
-);
-
-for(
-const room
-of rooms.docs
-){
-
-const msgs =
-await getDocs(
-
-collection(
-db,
-"rooms",
-room.id,
-"messages"
-)
-
-);
-
-for(
-const msg
-of msgs.docs
-){
-
-await deleteDoc(
-msg.ref
-);
-
-}
-
-}
-
-alert(
-"All Messages Deleted"
-);
-
-};
-
-</script>
-
-</body>
+</script></body>
 </html>
