@@ -1,1644 +1,1472 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Private Messenger - Secure 1 to 1 Chat</title>
-  <style>
-    :root{
-      --bg:#0b1020;
-      --bg2:#111933;
-      --panel:#131d38cc;
-      --panel2:#1b2748;
-      --border:rgba(255,255,255,.08);
-      --text:#eaf1ff;
-      --muted:#9aa9ca;
-      --brand:#4f8cff;
-      --brand2:#7c5cff;
-      --green:#1cc980;
-      --danger:#ff5a70;
-      --warning:#ffba57;
-      --bubbleMe:#4f8cff;
-      --bubbleOther:#1b2748;
-      --shadow:0 18px 60px rgba(0,0,0,.35);
-      --radius:24px;
-    }
-    *{box-sizing:border-box}
-    html,body{
-      margin:0;
-      padding:0;
-      min-height:100%;
-      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(circle at 0% 0%, rgba(79,140,255,.22), transparent 30%),
-        radial-gradient(circle at 100% 0%, rgba(124,92,255,.18), transparent 28%),
-        linear-gradient(180deg,#08101f,#0b1020 45%,#0b1122);
-    }
-    button,input,textarea{font:inherit}
-    img{display:block;max-width:100%}
-    .hidden{display:none!important}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Private Messenger</title>
 
-    .login-wrap{
-      min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-    }
-    .login-card{
-      width:min(1150px,100%);
-      display:grid;
-      grid-template-columns:1.1fr .9fr;
-      gap:28px;
-      border:1px solid var(--border);
-      background:rgba(19,29,56,.76);
-      backdrop-filter:blur(16px);
-      border-radius:32px;
-      overflow:hidden;
-      box-shadow:var(--shadow);
-    }
-    .hero{
-      padding:48px;
-      background:
-        linear-gradient(135deg, rgba(79,140,255,.11), rgba(124,92,255,.08)),
-        linear-gradient(180deg,#0d1730,#111933);
-    }
-    .badge{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:10px 14px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.04);
-      color:#dce6ff;
-      font-size:14px;
-      margin-bottom:18px;
-    }
-    .hero h1{
-      margin:0 0 14px;
-      line-height:1.03;
-      font-size:clamp(34px,5vw,64px);
-    }
-    .hero p{
-      margin:0 0 16px;
-      color:var(--muted);
-      font-size:18px;
-      line-height:1.7;
-      max-width:700px;
-    }
-    .hero-grid{
-      display:grid;
-      grid-template-columns:repeat(2,minmax(0,1fr));
-      gap:14px;
-      margin-top:28px;
-    }
-    .hero-box{
-      padding:18px;
-      border-radius:22px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.04);
-    }
-    .hero-box h3{
-      margin:0 0 8px;
-      font-size:16px;
-    }
-    .hero-box p{
-      margin:0;
-      font-size:14px;
-      line-height:1.55;
-    }
-    .login-side{
-      padding:28px;
-      display:flex;
-      align-items:center;
-    }
-    .login-panel{
-      width:100%;
-      padding:32px;
-      border-radius:28px;
-      border:1px solid var(--border);
-      background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));
-    }
-    .logo{
-      width:60px;
-      height:60px;
-      display:grid;
-      place-items:center;
-      border-radius:18px;
-      background:linear-gradient(135deg,var(--brand),var(--brand2));
-      font-size:28px;
-      font-weight:800;
-      box-shadow:0 12px 30px rgba(79,140,255,.35);
-      margin-bottom:18px;
-    }
-    .login-panel h2{
-      margin:0 0 10px;
-      font-size:30px;
-    }
-    .login-panel p{
-      margin:0 0 20px;
-      color:var(--muted);
-      line-height:1.65;
-    }
-    .btn{
-      border:none;
-      cursor:pointer;
-      transition:.2s ease;
-      border-radius:16px;
-      font-weight:700;
-    }
-    .btn:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.05);
-    }
-    .btn-google{
-      width:100%;
-      padding:16px 18px;
-      background:#fff;
-      color:#111827;
-    }
-    .btn-primary{
-      background:linear-gradient(135deg,var(--brand),var(--brand2));
-      color:#fff;
-      padding:14px 18px;
-    }
-    .btn-soft{
-      background:rgba(255,255,255,.05);
-      color:#fff;
-      border:1px solid var(--border);
-      padding:14px 18px;
-    }
-    .btn-danger{
-      background:rgba(255,90,112,.12);
-      color:#ffb2bd;
-      border:1px solid rgba(255,90,112,.22);
-      padding:14px 18px;
-    }
-    .status{
-      min-height:22px;
-      margin-top:14px;
-      font-size:14px;
-      color:#d8e4ff;
-    }
-    .mini-note{
-      margin-top:14px;
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.6;
-    }
+<style>
 
-    .app{
-      min-height:100vh;
-      padding:16px;
-    }
-    .frame{
-      max-width:1500px;
-      margin:0 auto;
-      min-height:calc(100vh - 32px);
-      display:grid;
-      grid-template-columns:360px 420px 1fr;
-      gap:16px;
-    }
-    .panel{
-      background:rgba(19,29,56,.78);
-      border:1px solid var(--border);
-      backdrop-filter:blur(16px);
-      border-radius:30px;
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-    .sidebar{
-      padding:16px;
-      display:flex;
-      flex-direction:column;
-      gap:16px;
-    }
-    .me-card{
-      padding:16px;
-      border-radius:24px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.04);
-      display:flex;
-      align-items:center;
-      gap:14px;
-    }
-    .avatar{
-      width:56px;
-      height:56px;
-      border-radius:50%;
-      object-fit:cover;
-      background:#243250;
-      flex:0 0 auto;
-    }
-    .avatar-lg{
-      width:62px;
-      height:62px;
-    }
-    .user-title{
-      font-size:16px;
-      font-weight:800;
-      line-height:1.3;
-    }
-    .user-sub{
-      font-size:13px;
-      color:var(--muted);
-      line-height:1.45;
-      word-break:break-word;
-      margin-top:4px;
-    }
-    .card{
-      padding:18px;
-      border-radius:24px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.03);
-    }
-    .card h3{
-      margin:0 0 8px;
-      font-size:18px;
-    }
-    .card p{
-      margin:0 0 14px;
-      color:var(--muted);
-      line-height:1.6;
-      font-size:14px;
-    }
-    .search-row{
-      display:flex;
-      gap:10px;
-    }
-    .input{
-      width:100%;
-      padding:14px 16px;
-      border-radius:16px;
-      outline:none;
-      border:1px solid var(--border);
-      background:#0d152b;
-      color:#fff;
-    }
-    .input:focus,.composer textarea:focus{
-      border-color:rgba(79,140,255,.45);
-      box-shadow:0 0 0 4px rgba(79,140,255,.11);
-    }
-    .result-box{
-      margin-top:14px;
-    }
-    .result-user{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      padding:12px;
-      border-radius:20px;
-      border:1px solid var(--border);
-      background:#0d152b;
-    }
-    .tiny{
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.55;
-    }
+:root{
+--bg:#0b1020;
+--bg2:#111933;
+--panel:#131d38;
+--panel2:#1b2748;
+--border:rgba(255,255,255,.08);
+--text:#ffffff;
+--muted:#9aa9ca;
+--brand:#4f8cff;
+--brand2:#7c5cff;
+--danger:#ff5a70;
+--green:#1cc980;
+}
 
-    .list-panel{
-      display:flex;
-      flex-direction:column;
-    }
-    .list-head{
-      padding:18px 18px 12px;
-      border-bottom:1px solid var(--border);
-    }
-    .list-head h2{
-      margin:0;
-      font-size:24px;
-    }
-    .list-head p{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size:14px;
-      line-height:1.5;
-    }
-    .chat-list{
-      padding:14px;
-      display:flex;
-      flex-direction:column;
-      gap:12px;
-      overflow:auto;
-      height:100%;
-      min-height:0;
-    }
-    .chat-item{
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.03);
-      border-radius:22px;
-      padding:14px;
-      cursor:pointer;
-      transition:.2s ease;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-    }
-    .chat-item:hover,.chat-item.active{
-      transform:translateY(-1px);
-      background:rgba(255,255,255,.05);
-    }
-    .chat-item-left{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width:0;
-    }
-    .chat-name{
-      font-weight:800;
-      line-height:1.3;
-    }
-    .chat-preview{
-      margin-top:4px;
-      font-size:13px;
-      color:var(--muted);
-      white-space:nowrap;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      max-width:230px;
-    }
-    .chat-meta{
-      text-align:right;
-      font-size:12px;
-      color:var(--muted);
-      white-space:nowrap;
-    }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
-    .conv{
-      display:grid;
-      grid-template-rows:auto 1fr auto auto;
-      min-height:calc(100vh - 32px);
-    }
-    .conv-head{
-      padding:16px 18px;
-      border-bottom:1px solid var(--border);
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      background:rgba(255,255,255,.02);
-    }
-    .conv-head-left{
-      display:flex;
-      align-items:center;
-      gap:14px;
-      min-width:0;
-    }
-    .head-actions{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .messages{
-      padding:18px;
-      overflow:auto;
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-      min-height:0;
-      background:
-        radial-gradient(circle at 30% 0%, rgba(79,140,255,.05), transparent 24%),
-        transparent;
-    }
-    .date-divider{
-      align-self:center;
-      padding:8px 14px;
-      font-size:12px;
-      color:#dbe6ff;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.05);
-    }
-    .row{
-      display:flex;
-      align-items:flex-end;
-      gap:10px;
-      max-width:82%;
-    }
-    .row.me{
-      align-self:flex-end;
-      flex-direction:row-reverse;
-    }
-    .msg-avatar{
-      width:34px;
-      height:34px;
-      border-radius:50%;
-      object-fit:cover;
-      background:#243250;
-      flex:0 0 auto;
-    }
-    .bubble{
-      padding:12px 14px;
-      border-radius:18px 18px 18px 6px;
-      background:var(--bubbleOther);
-      border:1px solid rgba(255,255,255,.06);
-      box-shadow:0 8px 24px rgba(0,0,0,.15);
-      min-width:120px;
-    }
-    .row.me .bubble{
-      background:linear-gradient(135deg,var(--bubbleMe),#3d75ff);
-      border-radius:18px 18px 6px 18px;
-    }
-    .sender-line{
-      font-size:12px;
-      line-height:1.45;
-      color:rgba(255,255,255,.86);
-      margin-bottom:8px;
-    }
-    .msg-text{
-      line-height:1.6;
-      white-space:pre-wrap;
-      word-break:break-word;
-      font-size:15px;
-    }
-    .msg-meta{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin-top:8px;
-      font-size:12px;
-      color:rgba(255,255,255,.8);
-      flex-wrap:wrap;
-    }
-    .link-btn{
-      background:transparent;
-      border:none;
-      color:#ffe2e8;
-      padding:0;
-      cursor:pointer;
-      font-size:12px;
-    }
-    .voice-box{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      min-width:280px;
-    }
-    .voice-top{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-      font-size:13px;
-      font-weight:700;
-    }
-    .voice-label{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-    audio{
-      width:100%;
-      height:40px;
-    }
-    .helper{
-      padding:0 18px 12px;
-      font-size:12px;
-      color:var(--muted);
-    }
-    .composer{
-      padding:14px 16px 16px;
-      border-top:1px solid var(--border);
-      display:flex;
-      align-items:flex-end;
-      gap:12px;
-      background:rgba(255,255,255,.02);
-      flex-wrap:wrap;
-    }
-    .icon-btn{
-      width:54px;
-      height:54px;
-      border-radius:18px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.06);
-      color:#fff;
-      cursor:pointer;
-      transition:.2s ease;
-      font-size:20px;
-    }
-    .icon-btn:hover{
-      transform:translateY(-1px);
-      filter:brightness(1.05);
-    }
-    .icon-btn.recording{
-      background:rgba(255,90,112,.15);
-      border-color:rgba(255,90,112,.35);
-      color:#ffb7c0;
-      box-shadow:0 0 0 8px rgba(255,90,112,.08);
-    }
-    .composer textarea{
-      flex:1;
-      min-width:260px;
-      min-height:56px;
-      max-height:160px;
-      resize:none;
-      padding:16px 18px;
-      border-radius:18px;
-      border:1px solid var(--border);
-      outline:none;
-      background:#0d152b;
-      color:#fff;
-    }
-    .send-btn{
-      width:56px;
-      height:56px;
-      border:none;
-      border-radius:18px;
-      cursor:pointer;
-      background:linear-gradient(135deg,var(--brand),var(--brand2));
-      color:#fff;
-      font-size:20px;
-      font-weight:800;
-    }
-    .record-info{
-      min-width:110px;
-      color:var(--muted);
-      font-size:13px;
-      text-align:center;
-      padding-bottom:4px;
-    }
-    .empty{
-      height:100%;
-      min-height:340px;
-      display:grid;
-      place-items:center;
-      text-align:center;
-      color:var(--muted);
-      padding:28px;
-    }
-    .empty h3{
-      margin:0 0 8px;
-      color:#fff;
-      font-size:22px;
-    }
-    .online{
-      color:#93f3bf;
-    }
-    .offline{
-      color:#ffd497;
-    }
-    .encrypt-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      margin-top:10px;
-      padding:8px 12px;
-      font-size:12px;
-      color:#dce6ff;
-      border-radius:999px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.04);
-    }
-    .footer-note{
-      margin-top:auto;
-      padding:12px 4px 0;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.65;
-    }
-    @media (max-width:1280px){
-      .frame{
-        grid-template-columns:320px 360px 1fr;
-      }
-    }
-    @media (max-width:1080px){
-      .login-card{
-        grid-template-columns:1fr;
-      }
-      .frame{
-        grid-template-columns:1fr;
-      }
-      .list-panel{
-        min-height:320px;
-      }
-      .conv{
-        min-height:70vh;
-      }
-    }
-    @media (max-width:700px){
-      .hero{padding:30px 22px}
-      .login-side{padding:20px}
-      .login-panel{padding:24px}
-      .hero-grid{grid-template-columns:1fr}
-      .row{max-width:95%}
-      .conv-head{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-      .head-actions{
-        width:100%;
-        justify-content:flex-start;
-      }
-      .voice-box{min-width:220px}
-      .composer textarea{min-width:100%}
-      .record-info{
-        width:100%;
-        text-align:left;
-      }
-    }
-  </style>
+body{
+background:
+linear-gradient(180deg,#08101f,#0b1020);
+color:#fff;
+min-height:100vh;
+overflow:hidden;
+}
+
+.hidden{
+display:none!important;
+}
+
+button{
+cursor:pointer;
+}
+
+img{
+display:block;
+max-width:100%;
+}
+
+.login-page{
+min-height:100vh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:20px;
+}
+
+.login-box{
+width:100%;
+max-width:1100px;
+display:grid;
+grid-template-columns:1fr 1fr;
+background:#131d38;
+border:1px solid var(--border);
+border-radius:35px;
+overflow:hidden;
+}
+
+.hero{
+padding:50px;
+background:
+linear-gradient(135deg,rgba(79,140,255,.15),rgba(124,92,255,.1));
+}
+
+.hero h1{
+font-size:60px;
+line-height:1.1;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:18px;
+line-height:1.8;
+color:var(--muted);
+}
+
+.hero-grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+margin-top:30px;
+}
+
+.hero-card{
+background:rgba(255,255,255,.04);
+border:1px solid var(--border);
+padding:20px;
+border-radius:22px;
+}
+
+.hero-card h3{
+margin-bottom:8px;
+}
+
+.hero-card p{
+font-size:14px;
+line-height:1.6;
+}
+
+.login-side{
+display:flex;
+align-items:center;
+justify-content:center;
+padding:40px;
+}
+
+.login-panel{
+width:100%;
+max-width:450px;
+}
+
+.logo{
+width:70px;
+height:70px;
+border-radius:22px;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:32px;
+font-weight:bold;
+background:linear-gradient(135deg,var(--brand),var(--brand2));
+margin-bottom:20px;
+}
+
+.login-panel h2{
+font-size:40px;
+margin-bottom:15px;
+}
+
+.login-panel p{
+color:var(--muted);
+line-height:1.7;
+margin-bottom:25px;
+}
+
+.google-btn{
+width:100%;
+padding:17px;
+border:none;
+border-radius:18px;
+background:#fff;
+color:#111;
+font-size:16px;
+font-weight:bold;
+}
+
+.status{
+margin-top:18px;
+font-size:14px;
+color:#9aa9ca;
+}
+
+.app{
+padding:15px;
+height:100vh;
+}
+
+.layout{
+display:grid;
+grid-template-columns:350px 400px 1fr;
+gap:15px;
+height:calc(100vh - 30px);
+}
+
+.sidebar{
+background:#131d38;
+border-radius:30px;
+border:1px solid var(--border);
+padding:15px;
+overflow:auto;
+}
+
+.chats-panel{
+background:#131d38;
+border-radius:30px;
+border:1px solid var(--border);
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+.chat-panel{
+background:#131d38;
+border-radius:30px;
+border:1px solid var(--border);
+display:flex;
+flex-direction:column;
+overflow:hidden;
+}
+
+.me-box{
+display:flex;
+align-items:center;
+gap:12px;
+padding:15px;
+border-radius:20px;
+background:#1a2548;
+margin-bottom:20px;
+}
+
+.avatar{
+width:55px;
+height:55px;
+border-radius:50%;
+object-fit:cover;
+background:#243250;
+}
+
+.big-avatar{
+width:60px;
+height:60px;
+}
+
+.name{
+font-size:16px;
+font-weight:bold;
+}
+
+.email{
+font-size:13px;
+color:var(--muted);
+margin-top:4px;
+word-break:break-word;
+}
+
+.card{
+padding:18px;
+background:#1a2548;
+border-radius:24px;
+margin-bottom:20px;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.card p{
+font-size:14px;
+line-height:1.7;
+color:var(--muted);
+margin-bottom:15px;
+}
+
+.search-input{
+width:100%;
+padding:15px;
+border:none;
+outline:none;
+border-radius:16px;
+background:#0d152b;
+color:#fff;
+margin-bottom:10px;
+}
+
+.primary-btn{
+width:100%;
+padding:15px;
+border:none;
+border-radius:16px;
+background:linear-gradient(135deg,var(--brand),var(--brand2));
+color:#fff;
+font-weight:bold;
+}
+
+.logout-btn{
+width:100%;
+padding:15px;
+border:none;
+border-radius:16px;
+background:var(--danger);
+color:#fff;
+font-weight:bold;
+margin-top:10px;
+}
+
+.result{
+margin-top:15px;
+}
+
+.user-result{
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+padding:12px;
+background:#0d152b;
+border-radius:18px;
+}
+
+.user-left{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.message-btn{
+padding:12px 18px;
+border:none;
+border-radius:15px;
+background:linear-gradient(135deg,var(--brand),var(--brand2));
+color:#fff;
+font-weight:bold;
+}
+
+.chats-head{
+padding:20px;
+border-bottom:1px solid var(--border);
+}
+
+.chats-head h2{
+font-size:28px;
+margin-bottom:8px;
+}
+
+.chats-head p{
+color:var(--muted);
+font-size:14px;
+}
+
+.chat-list{
+padding:15px;
+overflow:auto;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.chat-item{
+padding:14px;
+border-radius:20px;
+background:#1a2548;
+cursor:pointer;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+}
+
+.chat-item:hover{
+background:#243250;
+}
+
+.chat-item-left{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.chat-title{
+font-weight:bold;
+}
+
+.chat-preview{
+font-size:13px;
+color:var(--muted);
+margin-top:4px;
+}
+
+.chat-header{
+padding:15px 20px;
+border-bottom:1px solid var(--border);
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:15px;
+}
+
+.chat-header-left{
+display:flex;
+align-items:center;
+gap:12px;
+}
+
+.delete-btn{
+padding:12px 18px;
+border:none;
+border-radius:15px;
+background:var(--danger);
+color:#fff;
+font-weight:bold;
+}
+
+.chat-body{
+flex:1;
+overflow:auto;
+padding:20px;
+display:flex;
+flex-direction:column;
+gap:14px;
+background:
+radial-gradient(circle at top left,rgba(79,140,255,.08),transparent 25%);
+}
+
+.empty{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+color:var(--muted);
+padding:20px;
+}
+
+.message-row{
+display:flex;
+align-items:flex-end;
+gap:10px;
+max-width:80%;
+}
+
+.message-row.me{
+align-self:flex-end;
+flex-direction:row-reverse;
+}
+
+.message-bubble{
+padding:14px 16px;
+border-radius:18px;
+background:#1a2548;
+line-height:1.6;
+word-break:break-word;
+}
+
+.message-row.me .message-bubble{
+background:linear-gradient(135deg,var(--brand),#356cff);
+}
+
+.message-meta{
+font-size:11px;
+margin-top:8px;
+opacity:.75;
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+.delete-single{
+background:none;
+border:none;
+color:#ffb6c1;
+font-size:11px;
+cursor:pointer;
+}
+
+.audio-box{
+display:flex;
+flex-direction:column;
+gap:10px;
+min-width:260px;
+}
+
+audio{
+width:100%;
+}
+
+.chat-footer{
+padding:15px;
+border-top:1px solid var(--border);
+display:flex;
+align-items:flex-end;
+gap:10px;
+}
+
+.icon-btn{
+width:58px;
+height:58px;
+border:none;
+border-radius:18px;
+background:#1a2548;
+color:#fff;
+font-size:22px;
+}
+
+.recording{
+background:var(--danger)!important;
+}
+
+.message-input{
+flex:1;
+height:58px;
+resize:none;
+border:none;
+outline:none;
+border-radius:18px;
+background:#0d152b;
+padding:16px;
+color:#fff;
+font-size:15px;
+}
+
+.send-btn{
+width:58px;
+height:58px;
+border:none;
+border-radius:18px;
+background:linear-gradient(135deg,var(--brand),var(--brand2));
+color:#fff;
+font-size:22px;
+font-weight:bold;
+}
+
+.record-info{
+font-size:13px;
+color:var(--muted);
+min-width:90px;
+}
+
+@media(max-width:1200px){
+
+.layout{
+grid-template-columns:1fr;
+height:auto;
+overflow:auto;
+}
+
+.chat-panel{
+height:80vh;
+}
+
+.login-box{
+grid-template-columns:1fr;
+}
+
+.hero{
+display:none;
+}
+
+}
+
+</style>
 </head>
+
 <body>
-  <section id="loginScreen" class="login-wrap">
-    <div class="login-card">
-      <div class="hero">
-        <div class="badge">🔒 Secure Private Chat</div>
-        <h1>Gmail se login, 1 to 1 private messaging</h1>
-        <p>
-          Yeh page aap ke public chat se alag private messenger ke liye hai. Is me
-          private messages aur voice notes browser side par encrypt hote hain taake
-          3rd banda message content na padh sake.
-        </p>
-        <div class="hero-grid">
-          <div class="hero-box">
-            <h3>Google Signup/Login</h3>
-            <p>Gmail, DP aur naam automatic aa jayega.</p>
-          </div>
-          <div class="hero-box">
-            <h3>Exact Gmail Search</h3>
-            <p>Jis user ka Gmail likhenge usi se chat start hogi.</p>
-          </div>
-          <div class="hero-box">
-            <h3>Encrypted Messages</h3>
-            <p>Message content AES + RSA se encrypt hoga.</p>
-          </div>
-          <div class="hero-box">
-            <h3>Voice + Delete + Time</h3>
-            <p>Voice record, single delete, delete all aur time/date sab hai.</p>
-          </div>
-        </div>
-      </div>
-      <div class="login-side">
-        <div class="login-panel">
-          <div class="logo">P</div>
-          <h2>Private Messenger</h2>
-          <p>
-            Neeche Google button se sign in karein. Sign in ke baad private page khul jayega.
-          </p>
-          <button id="googleBtn" class="btn btn-google">Continue with Google</button>
-          <div id="loginStatus" class="status"></div>
-          <div class="mini-note">
-            Is file ko aap 4th page ki tarah use kar sakte hain. Public chat se alag rahegi.
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="appScreen" class="app hidden">
-    <div class="frame">
-      <aside class="panel sidebar">
-        <div id="meCard" class="me-card"></div>
-
-        <div class="card">
-          <h3>New Private Chat</h3>
-          <p>Exact Gmail likhein, phir user milne par “Message” dabayein.</p>
-          <div class="search-row">
-            <input id="searchEmail" class="input" type="email" placeholder="example@gmail.com" />
-            <button id="searchBtn" class="btn btn-primary">Search</button>
-          </div>
-          <div id="searchResult" class="result-box"></div>
-          <div class="encrypt-pill">🔐 Message content encrypted</div>
-        </div>
-
-        <div class="card">
-          <h3>Account</h3>
-          <p>Yeh page private chat ke liye alag signup/login use kar raha hai.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button id="refreshBtn" class="btn btn-soft">Refresh Keys</button>
-            <button id="logoutBtn" class="btn btn-danger">Logout</button>
-          </div>
-        </div>
-
-        <div class="footer-note">
-          Important: kyun ke aap rules change nahi kar rahe, is liye is page me
-          message content encryption use ki gayi hai. Same browser/device me best kaam karegi.
-        </div>
-      </aside>
-
-      <section class="panel list-panel">
-        <div class="list-head">
-          <h2>Your Private Chats</h2>
-          <p>Yahan sirf aap ki private 1-to-1 chats dikhengi.</p>
-        </div>
-        <div id="chatList" class="chat-list">
-          <div class="empty">
-            <div>
-              <h3>No chats yet</h3>
-              <div>Kisi Gmail se search karke nayi private chat start karein.</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel conv">
-        <header class="conv-head">
-          <div class="conv-head-left">
-            <img id="convAvatar" class="avatar avatar-lg" src="" alt="avatar" />
-            <div>
-              <div id="convName" class="user-title">Select a chat</div>
-              <div id="convSub" class="user-sub">User choose karein, phir private chat open hogi.</div>
-            </div>
-          </div>
-          <div class="head-actions">
-            <button id="deleteAllBtn" class="btn btn-danger hidden">Delete All</button>
-          </div>
-        </header>
-
-        <main id="messages" class="messages">
-          <div class="empty">
-            <div>
-              <h3>Private Messenger Ready</h3>
-              <div>Pehle left side se chat select karein ya Gmail search karke naya conversation shuru karein.</div>
-            </div>
-          </div>
-        </main>
-
-        <div class="helper">
-          Enter = send, Shift + Enter = new line. Voice record ke liye mic dabayein. Short voice best rehti hai.
-        </div>
-
-        <footer class="composer">
-          <button id="recordBtn" class="icon-btn hidden" title="Record voice">🎙️</button>
-          <div id="recordInfo" class="record-info hidden">Voice off</div>
-          <textarea id="messageInput" class="hidden" placeholder="Type your private message..."></textarea>
-          <button id="sendBtn" class="send-btn hidden" title="Send">➤</button>
-        </footer>
-      </section>
-    </div>
-  </section>
-
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
-    import {
-      getAuth,
-      GoogleAuthProvider,
-      signInWithPopup,
-      onAuthStateChanged,
-      signOut,
-      browserLocalPersistence,
-      setPersistence
-    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      doc,
-      getDoc,
-      getDocs,
-      setDoc,
-      addDoc,
-      deleteDoc,
-      updateDoc,
-      query,
-      where,
-      onSnapshot,
-      orderBy,
-      writeBatch,
-      serverTimestamp,
-      limit
-    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
-      authDomain: "wadi-soon-site.firebaseapp.com",
-      projectId: "wadi-soon-site",
-      storageBucket: "wadi-soon-site.firebasestorage.app",
-      messagingSenderId: "306902521128",
-      appId: "1:306902521128:web:13b34b479048240b96ec1d",
-      measurementId: "G-HX8J4GC9SQ"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
-    const provider = new GoogleAuthProvider();
-    provider.setCustomParameters({ prompt: "select_account" });
-
-    // ---------- UI ----------
-    const loginScreen = document.getElementById("loginScreen");
-    const appScreen = document.getElementById("appScreen");
-    const googleBtn = document.getElementById("googleBtn");
-    const loginStatus = document.getElementById("loginStatus");
-
-    const meCard = document.getElementById("meCard");
-    const searchEmail = document.getElementById("searchEmail");
-    const searchBtn = document.getElementById("searchBtn");
-    const searchResult = document.getElementById("searchResult");
-    const refreshBtn = document.getElementById("refreshBtn");
-    const logoutBtn = document.getElementById("logoutBtn");
-
-    const chatList = document.getElementById("chatList");
-    const convAvatar = document.getElementById("convAvatar");
-    const convName = document.getElementById("convName");
-    const convSub = document.getElementById("convSub");
-    const deleteAllBtn = document.getElementById("deleteAllBtn");
-
-    const messagesEl = document.getElementById("messages");
-    const messageInput = document.getElementById("messageInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const recordBtn = document.getElementById("recordBtn");
-    const recordInfo = document.getElementById("recordInfo");
-
-    // ---------- STATE ----------
-    const USERS = "pm_users_v1";
-    const CHATS = "pm_chats_v1";
-    const PRIVATE_KEY_PREFIX = "pm_private_jwk_v1_";
-
-    let currentUser = null;
-    let currentProfile = null;
-    let activeChatId = null;
-    let activeOtherUid = null;
-    let activeOtherProfile = null;
-    let chatUnsub = null;
-    let messagesUnsub = null;
-    let otherUserUnsub = null;
-    let chatCache = [];
-    let decryptCache = new Map();
-
-    let mediaRecorder = null;
-    let mediaStream = null;
-    let recordChunks = [];
-    let recordStart = 0;
-    let recordTimer = null;
-    let recording = false;
-
-    // ---------- HELPERS ----------
-    function qs(sel){ return document.querySelector(sel); }
-
-    function escapeHtml(str = "") {
-      return String(str).replace(/[&<>"']/g, m => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#39;"
-      }[m]));
-    }
-
-    function normalizeEmail(email = "") {
-      return String(email).trim().toLowerCase();
-    }
-
-    function avatarURL(name, photoURL) {
-      if (photoURL) return photoURL;
-      return "https://ui-avatars.com/api/?background=4f8cff&color=ffffff&name=" + encodeURIComponent(name || "User");
-    }
-
-    function buildChatId(a, b) {
-      return [a, b].sort().join("__");
-    }
-
-    function showLogin(message = "") {
-      loginScreen.classList.remove("hidden");
-      appScreen.classList.add("hidden");
-      loginStatus.textContent = message;
-    }
-
-    function showApp() {
-      loginScreen.classList.add("hidden");
-      appScreen.classList.remove("hidden");
-    }
-
-    function fmtDateTime(ts) {
-      if (!ts?.toDate) return "sending...";
-      const d = ts.toDate();
-      return new Intl.DateTimeFormat("en-US", {
-        month:"short",
-        day:"numeric",
-        hour:"numeric",
-        minute:"2-digit"
-      }).format(d);
-    }
-
-    function fmtDayLabel(ts) {
-      if (!ts?.toDate) return "Today";
-      const d = ts.toDate();
-      const today = new Date();
-      const sameDay = d.toDateString() === today.toDateString();
-      if (sameDay) return "Today";
-      const yesterday = new Date();
-      yesterday.setDate(today.getDate() - 1);
-      if (d.toDateString() === yesterday.toDateString()) return "Yesterday";
-      return new Intl.DateTimeFormat("en-US", { month:"short", day:"numeric", year:"numeric" }).format(d);
-    }
-
-    function timeMs(ts) {
-      return ts?.toMillis ? ts.toMillis() : 0;
-    }
-
-    function autoGrow() {
-      messageInput.style.height = "56px";
-      messageInput.style.height = Math.min(messageInput.scrollHeight, 160) + "px";
-    }
-
-    function setComposerVisible(visible) {
-      [messageInput, sendBtn, recordBtn, recordInfo].forEach(el => {
-        el.classList.toggle("hidden", !visible);
-      });
-      deleteAllBtn.classList.toggle("hidden", !visible);
-    }
-
-    function renderMeCard(user) {
-      meCard.innerHTML = `
-        <img class="avatar avatar-lg" src="${escapeHtml(avatarURL(user.name, user.photoURL))}" alt="me">
-        <div style="min-width:0;">
-          <div class="user-title">${escapeHtml(user.name || "No Name")}</div>
-          <div class="user-sub">${escapeHtml(user.email || "")}</div>
-        </div>
-      `;
-    }
-
-    function renderStatusLine(user) {
-      if (user?.online) return `<span class="online">● Online</span>`;
-      if (user?.lastSeen?.toDate) {
-        return `<span class="offline">Last seen ${escapeHtml(fmtDateTime(user.lastSeen))}</span>`;
-      }
-      return `<span class="offline">Offline</span>`;
-    }
-
-    function updateConversationHeader(profile = null) {
-      if (!profile) {
-        convAvatar.src = "";
-        convName.textContent = "Select a chat";
-        convSub.textContent = "User choose karein, phir private chat open hogi.";
-        return;
-      }
-      convAvatar.src = avatarURL(profile.name, profile.photoURL);
-      convName.textContent = profile.name || "Unknown User";
-      convSub.innerHTML = `
-        ${escapeHtml(profile.email || "")}<br>${renderStatusLine(profile)}
-      `;
-    }
-
-    function scrollBottom() {
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    }
-
-    function showEmptyMessages(title, text) {
-      messagesEl.innerHTML = `
-        <div class="empty">
-          <div>
-            <h3>${escapeHtml(title)}</h3>
-            <div>${escapeHtml(text)}</div>
-          </div>
-        </div>
-      `;
-    }
-
-    // ---------- CRYPTO ----------
-    function bufToBase64(buffer) {
-      const bytes = new Uint8Array(buffer);
-      let binary = "";
-      const chunk = 0x8000;
-      for (let i = 0; i < bytes.length; i += chunk) {
-        binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
-      }
-      return btoa(binary);
-    }
-
-    function base64ToBuf(base64) {
-      const binary = atob(base64);
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-      return bytes.buffer;
-    }
-
-    async function exportPublicKeyJwk(key) {
-      return await crypto.subtle.exportKey("jwk", key);
-    }
-
-    async function exportPrivateKeyJwk(key) {
-      return await crypto.subtle.exportKey("jwk", key);
-    }
-
-    async function importPublicKeyJwk(jwk) {
-      return await crypto.subtle.importKey(
-        "jwk",
-        jwk,
-        { name: "RSA-OAEP", hash: "SHA-256" },
-        true,
-        ["encrypt"]
-      );
-    }
-
-    async function importPrivateKeyJwk(jwk) {
-      return await crypto.subtle.importKey(
-        "jwk",
-        jwk,
-        { name: "RSA-OAEP", hash: "SHA-256" },
-        true,
-        ["decrypt"]
-      );
-    }
-
-    async function generateUserKeyPair() {
-      return await crypto.subtle.generateKey(
-        {
-          name: "RSA-OAEP",
-          modulusLength: 2048,
-          publicExponent: new Uint8Array([1, 0, 1]),
-          hash: "SHA-256"
-        },
-        true,
-        ["encrypt", "decrypt"]
-      );
-    }
-
-    function privateKeyStorageKey(uid) {
-      return PRIVATE_KEY_PREFIX + uid;
-    }
-
-    async function ensureLocalKeyPair(uid) {
-      const existing = localStorage.getItem(privateKeyStorageKey(uid));
-      if (existing) {
-        const privateJwk = JSON.parse(existing);
-        const privateKey = await importPrivateKeyJwk(privateJwk);
-        return { privateKey, privateJwk, created: false };
-      }
-
-      const pair = await generateUserKeyPair();
-      const publicJwk = await exportPublicKeyJwk(pair.publicKey);
-      const privateJwk = await exportPrivateKeyJwk(pair.privateKey);
-      localStorage.setItem(privateKeyStorageKey(uid), JSON.stringify(privateJwk));
-      return {
-        privateKey: pair.privateKey,
-        privateJwk,
-        publicJwk,
-        created: true
-      };
-    }
-
-    async function ensureProfileAndKeys(firebaseUser, forceRotate = false) {
-      const userRef = doc(db, USERS, firebaseUser.uid);
-
-      if (forceRotate) {
-        localStorage.removeItem(privateKeyStorageKey(firebaseUser.uid));
-      }
-
-      const local = await ensureLocalKeyPair(firebaseUser.uid);
-
-      let publicJwk = local.publicJwk;
-      const snap = await getDoc(userRef);
-      const existing = snap.exists() ? snap.data() : null;
-
-      if (!publicJwk && existing?.publicKeyJwk) {
-        publicJwk = existing.publicKeyJwk;
-      }
-
-      // If local private existed but no public in DB, create fresh pair to sync
-      if (!publicJwk) {
-        localStorage.removeItem(privateKeyStorageKey(firebaseUser.uid));
-        const fresh = await ensureLocalKeyPair(firebaseUser.uid);
-        publicJwk = fresh.publicJwk;
-      }
-
-      const payload = {
-        uid: firebaseUser.uid,
-        name: firebaseUser.displayName || "No Name",
-        email: firebaseUser.email || "",
-        emailLower: normalizeEmail(firebaseUser.email || ""),
-        photoURL: firebaseUser.photoURL || "",
-        publicKeyJwk: publicJwk,
-        online: true,
-        lastSeen: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-        createdAt: existing?.createdAt || serverTimestamp()
-      };
-
-      await setDoc(userRef, payload, { merge: true });
-
-      currentProfile = {
-        uid: firebaseUser.uid,
-        name: firebaseUser.displayName || "No Name",
-        email: firebaseUser.email || "",
-        emailLower: normalizeEmail(firebaseUser.email || ""),
-        photoURL: firebaseUser.photoURL || "",
-        publicKeyJwk: publicJwk,
-        online: true
-      };
-
-      return local.privateKey;
-    }
-
-    async function encryptBytesForParticipants(arrayBuffer, participantProfiles) {
-      const aesKey = await crypto.subtle.generateKey(
-        { name: "AES-GCM", length: 256 },
-        true,
-        ["encrypt", "decrypt"]
-      );
-      const iv = crypto.getRandomValues(new Uint8Array(12));
-      const cipherBuffer = await crypto.subtle.encrypt(
-        { name: "AES-GCM", iv },
-        aesKey,
-        arrayBuffer
-      );
-      const rawAes = await crypto.subtle.exportKey("raw", aesKey);
-
-      const wrappedKeys = {};
-      for (const p of participantProfiles) {
-        if (!p?.uid || !p?.publicKeyJwk) continue;
-        const publicKey = await importPublicKeyJwk(p.publicKeyJwk);
-        const wrapped = await crypto.subtle.encrypt(
-          { name: "RSA-OAEP" },
-          publicKey,
-          rawAes
-        );
-        wrappedKeys[p.uid] = bufToBase64(wrapped);
-      }
-
-      return {
-        iv: bufToBase64(iv.buffer),
-        cipher: bufToBase64(cipherBuffer),
-        keys: wrappedKeys
-      };
-    }
-
-    async function decryptMessagePayload(msg, privateKey, currentUid) {
-      const cacheKey = currentUid + "::" + msg.id;
-      if (decryptCache.has(cacheKey)) return decryptCache.get(cacheKey);
-
-      try {
-        const wrappedForMe = msg.keys?.[currentUid];
-        if (!wrappedForMe) {
-          const failed = { ok:false, error:"No key for current user" };
-          decryptCache.set(cacheKey, failed);
-          return failed;
-        }
-
-        const rawAes = await crypto.subtle.decrypt(
-          { name: "RSA-OAEP" },
-          privateKey,
-          base64ToBuf(wrappedForMe)
-        );
-
-        const aesKey = await crypto.subtle.importKey(
-          "raw",
-          rawAes,
-          { name: "AES-GCM" },
-          false,
-          ["decrypt"]
-        );
-
-        const plain = await crypto.subtle.decrypt(
-          { name: "AES-GCM", iv: new Uint8Array(base64ToBuf(msg.iv)) },
-          aesKey,
-          base64ToBuf(msg.cipher)
-        );
-
-        if (msg.type === "text") {
-          const text = new TextDecoder().decode(plain);
-          const result = { ok:true, text };
-          decryptCache.set(cacheKey, result);
-          return result;
-        }
-
-        if (msg.type === "voice") {
-          const blob = new Blob([plain], { type: msg.mimeType || "audio/webm" });
-          const url = URL.createObjectURL(blob);
-          const result = { ok:true, blobUrl:url };
-          decryptCache.set(cacheKey, result);
-          return result;
-        }
-
-        const unknown = { ok:false, error:"Unknown message type" };
-        decryptCache.set(cacheKey, unknown);
-        return unknown;
-      } catch (err) {
-        console.error("Decrypt error", err);
-        const failed = { ok:false, error:String(err?.message || err) };
-        decryptCache.set(cacheKey, failed);
-        return failed;
-      }
-    }
-
-    // ---------- FIRESTORE ----------
-    async function findUserByEmail(email) {
-      const q = query(collection(db, USERS), where("emailLower", "==", normalizeEmail(email)));
-      const snap = await getDocs(q);
-      return snap.docs.map(d => ({ id:d.id, ...d.data() }));
-    }
-
-    async function getUserProfile(uid) {
-      const snap = await getDoc(doc(db, USERS, uid));
-      return snap.exists() ? { uid:snap.id, ...snap.data() } : null;
-    }
-
-    async function ensureChatDoc(otherProfile) {
-      const chatId = buildChatId(currentUser.uid, otherProfile.uid);
-      const ref = doc(db, CHATS, chatId);
-      const snap = await getDoc(ref);
-
-      if (!snap.exists()) {
-        await setDoc(ref, {
-          chatId,
-          participants: [currentUser.uid, otherProfile.uid].sort(),
-          participantMap: {
-            [currentUser.uid]: {
-              uid: currentUser.uid,
-              name: currentProfile.name,
-              email: currentProfile.email,
-              photoURL: currentProfile.photoURL
-            },
-            [otherProfile.uid]: {
-              uid: otherProfile.uid,
-              name: otherProfile.name || "No Name",
-              email: otherProfile.email || "",
-              photoURL: otherProfile.photoURL || ""
-            }
-          },
-          lastPreview: "🔒 Encrypted chat",
-          lastMessageType: "text",
-          lastSenderId: "",
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-          lastMessageAt: serverTimestamp()
-        });
-      }
-
-      return chatId;
-    }
-
-    async function touchPresence(isOnline = true) {
-      if (!currentUser) return;
-      try {
-        await setDoc(doc(db, USERS, currentUser.uid), {
-          online: isOnline,
-          lastSeen: serverTimestamp(),
-          updatedAt: serverTimestamp()
-        }, { merge: true });
-      } catch (e) {}
-    }
-
-    async function sendEncryptedText(text) {
-      if (!activeOtherProfile || !activeChatId) return;
-      const clean = text.trim();
-      if (!clean) return;
-
-      const encoded = new TextEncoder().encode(clean);
-      const encrypted = await encryptBytesForParticipants(encoded.buffer, [currentProfile, activeOtherProfile]);
-
-      await addDoc(collection(db, CHATS, activeChatId, "messages"), {
-        type: "text",
-        senderId: currentUser.uid,
-        iv: encrypted.iv,
-        cipher: encrypted.cipher,
-        keys: encrypted.keys,
-        createdAt: serverTimestamp()
-      });
-
-      await setDoc(doc(db, CHATS, activeChatId), {
-        lastPreview: "🔒 Encrypted message",
-        lastMessageType: "text",
-        lastSenderId: currentUser.uid,
-        updatedAt: serverTimestamp(),
-        lastMessageAt: serverTimestamp()
-      }, { merge: true });
-
-      messageInput.value = "";
-      autoGrow();
-    }
-
-    async function sendEncryptedVoice(blob, durationSec) {
-      if (!activeOtherProfile || !activeChatId) return;
-
-      const buffer = await blob.arrayBuffer();
-
-      // Firestore document size limit ko dekhte hue short voice
-      if (buffer.byteLength > 450000) {
-        alert("Voice zyada badi hai. Thori short voice record karein.");
-        return;
-      }
-
-      const encrypted = await encryptBytesForParticipants(buffer, [currentProfile, activeOtherProfile]);
-
-      await addDoc(collection(db, CHATS, activeChatId, "messages"), {
-        type: "voice",
-        senderId: currentUser.uid,
-        mimeType: blob.type || "audio/webm",
-        durationSec,
-        iv: encrypted.iv,
-        cipher: encrypted.cipher,
-        keys: encrypted.keys,
-        createdAt: serverTimestamp()
-      });
-
-      await setDoc(doc(db, CHATS, activeChatId), {
-        lastPreview: "🔒 Encrypted voice",
-        lastMessageType: "voice",
-        lastSenderId: currentUser.uid,
-        updatedAt: serverTimestamp(),
-        lastMessageAt: serverTimestamp()
-      }, { merge: true });
-    }
-
-    async function deleteSingleMessage(messageId) {
-      if (!activeChatId) return;
-      const ok = confirm("Yeh message delete karna hai?");
-      if (!ok) return;
-      await deleteDoc(doc(db, CHATS, activeChatId, "messages", messageId));
-      decryptCache.delete(currentUser.uid + "::" + messageId);
-      await refreshLastPreviewAfterDelete();
-    }
-
-    async function refreshLastPreviewAfterDelete() {
-      if (!activeChatId) return;
-      const q = query(collection(db, CHATS, activeChatId, "messages"), orderBy("createdAt", "desc"), limit(1));
-      const snap = await getDocs(q);
-      if (snap.empty) {
-        await setDoc(doc(db, CHATS, activeChatId), {
-          lastPreview: "No messages",
-          lastMessageType: "text",
-          lastSenderId: "",
-          updatedAt: serverTimestamp(),
-          lastMessageAt: serverTimestamp()
-        }, { merge: true });
-      } else {
-        const last = snap.docs[0].data();
-        await setDoc(doc(db, CHATS, activeChatId), {
-          lastPreview: last.type === "voice" ? "🔒 Encrypted voice" : "🔒 Encrypted message",
-          lastMessageType: last.type || "text",
-          lastSenderId: last.senderId || "",
-          updatedAt: serverTimestamp(),
-          lastMessageAt: last.createdAt || serverTimestamp()
-        }, { merge: true });
-      }
-    }
-
-    async function deleteAllMessages() {
-      if (!activeChatId) return;
-      const ok = confirm("Poora conversation delete karna hai?");
-      if (!ok) return;
-
-      const snap = await getDocs(collection(db, CHATS, activeChatId, "messages"));
-      const docs = snap.docs;
-
-      for (let i = 0; i < docs.length; i += 350) {
-        const batch = writeBatch(db);
-        docs.slice(i, i + 350).forEach(d => batch.delete(d.ref));
-        await batch.commit();
-      }
-
-      decryptCache = new Map();
-      await setDoc(doc(db, CHATS, activeChatId), {
-        lastPreview: "No messages",
-        lastMessageType: "text",
-        lastSenderId: "",
-        updatedAt: serverTimestamp(),
-        lastMessageAt: serverTimestamp()
-      }, { merge: true });
-
-      showEmptyMessages("No messages yet", "Apna pehla private message bhejein.");
-    }
-
-    // ---------- RENDER ----------
-    function renderSearchResult(user) {
-      if (!user) {
-        searchResult.innerHTML = `<div class="tiny">User nahi mila.</div>`;
-        return;
-      }
-      searchResult.innerHTML = `
-        <div class="result-user">
-          <div style="display:flex;align-items:center;gap:12px;min-width:0;">
-            <img class="avatar" src="${escapeHtml(avatarURL(user.name, user.photoURL))}" alt="user">
-            <div style="min-width:0;">
-              <div class="user-title">${escapeHtml(user.name || "No Name")}</div>
-              <div class="user-sub">${escapeHtml(user.email || "")}</div>
-            </div>
-          </div>
-          <button id="startMsgBtn" class="btn btn-primary">Message</button>
-        </div>
-      `;
-      qs("#startMsgBtn").addEventListener("click", async () => {
-        const chatId = await ensureChatDoc(user);
-        await openConversation(chatId, user.uid);
-      });
-    }
-
-    function renderChatList(chats) {
-      if (!chats.length) {
-        chatList.innerHTML = `
-          <div class="empty">
-            <div>
-              <h3>No chats yet</h3>
-              <div>Kisi Gmail se search karke nayi private chat start karein.</div>
-            </div>
-          </div>
-        `;
-        return;
-      }
-
-      chatList.innerHTML = chats.map(chat => {
-        const otherUid = (chat.participants || []).find(uid => uid !== currentUser.uid);
-        const other = chat.participantMap?.[otherUid] || {};
-        const active = chat.chatId === activeChatId ? "active" : "";
-        return `
-          <div class="chat-item ${active}" data-chat-id="${escapeHtml(chat.chatId)}" data-other-uid="${escapeHtml(otherUid || "")}">
-            <div class="chat-item-left">
-              <img class="avatar" src="${escapeHtml(avatarURL(other.name, other.photoURL))}" alt="u">
-              <div style="min-width:0;">
-                <div class="chat-name">${escapeHtml(other.name || "Unknown User")}</div>
-                <div class="chat-preview">${escapeHtml(chat.lastPreview || "🔒 Encrypted chat")}</div>
-              </div>
-            </div>
-            <div class="chat-meta">
-              <div>${escapeHtml(fmtDateTime(chat.updatedAt))}</div>
-            </div>
-          </div>
-        `;
-      }).join("");
-
-      [...document.querySelectorAll(".chat-item")].forEach(item => {
-        item.addEventListener("click", async () => {
-          await openConversation(item.dataset.chatId, item.dataset.otherUid);
-        });
-      });
-    }
-
-    async function renderMessages(list) {
-      if (!list.length) {
-        showEmptyMessages("No messages yet", "Apna pehla private message bhejein.");
-        return;
-      }
-
-      const fragments = [];
-      let prevDay = "";
-
-      for (const msg of list) {
-        const day = fmtDayLabel(msg.createdAt);
-        if (day !== prevDay) {
-          fragments.push(`<div class="date-divider">${escapeHtml(day)}</div>`);
-          prevDay = day;
-        }
-
-        const mine = msg.senderId === currentUser.uid;
-        const sender = mine ? currentProfile : activeOtherProfile;
-        const decrypted = await decryptMessagePayload(msg, window.__pmPrivateKey, currentUser.uid);
-
-        let body = "";
-        if (msg.type === "text") {
-          body = decrypted.ok
-            ? `<div class="msg-text">${escapeHtml(decrypted.text)}</div>`
-            : `<div class="msg-text">🔒 Message locked</div>`;
-        } else if (msg.type === "voice") {
-          body = decrypted.ok
-            ? `
-              <div class="voice-box">
-                <div class="voice-top">
-                  <div class="voice-label">🎤 Voice message</div>
-                  <div>${escapeHtml(String(msg.durationSec || 0))}s</div>
-                </div>
-                <audio controls preload="none" src="${escapeHtml(decrypted.blobUrl)}"></audio>
-              </div>
-            `
-            : `<div class="msg-text">🔒 Voice locked</div>`;
-        } else {
-          body = `<div class="msg-text">Unsupported message</div>`;
-        }
-
-        fragments.push(`
-          <div class="row ${mine ? "me" : ""}">
-            <img class="msg-avatar" src="${escapeHtml(avatarURL(sender?.name, sender?.photoURL))}" alt="a">
-            <div class="bubble">
-              <div class="sender-line">
-                ${escapeHtml(sender?.name || "User")} · ${escapeHtml(sender?.email || "")}
-              </div>
-              ${body}
-              <div class="msg-meta">
-                <span>${escapeHtml(fmtDateTime(msg.createdAt))}</span>
-                ${mine ? `<button class="link-btn" data-del-id="${escapeHtml(msg.id)}">Delete</button>` : ``}
-              </div>
-            </div>
-          </div>
-        `);
-      }
-
-      messagesEl.innerHTML = fragments.join("");
-      scrollBottom();
-
-      [...messagesEl.querySelectorAll("[data-del-id]")].forEach(btn => {
-        btn.addEventListener("click", async () => {
-          await deleteSingleMessage(btn.dataset.delId);
-        });
-      });
-    }
-
-    // ---------- LISTENERS ----------
-    function listenChats() {
-      if (chatUnsub) chatUnsub();
-      const q = query(collection(db, CHATS), where("participants", "array-contains", currentUser.uid));
-      chatUnsub = onSnapshot(q, snap => {
-        chatCache = snap.docs.map(d => ({ chatId:d.id, ...d.data() }))
-          .sort((a,b) => timeMs(b.updatedAt) - timeMs(a.updatedAt));
-        renderChatList(chatCache);
-      }, err => {
-        console.error(err);
-      });
-    }
-
-    async function openConversation(chatId, otherUid) {
-      activeChatId = chatId;
-      activeOtherUid = otherUid;
-      decryptCache = new Map();
-
-      const other = await getUserProfile(otherUid);
-      activeOtherProfile = other;
-      updateConversationHeader(other);
-      setComposerVisible(true);
-
-      renderChatList(chatCache);
-
-      if (otherUserUnsub) otherUserUnsub();
-      otherUserUnsub = onSnapshot(doc(db, USERS, otherUid), snap => {
-        if (!snap.exists()) return;
-        activeOtherProfile = { uid:snap.id, ...snap.data() };
-        updateConversationHeader(activeOtherProfile);
-        renderChatList(chatCache);
-      });
-
-      if (messagesUnsub) messagesUnsub();
-      const q = query(collection(db, CHATS, chatId, "messages"), orderBy("createdAt", "asc"));
-      messagesUnsub = onSnapshot(q, async snap => {
-        const list = snap.docs.map(d => ({ id:d.id, ...d.data() }));
-        await renderMessages(list);
-      }, err => {
-        console.error(err);
-        showEmptyMessages("Error", "Messages load nahi ho rahe.");
-      });
-    }
-
-    // ---------- SEARCH ----------
-    async function doSearch() {
-      const email = normalizeEmail(searchEmail.value);
-      if (!email) {
-        searchResult.innerHTML = `<div class="tiny">Pehle Gmail likhein.</div>`;
-        return;
-      }
-      searchResult.innerHTML = `<div class="tiny">Searching...</div>`;
-
-      try {
-        const users = await findUserByEmail(email);
-        const target = users.find(u => u.uid !== currentUser.uid && u.id !== currentUser.uid) || users.find(u => u.uid !== currentUser.uid) || null;
-
-        if (!target) {
-          if (email === normalizeEmail(currentProfile.email)) {
-            searchResult.innerHTML = `<div class="tiny">Yeh aap ka apna Gmail hai.</div>`;
-          } else {
-            searchResult.innerHTML = `<div class="tiny">Is Gmail par user nahi mila.</div>`;
-          }
-          return;
-        }
-
-        renderSearchResult(target);
-      } catch (err) {
-        console.error(err);
-        searchResult.innerHTML = `<div class="tiny">Search failed: ${escapeHtml(err.message || String(err))}</div>`;
-      }
-    }
-
-    // ---------- VOICE ----------
-    function resetRecordingUI() {
-      recording = false;
-      recordBtn.classList.remove("recording");
-      recordInfo.textContent = "Voice off";
-      if (recordTimer) {
-        clearInterval(recordTimer);
-        recordTimer = null;
-      }
-    }
-
-    async function startRecording() {
-      if (!activeChatId) return;
-      if (!navigator.mediaDevices || !window.MediaRecorder) {
-        alert("Is browser me voice recording supported nahi hai.");
-        return;
-      }
-
-      try {
-        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        recordChunks = [];
-        recordStart = Date.now();
-
-        mediaRecorder = new MediaRecorder(mediaStream, {
-          mimeType: "audio/webm",
-          audioBitsPerSecond: 24000
-        });
-
-        mediaRecorder.ondataavailable = e => {
-          if (e.data.size > 0) recordChunks.push(e.data);
-        };
-
-        mediaRecorder.onstop = async () => {
-          try {
-            const durationSec = Math.max(1, Math.round((Date.now() - recordStart) / 1000));
-            const blob = new Blob(recordChunks, { type: "audio/webm" });
-            await sendEncryptedVoice(blob, durationSec);
-          } catch (err) {
-            console.error(err);
-            alert
+
+<div id="loginPage" class="login-page">
+
+<div class="login-box">
+
+<div class="hero">
+
+<h1>
+Private Messenger
+</h1>
+
+<p>
+Secure Gmail based private chatting system with voice notes and delete options.
+</p>
+
+<div class="hero-grid">
+
+<div class="hero-card">
+<h3>Google Login</h3>
+<p>Login with Gmail account easily.</p>
+</div>
+
+<div class="hero-card">
+<h3>Private Chat</h3>
+<p>1 to 1 messaging system.</p>
+</div>
+
+<div class="hero-card">
+<h3>Voice Notes</h3>
+<p>Send secure voice recordings.</p>
+</div>
+
+<div class="hero-card">
+<h3>Modern Design</h3>
+<p>Professional messenger UI.</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="login-side">
+
+<div class="login-panel">
+
+<div class="logo">
+P
+</div>
+
+<h2>
+Private Messenger
+</h2>
+
+<p>
+Continue with Google to start private chatting.
+</p>
+
+<button id="googleBtn" class="google-btn">
+Continue With Google
+</button>
+
+<div id="loginStatus" class="status"></div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="appPage" class="app hidden">
+
+<div class="layout">
+
+<div class="sidebar">
+
+<div id="meBox"></div>
+
+<div class="card">
+
+<h3>
+New Private Chat
+</h3>
+
+<p>
+Search Gmail to start private conversation.
+</p>
+
+<input id="searchInput" class="search-input" type="email" placeholder="example@gmail.com">
+
+<button id="searchBtn" class="primary-btn">
+Search User
+</button>
+
+<div id="searchResult" class="result"></div>
+
+</div>
+
+<div class="card">
+
+<h3>
+Account
+</h3>
+
+<p>
+Logout from messenger.
+</p>
+
+<button id="logoutBtn" class="logout-btn">
+Logout
+</button>
+
+</div>
+
+</div>
+
+<div class="chats-panel">
+
+<div class="chats-head">
+
+<h2>
+Chats
+</h2>
+
+<p>
+Your private conversations
+</p>
+
+</div>
+
+<div id="chatList" class="chat-list">
+
+<div class="empty">
+No chats yet
+</div>
+
+</div>
+
+</div>
+
+<div class="chat-panel">
+
+<div class="chat-header">
+
+<div class="chat-header-left">
+
+<img id="chatAvatar" class="avatar big-avatar">
+
+<div>
+
+<div id="chatName" class="name">
+Select Chat
+</div>
+
+<div id="chatEmail" class="email">
+Private conversation
+</div>
+
+</div>
+
+</div>
+
+<button id="deleteAllBtn" class="delete-btn hidden">
+Delete All
+</button>
+
+</div>
+
+<div id="chatBody" class="chat-body">
+
+<div class="empty">
+Select user to start chat
+</div>
+
+</div>
+
+<div class="chat-footer">
+
+<button id="voiceBtn" class="icon-btn hidden">
+🎙️
+</button>
+
+<div id="recordInfo" class="record-info hidden">
+Voice Off
+</div>
+
+<textarea id="messageInput" class="message-input hidden" placeholder="Type message"></textarea>
+
+<button id="sendBtn" class="send-btn hidden">
+➤
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+
+import {
+getAuth,
+GoogleAuthProvider,
+signInWithPopup,
+onAuthStateChanged,
+signOut
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+doc,
+setDoc,
+getDoc,
+getDocs,
+query,
+where,
+onSnapshot,
+addDoc,
+orderBy,
+serverTimestamp,
+deleteDoc
+} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
+
+authDomain: "wadi-soon-site.firebaseapp.com",
+
+projectId: "wadi-soon-site",
+
+storageBucket: "wadi-soon-site.firebasestorage.app",
+
+messagingSenderId: "306902521128",
+
+appId: "1:306902521128:web:13b34b479048240b96ec1d"
+
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
+
+const provider = new GoogleAuthProvider();
+
+const loginPage = document.getElementById("loginPage");
+
+const appPage = document.getElementById("appPage");
+
+const googleBtn = document.getElementById("googleBtn");
+
+const loginStatus = document.getElementById("loginStatus");
+
+const meBox = document.getElementById("meBox");
+
+const searchInput = document.getElementById("searchInput");
+
+const searchBtn = document.getElementById("searchBtn");
+
+const searchResult = document.getElementById("searchResult");
+
+const logoutBtn = document.getElementById("logoutBtn");
+
+const chatList = document.getElementById("chatList");
+
+const chatAvatar = document.getElementById("chatAvatar");
+
+const chatName = document.getElementById("chatName");
+
+const chatEmail = document.getElementById("chatEmail");
+
+const chatBody = document.getElementById("chatBody");
+
+const messageInput = document.getElementById("messageInput");
+
+const sendBtn = document.getElementById("sendBtn");
+
+const voiceBtn = document.getElementById("voiceBtn");
+
+const deleteAllBtn = document.getElementById("deleteAllBtn");
+
+const recordInfo = document.getElementById("recordInfo");
+
+let currentUser = null;
+
+let activeChatId = null;
+
+let activeUser = null;
+
+let messagesUnsub = null;
+
+let recorder = null;
+
+let recordChunks = [];
+
+let recording = false;
+
+function avatar(name,photo){
+
+if(photo){
+return photo;
+}
+
+return "https://ui-avatars.com/api/?name="+encodeURIComponent(name);
+
+}
+
+function buildChatId(a,b){
+
+return [a,b].sort().join("_");
+
+}
+
+function formatTime(time){
+
+const d = new Date(time);
+
+return d.toLocaleString();
+
+}
+
+function showComposer(show){
+
+messageInput.classList.toggle("hidden",!show);
+
+sendBtn.classList.toggle("hidden",!show);
+
+voiceBtn.classList.toggle("hidden",!show);
+
+recordInfo.classList.toggle("hidden",!show);
+
+deleteAllBtn.classList.toggle("hidden",!show);
+
+}
+
+googleBtn.addEventListener("click", async()=>{
+
+try{
+
+loginStatus.innerText = "Signing in...";
+
+const result = await signInWithPopup(auth,provider);
+
+currentUser = result.user;
+
+}catch(err){
+
+console.error(err);
+
+loginStatus.innerText = err.message;
+
+}
+
+});
+
+onAuthStateChanged(auth, async(user)=>{
+
+if(!user){
+
+loginPage.classList.remove("hidden");
+
+appPage.classList.add("hidden");
+
+return;
+
+}
+
+currentUser = user;
+
+await setDoc(doc(db,"private_users",user.uid),{
+
+uid:user.uid,
+
+name:user.displayName || "No Name",
+
+email:user.email || "",
+
+photo:user.photoURL || "",
+
+online:true,
+
+updatedAt:serverTimestamp()
+
+},{merge:true});
+
+meBox.innerHTML = `
+
+<div class="me-box">
+
+<img class="avatar" src="${avatar(user.displayName,user.photoURL)}">
+
+<div>
+
+<div class="name">
+${user.displayName}
+</div>
+
+<div class="email">
+${user.email}
+</div>
+
+</div>
+
+</div>
+
+`;
+
+loginPage.classList.add("hidden");
+
+appPage.classList.remove("hidden");
+
+loadChats();
+
+});
+
+searchBtn.addEventListener("click", async()=>{
+
+const email = searchInput.value.trim().toLowerCase();
+
+if(!email){
+
+searchResult.innerHTML = "Write Gmail";
+
+return;
+
+}
+
+searchResult.innerHTML = "Searching...";
+
+const q = query(
+
+collection(db,"private_users"),
+
+where("email","==",email)
+
+);
+
+const snap = await getDocs(q);
+
+if(snap.empty){
+
+searchResult.innerHTML = "User not found";
+
+return;
+
+}
+
+const user = snap.docs[0].data();
+
+if(user.uid === currentUser.uid){
+
+searchResult.innerHTML = "This is your Gmail";
+
+return;
+
+}
+
+searchResult.innerHTML = `
+
+<div class="user-result">
+
+<div class="user-left">
+
+<img class="avatar" src="${avatar(user.name,user.photo)}">
+
+<div>
+
+<div class="name">
+${user.name}
+</div>
+
+<div class="email">
+${user.email}
+</div>
+
+</div>
+
+</div>
+
+<button id="msgBtn" class="message-btn">
+Message
+</button>
+
+</div>
+
+`;
+
+document.getElementById("msgBtn").addEventListener("click", async()=>{
+
+const cid = buildChatId(currentUser.uid,user.uid);
+
+await setDoc(doc(db,"private_chats",cid),{
+
+users:[currentUser.uid,user.uid],
+
+last:"Chat started",
+
+updatedAt:serverTimestamp()
+
+},{merge:true});
+
+openChat(cid,user);
+
+});
+
+});
+
+async function loadChats(){
+
+const q = query(
+
+collection(db,"private_chats"),
+
+where("users","array-contains",currentUser.uid)
+
+);
+
+onSnapshot(q, async(snap)=>{
+
+if(snap.empty){
+
+chatList.innerHTML = `
+
+<div class="empty">
+No chats yet
+</div>
+
+`;
+
+return;
+
+}
+
+let html = "";
+
+for(const d of snap.docs){
+
+const data = d.data();
+
+const otherId = data.users.find(u=>u!==currentUser.uid);
+
+const otherSnap = await getDoc(doc(db,"private_users",otherId));
+
+const other = otherSnap.data();
+
+html += `
+
+<div class="chat-item" data-id="${d.id}" data-user="${other.uid}">
+
+<div class="chat-item-left">
+
+<img class="avatar" src="${avatar(other.name,other.photo)}">
+
+<div>
+
+<div class="chat-title">
+${other.name}
+</div>
+
+<div class="chat-preview">
+${data.last || ""}
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+chatList.innerHTML = html;
+
+document.querySelectorAll(".chat-item").forEach(item=>{
+
+item.addEventListener("click", async()=>{
+
+const uid = item.dataset.user;
+
+const snap = await getDoc(doc(db,"private_users",uid));
+
+openChat(item.dataset.id,snap.data());
+
+});
+
+});
+
+});
+
+}
+
+async function openChat(chatId,user){
+
+activeChatId = chatId;
+
+activeUser = user;
+
+chatAvatar.src = avatar(user.name,user.photo);
+
+chatName.innerText = user.name;
+
+chatEmail.innerText = user.email;
+
+showComposer(true);
+
+if(messagesUnsub){
+messagesUnsub();
+}
+
+const q = query(
+
+collection(db,"private_chats",chatId,"messages"),
+
+orderBy("createdAt","asc")
+
+);
+
+messagesUnsub = onSnapshot(q,(snap)=>{
+
+if(snap.empty){
+
+chatBody.innerHTML = `
+
+<div class="empty">
+No messages
+</div>
+
+`;
+
+return;
+
+}
+
+let html = "";
+
+snap.forEach(docSnap=>{
+
+const data = docSnap.data();
+
+const mine = data.sender === currentUser.uid;
+
+let content = "";
+
+if(data.type === "voice"){
+
+content = `
+
+<div class="audio-box">
+
+<div>
+🎤 Voice Message
+</div>
+
+<audio controls src="${data.voice}"></audio>
+
+</div>
+
+`;
+
+}else{
+
+content = data.text;
+
+}
+
+html += `
+
+<div class="message-row ${mine ? "me" : ""}">
+
+<div class="message-bubble">
+
+<div>
+${content}
+</div>
+
+<div class="message-meta">
+
+<span>
+${formatTime(data.time)}
+</span>
+
+${mine ? `<button class="delete-single" data-id="${docSnap.id}">Delete</button>` : ""}
+
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
+chatBody.innerHTML = html;
+
+chatBody.scrollTop = chatBody.scrollHeight;
+
+document.querySelectorAll(".delete-single").forEach(btn=>{
+
+btn.addEventListener("click", async()=>{
+
+const id = btn.dataset.id;
+
+await deleteDoc(doc(db,"private_chats",activeChatId,"messages",id));
+
+});
+
+});
+
+});
+
+}
+
+async function sendTextMessage(){
+
+const text = messageInput.value.trim();
+
+if(!text || !activeChatId){
+return;
+}
+
+await addDoc(
+
+collection(db,"private_chats",activeChatId,"messages"),
+
+{
+
+type:"text",
+
+text:text,
+
+sender:currentUser.uid,
+
+time:Date.now(),
+
+createdAt:serverTimestamp()
+
+}
+
+);
+
+await setDoc(doc(db,"private_chats",activeChatId),{
+
+last:text,
+
+updatedAt:serverTimestamp()
+
+},{merge:true});
+
+messageInput.value = "";
+
+}
+
+sendBtn.addEventListener("click", sendTextMessage);
+
+messageInput.addEventListener("keydown",(e)=>{
+
+if(e.key === "Enter" && !e.shiftKey){
+
+e.preventDefault();
+
+sendTextMessage();
+
+}
+
+});
+
+voiceBtn.addEventListener("click", async()=>{
+
+if(!activeChatId){
+return;
+}
+
+if(!recording){
+
+try{
+
+const stream = await navigator.mediaDevices.getUserMedia({
+
+audio:true
+
+});
+
+recorder = new MediaRecorder(stream);
+
+recordChunks = [];
+
+recorder.ondataavailable = e=>{
+
+recordChunks.push(e.data);
+
+};
+
+recorder.onstop = async()=>{
+
+const blob = new Blob(recordChunks,{
+
+type:"audio/webm"
+
+});
+
+const reader = new FileReader();
+
+reader.readAsDataURL(blob);
+
+reader.onloadend = async()=>{
+
+await addDoc(
+
+collection(db,"private_chats",activeChatId,"messages"),
+
+{
+
+type:"voice",
+
+voice:reader.result,
+
+sender:currentUser.uid,
+
+time:Date.now(),
+
+createdAt:serverTimestamp()
+
+}
+
+);
+
+await setDoc(doc(db,"private_chats",activeChatId),{
+
+last:"🎤 Voice Message",
+
+updatedAt:serverTimestamp()
+
+},{merge:true});
+
+};
+
+};
+
+recorder.start();
+
+recording = true;
+
+voiceBtn.classList.add("recording");
+
+voiceBtn.innerText = "⏹️";
+
+recordInfo.innerText = "Recording...";
+
+}catch(err){
+
+console.error(err);
+
+alert("Microphone access denied");
+
+}
+
+}else{
+
+recorder.stop();
+
+recording = false;
+
+voiceBtn.classList.remove("recording");
+
+voiceBtn.innerText = "🎙️";
+
+recordInfo.innerText = "Voice Off";
+
+}
+
+});
+
+deleteAllBtn.addEventListener("click", async()=>{
+
+if(!activeChatId){
+return;
+}
+
+const ok = confirm("Delete all messages?");
+
+if(!ok){
+return;
+}
+
+const snap = await getDocs(
+
+collection(db,"private_chats",activeChatId,"messages")
+
+);
+
+for(const d of snap.docs){
+
+await deleteDoc(d.ref);
+
+}
+
+chatBody.innerHTML = `
+
+<div class="empty">
+No messages
+</div>
+
+`;
+
+});
+
+logoutBtn.addEventListener("click", async()=>{
+
+await signOut(auth);
+
+});
+
+</script>
+
+</body>
+</html>
