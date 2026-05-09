@@ -6,21 +6,6 @@
 <title>Private Messenger</title>
 
 <style>
-
-:root{
---bg:#0b1020;
---bg2:#111933;
---panel:#131d38;
---panel2:#1b2748;
---border:rgba(255,255,255,.08);
---text:#ffffff;
---muted:#9aa9ca;
---brand:#4f8cff;
---brand2:#7c5cff;
---danger:#ff5a70;
---green:#1cc980;
-}
-
 *{
 margin:0;
 padding:0;
@@ -29,27 +14,16 @@ font-family:Arial,sans-serif;
 }
 
 body{
-background:
-linear-gradient(180deg,#08101f,#0b1020);
-color:#fff;
+background:#081120;
+color:white;
 min-height:100vh;
-overflow:hidden;
 }
 
 .hidden{
-display:none!important;
+display:none;
 }
 
-button{
-cursor:pointer;
-}
-
-img{
-display:block;
-max-width:100%;
-}
-
-.login-page{
+.login-screen{
 min-height:100vh;
 display:flex;
 align-items:center;
@@ -59,694 +33,286 @@ padding:20px;
 
 .login-box{
 width:100%;
-max-width:1100px;
-display:grid;
-grid-template-columns:1fr 1fr;
-background:#131d38;
-border:1px solid var(--border);
-border-radius:35px;
-overflow:hidden;
+max-width:420px;
+background:#101d35;
+padding:30px;
+border-radius:30px;
+border:1px solid rgba(255,255,255,.08);
 }
 
-.hero{
-padding:50px;
-background:
-linear-gradient(135deg,rgba(79,140,255,.15),rgba(124,92,255,.1));
-}
-
-.hero h1{
-font-size:60px;
-line-height:1.1;
-margin-bottom:20px;
-}
-
-.hero p{
-font-size:18px;
-line-height:1.8;
-color:var(--muted);
-}
-
-.hero-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:15px;
-margin-top:30px;
-}
-
-.hero-card{
-background:rgba(255,255,255,.04);
-border:1px solid var(--border);
-padding:20px;
-border-radius:22px;
-}
-
-.hero-card h3{
-margin-bottom:8px;
-}
-
-.hero-card p{
-font-size:14px;
-line-height:1.6;
-}
-
-.login-side{
-display:flex;
-align-items:center;
-justify-content:center;
-padding:40px;
-}
-
-.login-panel{
-width:100%;
-max-width:450px;
-}
-
-.logo{
-width:70px;
-height:70px;
-border-radius:22px;
-display:flex;
-align-items:center;
-justify-content:center;
+.title{
 font-size:32px;
 font-weight:bold;
-background:linear-gradient(135deg,var(--brand),var(--brand2));
-margin-bottom:20px;
+margin-bottom:10px;
 }
 
-.login-panel h2{
-font-size:40px;
-margin-bottom:15px;
-}
-
-.login-panel p{
-color:var(--muted);
+.subtitle{
+color:#9aa9ca;
 line-height:1.7;
 margin-bottom:25px;
 }
 
-.google-btn{
+.btn{
 width:100%;
-padding:17px;
+padding:16px;
 border:none;
 border-radius:18px;
-background:#fff;
-color:#111;
 font-size:16px;
 font-weight:bold;
+cursor:pointer;
 }
 
-.status{
-margin-top:18px;
-font-size:14px;
-color:#9aa9ca;
+.google-btn{
+background:linear-gradient(135deg,#4f8cff,#7c5cff);
+color:white;
 }
 
 .app{
 padding:15px;
-height:100vh;
 }
 
-.layout{
+.container{
 display:grid;
-grid-template-columns:350px 400px 1fr;
+grid-template-columns:340px 1fr;
 gap:15px;
 height:calc(100vh - 30px);
 }
 
-.sidebar{
-background:#131d38;
+.sidebar,
+.chat-area{
+background:#101d35;
 border-radius:30px;
-border:1px solid var(--border);
+border:1px solid rgba(255,255,255,.08);
+overflow:hidden;
+}
+
+.sidebar{
 padding:15px;
 overflow:auto;
 }
 
-.chats-panel{
-background:#131d38;
-border-radius:30px;
-border:1px solid var(--border);
-display:flex;
-flex-direction:column;
-overflow:hidden;
-}
-
-.chat-panel{
-background:#131d38;
-border-radius:30px;
-border:1px solid var(--border);
-display:flex;
-flex-direction:column;
-overflow:hidden;
-}
-
 .me-box{
+background:#1a2850;
+padding:15px;
+border-radius:22px;
 display:flex;
 align-items:center;
-gap:12px;
-padding:15px;
-border-radius:20px;
-background:#1a2548;
+gap:15px;
 margin-bottom:20px;
 }
 
 .avatar{
-width:55px;
-height:55px;
+width:65px;
+height:65px;
 border-radius:50%;
 object-fit:cover;
-background:#243250;
-}
-
-.big-avatar{
-width:60px;
-height:60px;
 }
 
 .name{
-font-size:16px;
+font-size:22px;
 font-weight:bold;
 }
 
 .email{
-font-size:13px;
-color:var(--muted);
+color:#9aa9ca;
 margin-top:4px;
 word-break:break-word;
 }
 
 .card{
-padding:18px;
-background:#1a2548;
-border-radius:24px;
+background:#1a2850;
+padding:20px;
+border-radius:25px;
 margin-bottom:20px;
 }
 
-.card h3{
-margin-bottom:10px;
-}
-
-.card p{
-font-size:14px;
-line-height:1.7;
-color:var(--muted);
+.card h2{
 margin-bottom:15px;
 }
 
-.search-input{
+.input{
 width:100%;
 padding:15px;
 border:none;
 outline:none;
 border-radius:16px;
-background:#0d152b;
-color:#fff;
-margin-bottom:10px;
+background:#081120;
+color:white;
+margin-bottom:15px;
 }
 
-.primary-btn{
-width:100%;
-padding:15px;
-border:none;
-border-radius:16px;
-background:linear-gradient(135deg,var(--brand),var(--brand2));
-color:#fff;
-font-weight:bold;
+.search-btn{
+background:linear-gradient(135deg,#4f8cff,#7c5cff);
+color:white;
 }
 
 .logout-btn{
-width:100%;
-padding:15px;
-border:none;
-border-radius:16px;
-background:var(--danger);
-color:#fff;
-font-weight:bold;
-margin-top:10px;
-}
-
-.result{
-margin-top:15px;
-}
-
-.user-result{
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:10px;
-padding:12px;
-background:#0d152b;
-border-radius:18px;
-}
-
-.user-left{
-display:flex;
-align-items:center;
-gap:12px;
-}
-
-.message-btn{
-padding:12px 18px;
-border:none;
-border-radius:15px;
-background:linear-gradient(135deg,var(--brand),var(--brand2));
-color:#fff;
-font-weight:bold;
-}
-
-.chats-head{
-padding:20px;
-border-bottom:1px solid var(--border);
-}
-
-.chats-head h2{
-font-size:28px;
-margin-bottom:8px;
-}
-
-.chats-head p{
-color:var(--muted);
-font-size:14px;
+background:#ff5470;
+color:white;
 }
 
 .chat-list{
-padding:15px;
-overflow:auto;
-display:flex;
-flex-direction:column;
-gap:10px;
+margin-top:20px;
 }
 
 .chat-item{
-padding:14px;
-border-radius:20px;
-background:#1a2548;
-cursor:pointer;
 display:flex;
 align-items:center;
-justify-content:space-between;
 gap:12px;
+padding:12px;
+border-radius:18px;
+background:#1a2850;
+margin-bottom:10px;
+cursor:pointer;
 }
 
 .chat-item:hover{
-background:#243250;
+background:#223566;
 }
 
-.chat-item-left{
+.chat-area{
 display:flex;
-align-items:center;
-gap:12px;
-}
-
-.chat-title{
-font-weight:bold;
-}
-
-.chat-preview{
-font-size:13px;
-color:var(--muted);
-margin-top:4px;
+flex-direction:column;
 }
 
 .chat-header{
-padding:15px 20px;
-border-bottom:1px solid var(--border);
-display:flex;
-align-items:center;
-justify-content:space-between;
-gap:15px;
-}
-
-.chat-header-left{
+padding:18px;
+border-bottom:1px solid rgba(255,255,255,.08);
 display:flex;
 align-items:center;
 gap:12px;
 }
 
-.delete-btn{
-padding:12px 18px;
-border:none;
-border-radius:15px;
-background:var(--danger);
-color:#fff;
-font-weight:bold;
-}
-
-.chat-body{
+.messages{
 flex:1;
 overflow:auto;
 padding:20px;
 display:flex;
 flex-direction:column;
-gap:14px;
-background:
-radial-gradient(circle at top left,rgba(79,140,255,.08),transparent 25%);
+gap:15px;
 }
 
-.empty{
-flex:1;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-color:var(--muted);
-padding:20px;
-}
-
-.message-row{
-display:flex;
-align-items:flex-end;
-gap:10px;
-max-width:80%;
-}
-
-.message-row.me{
-align-self:flex-end;
-flex-direction:row-reverse;
-}
-
-.message-bubble{
-padding:14px 16px;
+.message{
+max-width:75%;
+padding:14px;
 border-radius:18px;
-background:#1a2548;
 line-height:1.6;
-word-break:break-word;
 }
 
-.message-row.me .message-bubble{
-background:linear-gradient(135deg,var(--brand),#356cff);
+.me{
+align-self:flex-end;
+background:linear-gradient(135deg,#4f8cff,#7c5cff);
 }
 
-.message-meta{
-font-size:11px;
-margin-top:8px;
-opacity:.75;
-display:flex;
-gap:10px;
-align-items:center;
+.other{
+align-self:flex-start;
+background:#1a2850;
 }
 
-.delete-single{
-background:none;
-border:none;
-color:#ffb6c1;
-font-size:11px;
-cursor:pointer;
-}
-
-.audio-box{
-display:flex;
-flex-direction:column;
-gap:10px;
-min-width:260px;
-}
-
-audio{
-width:100%;
-}
-
-.chat-footer{
+.composer{
 padding:15px;
-border-top:1px solid var(--border);
+border-top:1px solid rgba(255,255,255,.08);
 display:flex;
-align-items:flex-end;
-gap:10px;
+gap:12px;
 }
 
-.icon-btn{
-width:58px;
-height:58px;
-border:none;
-border-radius:18px;
-background:#1a2548;
-color:#fff;
-font-size:22px;
-}
-
-.recording{
-background:var(--danger)!important;
-}
-
-.message-input{
+.textarea{
 flex:1;
 height:58px;
 resize:none;
+padding:16px;
 border:none;
 outline:none;
 border-radius:18px;
-background:#0d152b;
-padding:16px;
-color:#fff;
-font-size:15px;
+background:#081120;
+color:white;
 }
 
 .send-btn{
-width:58px;
-height:58px;
+width:60px;
 border:none;
 border-radius:18px;
-background:linear-gradient(135deg,var(--brand),var(--brand2));
-color:#fff;
+background:linear-gradient(135deg,#4f8cff,#7c5cff);
+color:white;
 font-size:22px;
 font-weight:bold;
+cursor:pointer;
 }
 
-.record-info{
-font-size:13px;
-color:var(--muted);
-min-width:90px;
-}
-
-@media(max-width:1200px){
-
-.layout{
+@media(max-width:900px){
+.container{
 grid-template-columns:1fr;
 height:auto;
-overflow:auto;
 }
 
-.chat-panel{
+.chat-area{
 height:80vh;
 }
-
-.login-box{
-grid-template-columns:1fr;
 }
-
-.hero{
-display:none;
-}
-
-}
-
 </style>
 </head>
-
 <body>
 
-<div id="loginPage" class="login-page">
-
+<section id="loginScreen" class="login-screen">
 <div class="login-box">
-
-<div class="hero">
-
-<h1>
-Private Messenger
-</h1>
-
-<p>
-Secure Gmail based private chatting system with voice notes and delete options.
-</p>
-
-<div class="hero-grid">
-
-<div class="hero-card">
-<h3>Google Login</h3>
-<p>Login with Gmail account easily.</p>
+<div class="title">Private Messenger</div>
+<div class="subtitle">
+Secure private chatting with Google login.
 </div>
-
-<div class="hero-card">
-<h3>Private Chat</h3>
-<p>1 to 1 messaging system.</p>
-</div>
-
-<div class="hero-card">
-<h3>Voice Notes</h3>
-<p>Send secure voice recordings.</p>
-</div>
-
-<div class="hero-card">
-<h3>Modern Design</h3>
-<p>Professional messenger UI.</p>
-</div>
-
-</div>
-
-</div>
-
-<div class="login-side">
-
-<div class="login-panel">
-
-<div class="logo">
-P
-</div>
-
-<h2>
-Private Messenger
-</h2>
-
-<p>
-Continue with Google to start private chatting.
-</p>
-
-<button id="googleBtn" class="google-btn">
+<button id="googleBtn" class="btn google-btn">
 Continue With Google
 </button>
-
-<div id="loginStatus" class="status"></div>
-
 </div>
+</section>
 
-</div>
-
-</div>
-
-</div>
-
-<div id="appPage" class="app hidden">
-
-<div class="layout">
+<section id="app" class="app hidden">
+<div class="container">
 
 <div class="sidebar">
 
 <div id="meBox"></div>
 
 <div class="card">
-
-<h3>
-New Private Chat
-</h3>
-
-<p>
-Search Gmail to start private conversation.
-</p>
-
-<input id="searchInput" class="search-input" type="email" placeholder="example@gmail.com">
-
-<button id="searchBtn" class="primary-btn">
-Search User
-</button>
-
-<div id="searchResult" class="result"></div>
-
+<h2>New Private Chat</h2>
+<input id="searchInput" class="input" type="email" placeholder="example@gmail.com">
+<button id="searchBtn" class="btn search-btn">Search User</button>
+<div id="searchResult" style="margin-top:15px"></div>
 </div>
 
 <div class="card">
+<h2>Account</h2>
+<button id="logoutBtn" class="btn logout-btn">Logout</button>
+</div>
 
-<h3>
-Account
-</h3>
-
-<p>
-Logout from messenger.
-</p>
-
-<button id="logoutBtn" class="logout-btn">
-Logout
-</button>
+<div class="chat-list" id="chatList"></div>
 
 </div>
 
-</div>
-
-<div class="chats-panel">
-
-<div class="chats-head">
-
-<h2>
-Chats
-</h2>
-
-<p>
-Your private conversations
-</p>
-
-</div>
-
-<div id="chatList" class="chat-list">
-
-<div class="empty">
-No chats yet
-</div>
-
-</div>
-
-</div>
-
-<div class="chat-panel">
+<div class="chat-area">
 
 <div class="chat-header">
-
-<div class="chat-header-left">
-
-<img id="chatAvatar" class="avatar big-avatar">
-
+<img id="chatAvatar" class="avatar">
 <div>
-
-<div id="chatName" class="name">
-Select Chat
+<div id="chatName" class="name">Select Chat</div>
+<div id="chatEmail" class="email"></div>
+</div>
 </div>
 
-<div id="chatEmail" class="email">
-Private conversation
-</div>
+<div class="messages" id="messages"></div>
 
-</div>
-
-</div>
-
-<button id="deleteAllBtn" class="delete-btn hidden">
-Delete All
-</button>
-
-</div>
-
-<div id="chatBody" class="chat-body">
-
-<div class="empty">
-Select user to start chat
-</div>
-
-</div>
-
-<div class="chat-footer">
-
-<button id="voiceBtn" class="icon-btn hidden">
-🎙️
-</button>
-
-<div id="recordInfo" class="record-info hidden">
-Voice Off
-</div>
-
-<textarea id="messageInput" class="message-input hidden" placeholder="Type message"></textarea>
-
-<button id="sendBtn" class="send-btn hidden">
-➤
-</button>
-
+<div class="composer">
+<textarea id="messageInput" class="textarea" placeholder="Write message..."></textarea>
+<button id="sendBtn" class="send-btn">➤</button>
 </div>
 
 </div>
 
 </div>
-
-</div>
+</section>
 
 <script type="module">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
 
 import {
 getAuth,
@@ -754,717 +320,266 @@ GoogleAuthProvider,
 signInWithPopup,
 onAuthStateChanged,
 signOut
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
 
 import {
 getFirestore,
-collection,
 doc,
 setDoc,
 getDoc,
-getDocs,
+collection,
 query,
 where,
-onSnapshot,
+getDocs,
 addDoc,
+onSnapshot,
 orderBy,
-serverTimestamp,
-deleteDoc
-} from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
+serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
-
 apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
-
 authDomain: "wadi-soon-site.firebaseapp.com",
-
 projectId: "wadi-soon-site",
-
-storageBucket: "wadi-soon-site.firebasestorage.app",
-
+storageBucket: "wadi-soon-site.appspot.com",
 messagingSenderId: "306902521128",
-
 appId: "1:306902521128:web:13b34b479048240b96ec1d"
-
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
-
 const db = getFirestore(app);
-
 const provider = new GoogleAuthProvider();
 
-const loginPage = document.getElementById("loginPage");
-
-const appPage = document.getElementById("appPage");
-
+const loginScreen = document.getElementById("loginScreen");
+const appScreen = document.getElementById("app");
 const googleBtn = document.getElementById("googleBtn");
-
-const loginStatus = document.getElementById("loginStatus");
-
 const meBox = document.getElementById("meBox");
-
 const searchInput = document.getElementById("searchInput");
-
 const searchBtn = document.getElementById("searchBtn");
-
 const searchResult = document.getElementById("searchResult");
-
 const logoutBtn = document.getElementById("logoutBtn");
-
 const chatList = document.getElementById("chatList");
-
+const messages = document.getElementById("messages");
+const messageInput = document.getElementById("messageInput");
+const sendBtn = document.getElementById("sendBtn");
 const chatAvatar = document.getElementById("chatAvatar");
-
 const chatName = document.getElementById("chatName");
-
 const chatEmail = document.getElementById("chatEmail");
 
-const chatBody = document.getElementById("chatBody");
-
-const messageInput = document.getElementById("messageInput");
-
-const sendBtn = document.getElementById("sendBtn");
-
-const voiceBtn = document.getElementById("voiceBtn");
-
-const deleteAllBtn = document.getElementById("deleteAllBtn");
-
-const recordInfo = document.getElementById("recordInfo");
-
 let currentUser = null;
-
+let activeUser = null;
 let activeChatId = null;
 
-let activeUser = null;
-
-let messagesUnsub = null;
-
-let recorder = null;
-
-let recordChunks = [];
-
-let recording = false;
-
 function avatar(name,photo){
-
-if(photo){
-return photo;
+if(photo) return photo;
+return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=4f8cff&color=fff`;
 }
 
-return "https://ui-avatars.com/api/?name="+encodeURIComponent(name);
-
-}
-
-function buildChatId(a,b){
-
+function chatId(a,b){
 return [a,b].sort().join("_");
-
 }
 
-function formatTime(time){
+async function saveUser(user){
 
-const d = new Date(time);
-
-return d.toLocaleString();
-
-}
-
-function showComposer(show){
-
-messageInput.classList.toggle("hidden",!show);
-
-sendBtn.classList.toggle("hidden",!show);
-
-voiceBtn.classList.toggle("hidden",!show);
-
-recordInfo.classList.toggle("hidden",!show);
-
-deleteAllBtn.classList.toggle("hidden",!show);
-
-}
-
-googleBtn.addEventListener("click", async()=>{
-
-try{
-
-loginStatus.innerText = "Signing in...";
-
-const result = await signInWithPopup(auth,provider);
-
-currentUser = result.user;
-
-}catch(err){
-
-console.error(err);
-
-loginStatus.innerText = err.message;
-
-}
-
-});
-
-onAuthStateChanged(auth, async(user)=>{
-
-if(!user){
-
-loginPage.classList.remove("hidden");
-
-appPage.classList.add("hidden");
-
-return;
-
-}
-
-currentUser = user;
+const fixedName = user.displayName
+? user.displayName
+: user.email.split("@")[0];
 
 await setDoc(doc(db,"private_users",user.uid),{
-
 uid:user.uid,
-
-name:user.displayName || "No Name",
-
-email:user.email || "",
-
+name:fixedName,
+email:user.email,
 photo:user.photoURL || "",
-
 online:true,
-
 updatedAt:serverTimestamp()
-
 },{merge:true});
 
 meBox.innerHTML = `
-
 <div class="me-box">
-
-<img class="avatar" src="${avatar(user.displayName,user.photoURL)}">
-
+<img class="avatar" src="${avatar(fixedName,user.photoURL)}">
 <div>
-
-<div class="name">
-${user.displayName}
+<div class="name">${fixedName}</div>
+<div class="email">${user.email}</div>
 </div>
-
-<div class="email">
-${user.email}
 </div>
-
-</div>
-
-</div>
-
 `;
+}
 
-loginPage.classList.add("hidden");
+googleBtn.onclick = async ()=>{
+await signInWithPopup(auth,provider);
+};
 
-appPage.classList.remove("hidden");
+onAuthStateChanged(auth,async(user)=>{
 
+if(user){
+currentUser = user;
+loginScreen.classList.add("hidden");
+appScreen.classList.remove("hidden");
+await saveUser(user);
 loadChats();
+}else{
+loginScreen.classList.remove("hidden");
+appScreen.classList.add("hidden");
+}
 
 });
 
-searchBtn.addEventListener("click", async()=>{
+searchBtn.onclick = async ()=>{
 
 const email = searchInput.value.trim().toLowerCase();
 
 if(!email){
-
 searchResult.innerHTML = "Write Gmail";
-
 return;
-
 }
 
-searchResult.innerHTML = "Searching...";
-
-const q = query(
-
-collection(db,"private_users"),
-
-where("email","==",email)
-
-);
-
+const q = query(collection(db,"private_users"),where("email","==",email));
 const snap = await getDocs(q);
 
 if(snap.empty){
-
 searchResult.innerHTML = "User not found";
-
 return;
-
 }
 
 const user = snap.docs[0].data();
 
 if(user.uid === currentUser.uid){
-
 searchResult.innerHTML = "This is your Gmail";
-
 return;
-
 }
 
 searchResult.innerHTML = `
-
-<div class="user-result">
-
-<div class="user-left">
-
+<div class="chat-item">
 <img class="avatar" src="${avatar(user.name,user.photo)}">
-
-<div>
-
-<div class="name">
-${user.name}
+<div style="flex:1">
+<div class="name">${user.name}</div>
+<div class="email">${user.email}</div>
 </div>
-
-<div class="email">
-${user.email}
+<button id="startBtn" class="btn search-btn">Message</button>
 </div>
-
-</div>
-
-</div>
-
-<button id="msgBtn" class="message-btn">
-Message
-</button>
-
-</div>
-
 `;
 
-document.getElementById("msgBtn").addEventListener("click", async()=>{
+setTimeout(()=>{
 
-const cid = buildChatId(currentUser.uid,user.uid);
+document.getElementById("startBtn").onclick = ()=>{
+openChat(user);
+};
 
-await setDoc(doc(db,"private_chats",cid),{
+},100);
 
-users:[currentUser.uid,user.uid],
+};
 
-last:"Chat started",
-
-updatedAt:serverTimestamp()
-
-},{merge:true});
-
-openChat(cid,user);
-
-});
-
-});
-
-async function loadChats(){
-
-const q = query(
-
-collection(db,"private_chats"),
-
-where("users","array-contains",currentUser.uid)
-
-);
-
-onSnapshot(q, async(snap)=>{
-
-if(snap.empty){
-
-chatList.innerHTML = `
-
-<div class="empty">
-No chats yet
-</div>
-
-`;
-
-return;
-
-}
-
-let html = "";
-
-for(const d of snap.docs){
-
-const data = d.data();
-
-const otherId = data.users.find(u=>u!==currentUser.uid);
-
-const otherSnap = await getDoc(doc(db,"private_users",otherId));
-
-const other = otherSnap.data();
-
-html += `
-
-<div class="chat-item" data-id="${d.id}" data-user="${other.uid}">
-
-<div class="chat-item-left">
-
-<img class="avatar" src="${avatar(other.name,other.photo)}">
-
-<div>
-
-<div class="chat-title">
-${other.name}
-</div>
-
-<div class="chat-preview">
-${data.last || ""}
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-}
-
-chatList.innerHTML = html;
-
-document.querySelectorAll(".chat-item").forEach(item=>{
-
-item.addEventListener("click", async()=>{
-
-const uid = item.dataset.user;
-
-const snap = await getDoc(doc(db,"private_users",uid));
-
-openChat(item.dataset.id,snap.data());
-
-});
-
-});
-
-});
-
-}
-
-async function openChat(chatId,user){
-
-activeChatId = chatId;
+async function openChat(user){
 
 activeUser = user;
+activeChatId = chatId(currentUser.uid,user.uid);
 
 chatAvatar.src = avatar(user.name,user.photo);
+chatName.textContent = user.name;
+chatEmail.textContent = user.email;
 
-chatName.innerText = user.name;
-
-chatEmail.innerText = user.email;
-
-showComposer(true);
-
-if(messagesUnsub){
-messagesUnsub();
-}
-
-const q = query(
-
-collection(db,"private_chats",chatId,"messages"),
-
-orderBy("createdAt","asc")
-
-);
-
-messagesUnsub = onSnapshot(q,(snap)=>{
-
-if(snap.empty){
-
-chatBody.innerHTML = `
-
-<div class="empty">
-No messages
-</div>
-
-`;
-
-return;
+listenMessages();
 
 }
 
-let html = "";
-
-snap.forEach(docSnap=>{
-
-const data = docSnap.data();
-
-const mine = data.sender === currentUser.uid;
-
-let content = "";
-
-if(data.type === "voice"){
-
-content = `
-
-<div class="audio-box">
-
-<div>
-🎤 Voice Message
-</div>
-
-<audio controls src="${data.voice}"></audio>
-
-</div>
-
-`;
-
-}else{
-
-content = data.text;
-
-}
-
-html += `
-
-<div class="message-row ${mine ? "me" : ""}">
-
-<div class="message-bubble">
-
-<div>
-${content}
-</div>
-
-<div class="message-meta">
-
-<span>
-${formatTime(data.time)}
-</span>
-
-${mine ? `<button class="delete-single" data-id="${docSnap.id}">Delete</button>` : ""}
-
-</div>
-
-</div>
-
-</div>
-
-`;
-
-});
-
-chatBody.innerHTML = html;
-
-chatBody.scrollTop = chatBody.scrollHeight;
-
-document.querySelectorAll(".delete-single").forEach(btn=>{
-
-btn.addEventListener("click", async()=>{
-
-const id = btn.dataset.id;
-
-await deleteDoc(doc(db,"private_chats",activeChatId,"messages",id));
-
-});
-
-});
-
-});
-
-}
-
-async function sendTextMessage(){
+async function sendMessage(){
 
 const text = messageInput.value.trim();
 
-if(!text || !activeChatId){
-return;
-}
+if(!text || !activeUser) return;
 
-await addDoc(
-
-collection(db,"private_chats",activeChatId,"messages"),
-
-{
-
-type:"text",
-
-text:text,
-
+await addDoc(collection(db,"private_chats",activeChatId,"messages"),{
+text,
 sender:currentUser.uid,
-
-time:Date.now(),
-
 createdAt:serverTimestamp()
-
-}
-
-);
-
-await setDoc(doc(db,"private_chats",activeChatId),{
-
-last:text,
-
-updatedAt:serverTimestamp()
-
-},{merge:true});
+});
 
 messageInput.value = "";
 
 }
 
-sendBtn.addEventListener("click", sendTextMessage);
+sendBtn.onclick = sendMessage;
 
 messageInput.addEventListener("keydown",(e)=>{
-
 if(e.key === "Enter" && !e.shiftKey){
-
 e.preventDefault();
-
-sendTextMessage();
-
+sendMessage();
 }
-
 });
 
-voiceBtn.addEventListener("click", async()=>{
+function listenMessages(){
 
-if(!activeChatId){
-return;
-}
-
-if(!recording){
-
-try{
-
-const stream = await navigator.mediaDevices.getUserMedia({
-
-audio:true
-
-});
-
-recorder = new MediaRecorder(stream);
-
-recordChunks = [];
-
-recorder.ondataavailable = e=>{
-
-recordChunks.push(e.data);
-
-};
-
-recorder.onstop = async()=>{
-
-const blob = new Blob(recordChunks,{
-
-type:"audio/webm"
-
-});
-
-const reader = new FileReader();
-
-reader.readAsDataURL(blob);
-
-reader.onloadend = async()=>{
-
-await addDoc(
-
+const q = query(
 collection(db,"private_chats",activeChatId,"messages"),
-
-{
-
-type:"voice",
-
-voice:reader.result,
-
-sender:currentUser.uid,
-
-time:Date.now(),
-
-createdAt:serverTimestamp()
-
-}
-
+orderBy("createdAt","asc")
 );
 
-await setDoc(doc(db,"private_chats",activeChatId),{
+onSnapshot(q,(snap)=>{
 
-last:"🎤 Voice Message",
+messages.innerHTML = "";
 
-updatedAt:serverTimestamp()
+snap.forEach(docSnap=>{
 
-},{merge:true});
+const data = docSnap.data();
 
-};
+const div = document.createElement("div");
 
-};
+div.className = data.sender === currentUser.uid
+? "message me"
+: "message other";
 
-recorder.start();
+div.textContent = data.text;
 
-recording = true;
-
-voiceBtn.classList.add("recording");
-
-voiceBtn.innerText = "⏹️";
-
-recordInfo.innerText = "Recording...";
-
-}catch(err){
-
-console.error(err);
-
-alert("Microphone access denied");
-
-}
-
-}else{
-
-recorder.stop();
-
-recording = false;
-
-voiceBtn.classList.remove("recording");
-
-voiceBtn.innerText = "🎙️";
-
-recordInfo.innerText = "Voice Off";
-
-}
+messages.appendChild(div);
 
 });
 
-deleteAllBtn.addEventListener("click", async()=>{
+messages.scrollTop = messages.scrollHeight;
 
-if(!activeChatId){
-return;
-}
-
-const ok = confirm("Delete all messages?");
-
-if(!ok){
-return;
-}
-
-const snap = await getDocs(
-
-collection(db,"private_chats",activeChatId,"messages")
-
-);
-
-for(const d of snap.docs){
-
-await deleteDoc(d.ref);
+});
 
 }
 
-chatBody.innerHTML = `
+function loadChats(){
 
-<div class="empty">
-No messages
+const q = query(collection(db,"private_users"));
+
+onSnapshot(q,(snap)=>{
+
+chatList.innerHTML = "";
+
+snap.forEach(docSnap=>{
+
+const data = docSnap.data();
+
+if(data.uid === currentUser.uid) return;
+
+const div = document.createElement("div");
+
+div.className = "chat-item";
+
+div.innerHTML = `
+<img class="avatar" src="${avatar(data.name,data.photo)}">
+<div>
+<div class="name">${data.name}</div>
+<div class="email">${data.email}</div>
 </div>
-
 `;
 
+div.onclick = ()=> openChat(data);
+
+chatList.appendChild(div);
+
 });
 
-logoutBtn.addEventListener("click", async()=>{
+});
 
+}
+
+logoutBtn.onclick = async ()=>{
 await signOut(auth);
-
-});
+};
 
 </script>
 
