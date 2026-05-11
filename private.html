@@ -1740,28 +1740,87 @@
     autoGrow();
     setComposerVisible(false);
   </script>
-<button onclick="window.history.back()" 
-style="
-position:fixed;
-top:15px;
-left:15px;
-width:45px;
-height:45px;
-border:none;
-border-radius:50%;
-background:rgba(255,255,255,0.15);
-backdrop-filter:blur(10px);
-color:white;
-font-size:24px;
-font-weight:bold;
-cursor:pointer;
-box-shadow:0 4px 12px rgba(0,0,0,0.3);
-z-index:9999;
-transition:0.3s;
-"
-onmouseover="this.style.transform='scale(1.1)';this.style.background='rgba(255,255,255,0.25)'"
-onmouseout="this.style.transform='scale(1)';this.style.background='rgba(255,255,255,0.15)'">
-←
+<button class="lux-back-btn" onclick="window.history.back()">
+  <span class="arrow">←</span>
+  <span class="text">Back</span>
 </button>
+
+<style>
+.lux-back-btn{
+    position:fixed;
+    top:12px;
+    left:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:12px 18px;
+    border:none;
+    border-radius:18px;
+    background:rgba(20,20,20,0.45);
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+    color:#fff;
+    font-size:17px;
+    font-weight:700;
+    letter-spacing:0.5px;
+    cursor:pointer;
+    z-index:99999;
+    overflow:hidden;
+    box-shadow:
+      0 6px 20px rgba(0,0,0,0.35),
+      inset 0 1px 1px rgba(255,255,255,0.12);
+    transition:all 0.35s ease;
+}
+
+.lux-back-btn::before{
+    content:'';
+    position:absolute;
+    top:-50%;
+    left:-60%;
+    width:220%;
+    height:220%;
+    background:linear-gradient(
+      120deg,
+      transparent,
+      rgba(255,255,255,0.18),
+      transparent
+    );
+    transform:rotate(25deg);
+    transition:0.7s;
+}
+
+.lux-back-btn:hover::before{
+    left:100%;
+}
+
+.lux-back-btn:hover{
+    transform:translateY(-2px) scale(1.04);
+    box-shadow:
+      0 10px 28px rgba(0,0,0,0.45),
+      0 0 18px rgba(255,255,255,0.15);
+}
+
+.arrow{
+    width:34px;
+    height:34px;
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:rgba(255,255,255,0.12);
+    font-size:20px;
+    transition:0.3s;
+}
+
+.lux-back-btn:hover .arrow{
+    transform:translateX(-3px);
+    background:rgba(255,255,255,0.2);
+}
+
+.text{
+    position:relative;
+    top:1px;
+}
+</style>
 </body>
 </html>
