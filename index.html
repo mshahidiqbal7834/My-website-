@@ -300,36 +300,68 @@ Forgot Password?
   </div>
 
   <script type="module">
-    const fingerBtn =
+ const fingerBtn =
 document.getElementById("fingerBtn");
 
 fingerBtn.addEventListener("click", async () => {
 
   try {
 
-    await navigator.credentials.get({
+    // CREATE PASSKEY FIRST TIME
+    const credential =
+    await navigator.credentials.create({
 
       publicKey: {
 
         challenge: new Uint8Array(32),
 
+        rp: {
+          name: "Wadi Soon"
+        },
+
+        user: {
+
+          id: new Uint8Array(16),
+
+          name: "user@wadi.com",
+
+          displayName: "Wadi User"
+
+        },
+
+        pubKeyCredParams: [
+          {
+            type: "public-key",
+            alg: -7
+          }
+        ],
+
+        authenticatorSelection: {
+          authenticatorAttachment: "platform",
+          userVerification: "required"
+        },
+
         timeout: 60000,
 
-        userVerification: "required"
+        attestation: "none"
 
       }
 
     });
 
-    alert("Fingerprint Verified ✅");
+    if (credential) {
+
+      alert("Fingerprint Registered ✅");
+
+    }
 
   } catch (err) {
 
-    alert("Fingerprint Failed ❌");
+    alert(err.message);
 
   }
 
-});
+});   
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.1/firebase-app.js";
     import {
       getAuth,
