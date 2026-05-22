@@ -1973,31 +1973,5 @@ setInterval(enableEmojiReactions, 1000);
     padding:4px 10px;
     font-size:15px;
 }
-  <style>
-  </script>
-  <input type="file" id="mediaFile" accept="video/*,audio/*">
-
-<video id="videoPreview" controls style="display:none;width:100%"></video>
-<audio id="audioPreview" controls style="display:none"></audio>
-
-<script>
-const fileInput = document.getElementById("mediaFile");
-
-fileInput.addEventListener("change", function () {
-  const file = this.files[0];
-  const url = URL.createObjectURL(file);
-
-  if (file.type.startsWith("video")) {
-    const video = document.getElementById("videoPreview");
-    video.src = url;
-    video.style.display = "block";
-  }
-
-  if (file.type.startsWith("audio")) {
-    const audio = document.getElementById("audioPreview");
-    audio.src = url;
-    audio.style.display = "block";
-  }
-}); 
 </body>
 </html>
