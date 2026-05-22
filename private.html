@@ -1410,9 +1410,6 @@
               </div>
               <audio controls preload="none" src="${escapeHtml(decrypted.blobUrl)}"></audio>
             </div>
-            <button type="button" id="attachBtn" class="attach-btn">📎</button>
-<input type="file" id="mediaPicker" accept="image/*,video/*,audio/*" hidden>
-
           ` : `<div class="msg-text">🔒 Voice locked</div>`;
         } else {
           body = `<div class="msg-text">Unsupported message</div>`;
@@ -1742,6 +1739,23 @@
 
     autoGrow();
     setComposerVisible(false);
+    const fileInput = document.getElementById("fileInput");
+
+fileInput.addEventListener("change", async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  console.log(file);
+});
   </script>
+  <!-- chat input area ke niche -->
+
+<input type="file" id="fileInput"
+accept="image/*,video/*,audio/*" hidden>
+
+<button onclick="document.getElementById('fileInput').click()">
+📎
+</button>
+
 </body>
 </html>
