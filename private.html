@@ -1,5 +1,4 @@
-  
-  Private Messenger - Secure 1 to 1 Chat
+Private Messenger - Secure 1 to 1 Chat
   
     :root{
       --bg:#0b1020;
@@ -977,7 +976,7 @@
               photoURL: currentProfile.photoURL
             },
           
-              uid: otherProfile.uid, in
+              uid: otherProfile.uid,
               name: otherProfile.name || "No Name",
               email: otherProfile.email || "",
               photoURL: otherProfile.photoURL || ""
@@ -1171,6 +1170,7 @@
                 ${escapeHtml(other.name || "Unknown User")}
                 ${escapeHtml(chat.lastPreview || "🔒 Encrypted chat")}
               
+            
             ${escapeHtml(fmtDateTime(chat.updatedAt))}
           
         `;
@@ -1524,68 +1524,6 @@
 
     autoGrow();
     setComposerVisible(false);
-    /* ========= EMOJI REACTIONS ========= */
-
-function enableEmojiReactions(){
-
-  document.querySelectorAll(".bubble").forEach(msg => {
-
-    if(msg.querySelector(".react-btn")) return;
-
-    const reactBtn = document.createElement("button");
-    reactBtn.className = "react-btn";
-    reactBtn.innerHTML = "😊";
-
-    const picker = document.createElement("div");
-    picker.className = "emoji-picker";
-
-    const emojis = ["❤️","😂","🔥","👍","😮","😢","😍","👏"];
-
-    emojis.forEach(em => {
-
-      const emoji = document.createElement("div");
-      emoji.className = "emoji";
-      emoji.innerHTML = em;
-
-      emoji.onclick = () => {
-
-        let bar = msg.querySelector(".reaction-bar");
-
-        if(!bar){
-          bar = document.createElement("div");
-          bar.className = "reaction-bar";
-          msg.appendChild(bar);
-        }
-
-        const reaction = document.createElement("div");
-        reaction.className = "reaction";
-        reaction.innerHTML = em;
-
-        bar.appendChild(reaction);
-
-        picker.classList.remove("show");
-      };
-
-      picker.appendChild(emoji);
-    });
-
-    reactBtn.onclick = (e) => {
-      e.stopPropagation();
-      picker.classList.toggle("show");
-    };
-
-    document.addEventListener("click", () => {
-      picker.classList.remove("show");
-    });
-
-    msg.appendChild(reactBtn);
-    msg.appendChild(picker);
-
-  });
-
-}
-
-setInterval(enableEmojiReactions, 1000);
   
 
     ←
@@ -1685,79 +1623,6 @@ setInterval(enableEmojiReactions, 1000);
     top:1px;
     text-shadow:0 1px 3px rgba(0,0,0,0.3);
 }
-  /* ===== MODERN EMOJI REACTIONS ===== */
-
-.react-btn{
-    position:absolute;
-    right:-12px;
-    bottom:-12px;
-    width:34px;
-    height:34px;
-    border:none;
-    border-radius:50%;
-    background:linear-gradient(135deg,#4f8cff,#7c5cff);
-    color:#fff;
-    font-size:16px;
-    cursor:pointer;
-    box-shadow:0 4px 14px rgba(0,0,0,.25);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:.25s;
-    z-index:5;
-}
-
-.react-btn:hover{
-    transform:scale(1.12);
-}
-
-.bubble{
-    position:relative;
-}
-
-.emoji-picker{
-    position:absolute;
-    bottom:48px;
-    right:0;
-    background:#111933;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:18px;
-    padding:8px;
-    display:none;
-    gap:8px;
-    align-items:center;
-    box-shadow:0 10px 25px rgba(0,0,0,.35);
-    z-index:10;
-}
-
-.emoji-picker.show{
-    display:flex;
-}
-
-.emoji{
-    font-size:24px;
-    cursor:pointer;
-    transition:.2s;
-}
-
-.emoji:hover{
-    transform:scale(1.25);
-}
-
-.reaction-bar{
-    display:flex;
-    gap:6px;
-    margin-top:10px;
-    flex-wrap:wrap;
-}
-
-.reaction{
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:999px;
-    padding:4px 10px;
-    font-size:15px;
-}
 </style>
   </body>
-</html>
+</html> 
