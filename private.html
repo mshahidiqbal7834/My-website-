@@ -1170,7 +1170,7 @@
               photoURL: currentProfile.photoURL
             },
             [otherProfile.uid]: {
-              uid: otherProfile.uid,
+              uid: otherProfile.uid, in
               name: otherProfile.name || "No Name",
               email: otherProfile.email || "",
               photoURL: otherProfile.photoURL || ""
@@ -1369,9 +1369,6 @@
             </div>
             <div class="chat-meta"><div>${escapeHtml(fmtDateTime(chat.updatedAt))}</div></div>
           </div>
-          <button type="button" id="attachBtn" class="attach-btn">📎</button>
-<input type="file" id="mediaPicker" accept="image/*,video/*,audio/*" hidden>
-
         `;
       }).join("");
 
@@ -1414,6 +1411,20 @@
               <audio controls preload="none" src="${escapeHtml(decrypted.blobUrl)}"></audio>
             </div>
           ` : `<div class="msg-text">🔒 Voice locked</div>`;
+          <div class="chat-compose">
+  <button type="button" id="attachBtn" class="attach-btn">📎</button>
+
+  <input
+    type="file"
+    id="mediaPicker"
+    accept="image/*,video/*,audio/*"
+    hidden
+  >
+
+  <input type="text" id="messageInput" placeholder="Type a message...">
+  <button type="button" id="sendBtn">Send</button>
+</div>
+
         } else {
           body = `<div class="msg-text">Unsupported message</div>`;
         }
