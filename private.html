@@ -1406,6 +1406,9 @@
             <div class="voice-box">
               <div class="voice-top">
                 <div class="voice-label">🎤 Voice message</div>
+                <button type="button" id="attachBtn" class="attach-btn">📎</button>
+<input type="file" id="mediaPicker" accept="image/*,video/*,audio/*" hidden>
+
                 <div>${escapeHtml(String(msg.durationSec || 0))}s</div>
               </div>
               <audio controls preload="none" src="${escapeHtml(decrypted.blobUrl)}"></audio>
