@@ -1,38 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Private Messenger Pro</title>
-  <style>
+
+
+
+  
+  
+  Private Messenger - Secure 1 to 1 Chat
+  
     :root{
       --bg:#0b1020;
       --bg2:#111933;
-      --panel:#131d38;
-      --panel2:#1a274a;
+      --panel:#131d38cc;
+      --panel2:#1b2748;
       --border:rgba(255,255,255,.08);
-      --text:#eef3ff;
-      --muted:#9fb0d4;
+      --text:#eaf1ff;
+      --muted:#9aa9ca;
       --brand:#4f8cff;
       --brand2:#7c5cff;
+      --green:#1cc980;
       --danger:#ff5a70;
-      --ok:#1cc980;
+      --warning:#ffba57;
+      --bubbleMe:#4f8cff;
+      --bubbleOther:#1b2748;
       --shadow:0 18px 60px rgba(0,0,0,.35);
-      --radius:22px;
+      --radius:24px;
     }
     *{box-sizing:border-box}
-    body{
+    html,body{
       margin:0;
+      padding:0;
+      min-height:100%;
       font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
       background:
-        radial-gradient(circle at 0% 0%, rgba(79,140,255,.18), transparent 30%),
-        radial-gradient(circle at 100% 0%, rgba(124,92,255,.16), transparent 24%),
+        radial-gradient(circle at 0% 0%, rgba(79,140,255,.22), transparent 30%),
+        radial-gradient(circle at 100% 0%, rgba(124,92,255,.18), transparent 28%),
         linear-gradient(180deg,#08101f,#0b1020 45%,#0b1122);
-      min-height:100vh;
     }
-    img{max-width:100%;display:block}
     button,input,textarea{font:inherit}
+    img{display:block;max-width:100%}
     .hidden{display:none!important}
 
     .login-wrap{
@@ -43,106 +47,168 @@
       padding:24px;
     }
     .login-card{
-      width:min(1100px,100%);
+      width:min(1150px,100%);
       display:grid;
       grid-template-columns:1.1fr .9fr;
-      gap:24px;
-      background:rgba(19,29,56,.82);
+      gap:28px;
       border:1px solid var(--border);
-      border-radius:30px;
+      background:rgba(19,29,56,.76);
+      backdrop-filter:blur(16px);
+      border-radius:32px;
       overflow:hidden;
       box-shadow:var(--shadow);
-      backdrop-filter:blur(14px);
     }
     .hero{
-      padding:42px;
+      padding:48px;
       background:
-        linear-gradient(135deg, rgba(79,140,255,.10), rgba(124,92,255,.08)),
+        linear-gradient(135deg, rgba(79,140,255,.11), rgba(124,92,255,.08)),
         linear-gradient(180deg,#0d1730,#111933);
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 14px;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:#dce6ff;
+      font-size:14px;
+      margin-bottom:18px;
     }
     .hero h1{
       margin:0 0 14px;
-      font-size:clamp(32px,5vw,60px);
-      line-height:1.04;
+      line-height:1.03;
+      font-size:clamp(34px,5vw,64px);
     }
     .hero p{
-      margin:0;
+      margin:0 0 16px;
       color:var(--muted);
+      font-size:18px;
       line-height:1.7;
-      font-size:17px;
+      max-width:700px;
     }
     .hero-grid{
       display:grid;
       grid-template-columns:repeat(2,minmax(0,1fr));
       gap:14px;
-      margin-top:26px;
+      margin-top:28px;
     }
     .hero-box{
-      padding:16px;
-      border-radius:20px;
+      padding:18px;
+      border-radius:22px;
       border:1px solid var(--border);
       background:rgba(255,255,255,.04);
     }
-    .hero-box h3{margin:0 0 8px;font-size:16px}
-    .hero-box p{margin:0;font-size:14px;line-height:1.55}
+    .hero-box h3{
+      margin:0 0 8px;
+      font-size:16px;
+    }
+    .hero-box p{
+      margin:0;
+      font-size:14px;
+      line-height:1.55;
+    }
     .login-side{
+      padding:28px;
       display:flex;
       align-items:center;
-      padding:24px;
     }
     .login-panel{
       width:100%;
-      padding:30px;
-      border-radius:26px;
+      padding:32px;
+      border-radius:28px;
       border:1px solid var(--border);
-      background:rgba(255,255,255,.03);
+      background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,.02));
     }
     .logo{
-      width:64px;height:64px;border-radius:18px;
-      display:grid;place-items:center;
-      font-weight:900;font-size:28px;
+      width:60px;
+      height:60px;
+      display:grid;
+      place-items:center;
+      border-radius:18px;
       background:linear-gradient(135deg,var(--brand),var(--brand2));
-      margin-bottom:16px;
-      box-shadow:0 12px 28px rgba(79,140,255,.35);
+      font-size:28px;
+      font-weight:800;
+      box-shadow:0 12px 30px rgba(79,140,255,.35);
+      margin-bottom:18px;
+    }
+    .login-panel h2{
+      margin:0 0 10px;
+      font-size:30px;
+    }
+    .login-panel p{
+      margin:0 0 20px;
+      color:var(--muted);
+      line-height:1.65;
     }
     .btn{
       border:none;
       cursor:pointer;
-      border-radius:16px;
-      padding:14px 18px;
-      font-weight:800;
       transition:.2s ease;
+      border-radius:16px;
+      font-weight:700;
     }
-    .btn:hover{transform:translateY(-1px);filter:brightness(1.05)}
-    .btn-google{width:100%;background:#fff;color:#111827}
-    .btn-primary{background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff}
-    .btn-soft{background:rgba(255,255,255,.05);color:#fff;border:1px solid var(--border)}
-    .btn-danger{background:rgba(255,90,112,.12);color:#ffb2bd;border:1px solid rgba(255,90,112,.22)}
+    .btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.05);
+    }
+    .btn-google{
+      width:100%;
+      padding:16px 18px;
+      background:#fff;
+      color:#111827;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,var(--brand),var(--brand2));
+      color:#fff;
+      padding:14px 18px;
+    }
+    .btn-soft{
+      background:rgba(255,255,255,.05);
+      color:#fff;
+      border:1px solid var(--border);
+      padding:14px 18px;
+    }
+    .btn-danger{
+      background:rgba(255,90,112,.12);
+      color:#ffb2bd;
+      border:1px solid rgba(255,90,112,.22);
+      padding:14px 18px;
+    }
     .status{
-      min-height:24px;
+      min-height:22px;
       margin-top:14px;
-      color:#dbe7ff;
-      white-space:pre-wrap;
       font-size:14px;
-      line-height:1.55;
+      color:#d8e4ff;
+      white-space:pre-wrap;
+    }
+    .mini-note{
+      margin-top:14px;
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.6;
     }
 
-    .app{padding:16px}
+    .app{
+      min-height:100vh;
+      padding:16px;
+    }
     .frame{
       max-width:1500px;
       margin:0 auto;
       min-height:calc(100vh - 32px);
       display:grid;
-      grid-template-columns:340px 360px 1fr;
+      grid-template-columns:360px 420px 1fr;
       gap:16px;
     }
     .panel{
-      background:rgba(19,29,56,.82);
+      background:rgba(19,29,56,.78);
       border:1px solid var(--border);
-      border-radius:28px;
-      overflow:hidden;
+      backdrop-filter:blur(16px);
+      border-radius:30px;
       box-shadow:var(--shadow);
-      backdrop-filter:blur(14px);
+      overflow:hidden;
     }
     .sidebar{
       padding:16px;
@@ -150,77 +216,144 @@
       flex-direction:column;
       gap:16px;
     }
-    .card{
+    .me-card{
       padding:16px;
-      border-radius:22px;
+      border-radius:24px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+    .avatar{
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      object-fit:cover;
+      background:#243250;
+      flex:0 0 auto;
+    }
+    .avatar-lg{
+      width:62px;
+      height:62px;
+    }
+    .user-title{
+      font-size:16px;
+      font-weight:800;
+      line-height:1.3;
+    }
+    .user-sub{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.45;
+      word-break:break-word;
+      margin-top:4px;
+    }
+    .card{
+      padding:18px;
+      border-radius:24px;
       border:1px solid var(--border);
       background:rgba(255,255,255,.03);
     }
-    .card h3{margin:0 0 8px}
-    .card p{margin:0 0 12px;color:var(--muted);font-size:14px;line-height:1.6}
-    .me-card{
+    .card h3{
+      margin:0 0 8px;
+      font-size:18px;
+    }
+    .card p{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.6;
+      font-size:14px;
+    }
+    .search-row{
       display:flex;
-      align-items:center;
-      gap:12px;
-      padding:16px;
-      border-radius:22px;
-      border:1px solid var(--border);
-      background:rgba(255,255,255,.04);
+      gap:10px;
     }
-    .avatar{
-      width:54px;height:54px;border-radius:50%;object-fit:cover;background:#263555;flex:0 0 auto;
-    }
-    .avatar-lg{width:62px;height:62px}
     .input{
       width:100%;
-      background:#0d152b;
-      border:1px solid var(--border);
-      border-radius:16px;
-      color:#fff;
       padding:14px 16px;
+      border-radius:16px;
       outline:none;
+      border:1px solid var(--border);
+      background:#0d152b;
+      color:#fff;
     }
-    .input:focus, textarea:focus{
+    .input:focus,.composer textarea:focus{
       border-color:rgba(79,140,255,.45);
-      box-shadow:0 0 0 4px rgba(79,140,255,.10);
+      box-shadow:0 0 0 4px rgba(79,140,255,.11);
     }
-    .search-row{display:flex;gap:10px}
-    .tiny{font-size:12px;color:var(--muted);line-height:1.6}
+    .result-box{
+      margin-top:14px;
+    }
+    .result-user{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:12px;
+      border-radius:20px;
+      border:1px solid var(--border);
+      background:#0d152b;
+    }
+    .tiny{
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.55;
+    }
+
+    .list-panel{
+      display:flex;
+      flex-direction:column;
+    }
     .list-head{
       padding:18px 18px 12px;
       border-bottom:1px solid var(--border);
     }
-    .list-head h2{margin:0;font-size:24px}
-    .list-head p{margin:6px 0 0;color:var(--muted);font-size:14px}
+    .list-head h2{
+      margin:0;
+      font-size:24px;
+    }
+    .list-head p{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
     .chat-list{
       padding:14px;
       display:flex;
       flex-direction:column;
       gap:12px;
       overflow:auto;
-      height:calc(100vh - 120px);
+      height:100%;
+      min-height:0;
     }
     .chat-item{
       border:1px solid var(--border);
       background:rgba(255,255,255,.03);
-      border-radius:20px;
+      border-radius:22px;
       padding:14px;
       cursor:pointer;
       transition:.2s ease;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap:10px;
+      gap:12px;
     }
-    .chat-item:hover,.chat-item.active{background:rgba(255,255,255,.05);transform:translateY(-1px)}
+    .chat-item:hover,.chat-item.active{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.05);
+    }
     .chat-item-left{
       display:flex;
       align-items:center;
       gap:12px;
       min-width:0;
-      flex:1;
     }
-    .chat-name{font-weight:800}
+    .chat-name{
+      font-weight:800;
+      line-height:1.3;
+    }
     .chat-preview{
       margin-top:4px;
       font-size:13px;
@@ -228,12 +361,18 @@
       white-space:nowrap;
       overflow:hidden;
       text-overflow:ellipsis;
-      max-width:200px;
+      max-width:230px;
     }
-    .chat-meta{font-size:12px;color:var(--muted);white-space:nowrap}
+    .chat-meta{
+      text-align:right;
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+
     .conv{
       display:grid;
-      grid-template-rows:auto 1fr auto;
+      grid-template-rows:auto 1fr auto auto;
       min-height:calc(100vh - 32px);
     }
     .conv-head{
@@ -243,15 +382,21 @@
       align-items:center;
       justify-content:space-between;
       gap:12px;
+      background:rgba(255,255,255,.02);
     }
-    .conv-left{
+    .conv-head-left{
       display:flex;
       align-items:center;
       gap:14px;
       min-width:0;
     }
-    .title{font-size:16px;font-weight:800}
-    .sub{font-size:13px;color:var(--muted);line-height:1.55;word-break:break-word}
+    .head-actions{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
     .messages{
       padding:18px;
       overflow:auto;
@@ -259,60 +404,59 @@
       flex-direction:column;
       gap:14px;
       min-height:0;
+      background:
+        radial-gradient(circle at 30% 0%, rgba(79,140,255,.05), transparent 24%),
+        transparent;
     }
-    .empty{
-      min-height:280px;
-      display:grid;
-      place-items:center;
-      text-align:center;
-      color:var(--muted);
-      padding:24px;
-    }
-    .empty h3{margin:0 0 8px;color:#fff}
     .date-divider{
       align-self:center;
       padding:8px 14px;
+      font-size:12px;
+      color:#dbe6ff;
       border-radius:999px;
       border:1px solid var(--border);
       background:rgba(255,255,255,.05);
-      font-size:12px;
-      color:#dbe6ff;
     }
     .row{
       display:flex;
+      align-items:flex-end;
       gap:10px;
       max-width:82%;
-      align-items:flex-end;
     }
     .row.me{
       align-self:flex-end;
       flex-direction:row-reverse;
     }
     .msg-avatar{
-      width:34px;height:34px;border-radius:50%;object-fit:cover;background:#243250;flex:0 0 auto;
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      object-fit:cover;
+      background:#243250;
+      flex:0 0 auto;
     }
     .bubble{
-      min-width:130px;
       padding:12px 14px;
       border-radius:18px 18px 18px 6px;
-      background:#1b2748;
+      background:var(--bubbleOther);
       border:1px solid rgba(255,255,255,.06);
-      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      box-shadow:0 8px 24px rgba(0,0,0,.15);
+      min-width:120px;
     }
     .row.me .bubble{
-      background:linear-gradient(135deg,var(--brand),#3d75ff);
+      background:linear-gradient(135deg,var(--bubbleMe),#3d75ff);
       border-radius:18px 18px 6px 18px;
     }
     .sender-line{
       font-size:12px;
-      color:rgba(255,255,255,.85);
+      line-height:1.45;
+      color:rgba(255,255,255,.86);
       margin-bottom:8px;
-      line-height:1.4;
     }
     .msg-text{
+      line-height:1.6;
       white-space:pre-wrap;
       word-break:break-word;
-      line-height:1.6;
       font-size:15px;
     }
     .msg-meta{
@@ -321,202 +465,294 @@
       gap:10px;
       margin-top:8px;
       font-size:12px;
-      color:rgba(255,255,255,.82);
+      color:rgba(255,255,255,.8);
       flex-wrap:wrap;
     }
     .link-btn{
       background:transparent;
       border:none;
       color:#ffe2e8;
-      cursor:pointer;
       padding:0;
+      cursor:pointer;
       font-size:12px;
+    }
+    .voice-box{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:280px;
+    }
+    .voice-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      font-size:13px;
+      font-weight:700;
+    }
+    .voice-label{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    audio{
+      width:100%;
+      height:40px;
+    }
+    .helper{
+      padding:0 18px 12px;
+      font-size:12px;
+      color:var(--muted);
     }
     .composer{
       padding:14px 16px 16px;
       border-top:1px solid var(--border);
       display:flex;
-      gap:10px;
       align-items:flex-end;
-      flex-wrap:wrap;
+      gap:12px;
       background:rgba(255,255,255,.02);
+      flex-wrap:wrap;
     }
-    textarea{
+    .icon-btn{
+      width:54px;
+      height:54px;
+      border-radius:18px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.06);
+      color:#fff;
+      cursor:pointer;
+      transition:.2s ease;
+      font-size:20px;
+    }
+    .icon-btn:hover{
+      transform:translateY(-1px);
+      filter:brightness(1.05);
+    }
+    .icon-btn.recording{
+      background:rgba(255,90,112,.15);
+      border-color:rgba(255,90,112,.35);
+      color:#ffb7c0;
+      box-shadow:0 0 0 8px rgba(255,90,112,.08);
+    }
+    .composer textarea{
       flex:1;
       min-width:260px;
       min-height:56px;
       max-height:160px;
       resize:none;
-      background:#0d152b;
-      border:1px solid var(--border);
-      border-radius:18px;
-      color:#fff;
       padding:16px 18px;
-      outline:none;
-    }
-    .icon-btn{
-      width:54px;height:54px;border-radius:18px;
+      border-radius:18px;
       border:1px solid var(--border);
-      background:rgba(255,255,255,.06);
+      outline:none;
+      background:#0d152b;
       color:#fff;
-      cursor:pointer;
-      font-size:20px;
     }
     .send-btn{
-      width:56px;height:56px;border:none;border-radius:18px;
+      width:56px;
+      height:56px;
+      border:none;
+      border-radius:18px;
+      cursor:pointer;
       background:linear-gradient(135deg,var(--brand),var(--brand2));
-      color:#fff;font-size:20px;font-weight:900;cursor:pointer;
+      color:#fff;
+      font-size:20px;
+      font-weight:800;
     }
-    .file-card{
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(255,255,255,.04);
-      border-radius:16px;
-      padding:12px;
-      margin-top:6px;
+    .record-info{
+      min-width:110px;
+      color:var(--muted);
+      font-size:13px;
+      text-align:center;
+      padding-bottom:4px;
     }
-    .file-preview{
+    .empty{
+      height:100%;
+      min-height:340px;
+      display:grid;
+      place-items:center;
+      text-align:center;
+      color:var(--muted);
+      padding:28px;
+    }
+    .empty h3{
+      margin:0 0 8px;
+      color:#fff;
+      font-size:22px;
+    }
+    .online{
+      color:#93f3bf;
+    }
+    .offline{
+      color:#ffd497;
+    }
+    .encrypt-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
       margin-top:10px;
-      border-radius:14px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(0,0,0,.16);
-      padding:8px;
-    }
-    .file-preview img{max-height:260px;margin:auto;border-radius:10px}
-    .file-preview video{width:100%;max-height:320px;border-radius:10px}
-    .file-preview audio{width:100%}
-    .progress{
-      margin-top:10px;
+      padding:8px 12px;
       font-size:12px;
-      color:#cfe0ff;
+      color:#dce6ff;
+      border-radius:999px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
     }
-    .online{color:#9cf0bf}
-    .offline{color:#ffd79c}
-    @media (max-width:1100px){
+    .footer-note{
+      margin-top:auto;
+      padding:12px 4px 0;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.65;
+    }
+    @media (max-width:1280px){
+      .frame{grid-template-columns:320px 360px 1fr}
+    }
+    @media (max-width:1080px){
       .login-card{grid-template-columns:1fr}
       .frame{grid-template-columns:1fr}
-      .chat-list{height:320px}
+      .list-panel{min-height:320px}
       .conv{min-height:70vh}
     }
     @media (max-width:700px){
+      .hero{padding:30px 22px}
+      .login-side{padding:20px}
+      .login-panel{padding:24px}
       .hero-grid{grid-template-columns:1fr}
-      .row{max-width:96%}
-      textarea{min-width:100%}
+      .row{max-width:95%}
       .conv-head{flex-direction:column;align-items:flex-start}
+      .head-actions{width:100%;justify-content:flex-start}
+      .voice-box{min-width:220px}
+      .composer textarea{min-width:100%}
+      .record-info{width:100%;text-align:left}
     }
-  </style>
-</head>
-<body>
+  
 
-  <section id="loginScreen" class="login-wrap">
-    <div class="login-card">
-      <div class="hero">
-        <h1>Private Messenger Pro</h1>
-        <p>
-          Gmail login ke sath 1-to-1 private chat, encrypted text, aur encrypted file attachment
-          system. Image, video aur files browser side se encrypt hoke send hongi.
-        </p>
-        <div class="hero-grid">
-          <div class="hero-box">
-            <h3>Google Sign-In</h3>
-            <p>Naam, Gmail aur photo automatic profile me aa jayegi.</p>
-          </div>
-          <div class="hero-box">
-            <h3>Exact Gmail Search</h3>
-            <p>Exact email se dusre user ko dhoond kar chat start karein.</p>
-          </div>
-          <div class="hero-box">
-            <h3>Encrypted Chat</h3>
-            <p>Text aur attachments browser side par encrypted rahenge.</p>
-          </div>
-          <div class="hero-box">
-            <h3>Image / Video / File</h3>
-            <p>Attachment upload, open, preview, delete all included.</p>
-          </div>
-        </div>
-      </div>
-      <div class="login-side">
-        <div class="login-panel">
-          <div class="logo">P</div>
-          <h2 style="margin:0 0 10px;">Login</h2>
-          <p style="margin:0 0 18px;color:var(--muted);line-height:1.7;">
-            Neeche Google button se sign in karein.
-          </p>
-          <button id="googleBtn" class="btn btn-google">Continue with Google</button>
-          <div id="loginStatus" class="status"></div>
-        </div>
-      </div>
-    </div>
-  </section>
 
-  <section id="appScreen" class="app hidden">
-    <div class="frame">
-      <aside class="panel sidebar">
-        <div id="meCard" class="me-card"></div>
+  
+    
+      
+        🔒 Secure Private Chat
+        Gmail se login, 1 to 1 private messaging
+        
+          Yeh page public chat se alag private messenger ke liye hai. Is me private messages
+          aur short voice notes browser side par encrypt hote hain taake 3rd banda content na padh sake.
+        
+        
+          
+            Google Signup/Login
+            Gmail, DP aur naam automatic aa jayega.
+          
+          
+            Exact Gmail Search
+            Jis user ka Gmail likhenge usi se chat start hogi.
+          
+          
+            Encrypted Messages
+            Message content AES + RSA se encrypt hoga.
+          
+          
+            Voice + Delete + Time
+            Voice record, single delete, delete all aur time/date sab hai.
+          
+        
+      
+      
+        
+          P
+          Private Messenger
+          Neeche Google button se sign in karein. Sign in ke baad private page khul jayega.
+          Continue with Google
+          
+          Is file ko aap 4th page ki tarah use kar sakte hain. Public chat se alag rahegi.
+        
+      
+    
+  
 
-        <div class="card">
-          <h3>New Private Chat</h3>
-          <p>Exact Gmail likhein aur Message dabayein.</p>
-          <div class="search-row">
-            <input id="searchEmail" class="input" type="email" placeholder="example@gmail.com" />
-            <button id="searchBtn" class="btn btn-primary">Search</button>
-          </div>
-          <div id="searchResult" style="margin-top:12px;"></div>
-        </div>
+  
+    
+      
+        
 
-        <div class="card">
-          <h3>Account</h3>
-          <p>Key rotate karne par purane encrypted messages unlock nahi honge.</p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button id="refreshBtn" class="btn btn-soft">Refresh Keys</button>
-            <button id="logoutBtn" class="btn btn-danger">Logout</button>
-          </div>
-        </div>
-      </aside>
+        
+          New Private Chat
+          Exact Gmail likhein, phir user milne par “Message” dabayein.
+          
+            
+            Search
+          
+          
+          🔐 Message content encrypted
+        
 
-      <section class="panel">
-        <div class="list-head">
-          <h2>Your Chats</h2>
-          <p>Sirf aapki 1-to-1 private chats.</p>
-        </div>
-        <div id="chatList" class="chat-list"></div>
-      </section>
+        
+          Account
+          Yeh page private chat ke liye alag signup/login use kar raha hai.
+          
+            Refresh Keys
+            Logout
+          
+        
 
-      <section class="panel conv">
-        <header class="conv-head">
-          <div class="conv-left">
-            <img id="convAvatar" class="avatar avatar-lg" src="" alt="avatar" />
-            <div>
-              <div id="convName" class="title">Select a chat</div>
-              <div id="convSub" class="sub">User select karein.</div>
-            </div>
-          </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button id="deleteAllBtn" class="btn btn-danger hidden">Delete All</button>
-          </div>
-        </header>
+        
+          Important: agar browser localStorage clear ho jaye to purani encrypted messages unlock nahi hongi.
+          Isi liye same browser/device me best kaam karega.
+        
+      
 
-        <main id="messages" class="messages">
-          <div class="empty">
-            <div>
-              <h3>Messenger Ready</h3>
-              <div>Pehle left side se chat select karein.</div>
-            </div>
-          </div>
-        </main>
+      
+        
+          Your Private Chats
+          Yahan sirf aap ki private 1-to-1 chats dikhengi.
+        
+        
+          
+            
+              No chats yet
+              Kisi Gmail se search karke nayi private chat start karein.
+            
+          
+        
+      
 
-        <footer class="composer">
-          <input id="attachmentInput" class="hidden" type="file" multiple />
-          <button id="attachBtn" class="icon-btn hidden" title="Attach">📎</button>
-          <textarea id="messageInput" class="hidden" placeholder="Type your private message..."></textarea>
-          <button id="sendBtn" class="send-btn hidden" title="Send">➤</button>
-          <div id="uploadProgress" class="progress hidden"></div>
-        </footer>
-      </section>
-    </div>
-  </section>
+      
+        
+          
+            
+            
+              Select a chat
+              User choose karein, phir private chat open hogi.
+            
+          
+          
+            Delete All
+          
+        
 
-  <script type="module">
+        
+          
+            
+              Private Messenger Ready
+              Pehle left side se chat select karein ya Gmail search karke naya conversation shuru karein.
+            
+          
+        
+
+        
+          Enter = send, Shift + Enter = new line. Voice record ke liye mic dabayein. Short voice best rehti hai.
+        
+
+        
+          🎙️
+          Voice off
+          
+          ➤
+        
+      
+    
+  
+
+  
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
     import {
       getAuth,
@@ -524,8 +760,8 @@
       signInWithPopup,
       onAuthStateChanged,
       signOut,
-      setPersistence,
-      browserLocalPersistence
+      browserLocalPersistence,
+      setPersistence
     } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
     import {
       getFirestore,
@@ -544,35 +780,22 @@
       serverTimestamp,
       limit
     } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-firestore.js";
-    import {
-      getStorage,
-      ref,
-      uploadBytesResumable,
-      getBlob,
-      deleteObject
-    } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-storage.js";
 
     const firebaseConfig = {
-      apiKey: "PASTE_YOUR_API_KEY",
-      authDomain: "PASTE_YOUR_AUTH_DOMAIN",
-      projectId: "PASTE_YOUR_PROJECT_ID",
-      storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
-      messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
-      appId: "PASTE_YOUR_APP_ID"
+      apiKey: "AIzaSyDpERmy9jWQ5IS5GmyP54EZNdYDiKB-3RI",
+      authDomain: "wadi-soon-site.firebaseapp.com",
+      projectId: "wadi-soon-site",
+      storageBucket: "wadi-soon-site.firebasestorage.app",
+      messagingSenderId: "306902521128",
+      appId: "1:306902521128:web:13b34b479048240b96ec1d",
+      measurementId: "G-HX8J4GC9SQ"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
-    const storage = getStorage(app);
-
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
-
-    const USERS = "pm_users_v2";
-    const CHATS = "private_chats";
-    const ATTACH_ROOT = "private_attachments";
-    const PRIVATE_KEY_PREFIX = "pm_private_jwk_v2_";
 
     const loginScreen = document.getElementById("loginScreen");
     const appScreen = document.getElementById("appScreen");
@@ -588,34 +811,39 @@
     const convAvatar = document.getElementById("convAvatar");
     const convName = document.getElementById("convName");
     const convSub = document.getElementById("convSub");
-    const messagesEl = document.getElementById("messages");
     const deleteAllBtn = document.getElementById("deleteAllBtn");
+    const messagesEl = document.getElementById("messages");
     const messageInput = document.getElementById("messageInput");
     const sendBtn = document.getElementById("sendBtn");
-    const attachBtn = document.getElementById("attachBtn");
-    const attachmentInput = document.getElementById("attachmentInput");
-    const uploadProgress = document.getElementById("uploadProgress");
+    const recordBtn = document.getElementById("recordBtn");
+    const recordInfo = document.getElementById("recordInfo");
+
+    const USERS = "pm_users_v1";
+    const CHATS = "pm_chats_v1";
+    const PRIVATE_KEY_PREFIX = "pm_private_jwk_v1_";
 
     let currentUser = null;
     let currentProfile = null;
-    let currentPrivateKey = null;
-
     let activeChatId = null;
     let activeOtherUid = null;
     let activeOtherProfile = null;
-
-    let chatsUnsub = null;
+    let chatUnsub = null;
     let messagesUnsub = null;
     let otherUserUnsub = null;
-
     let chatCache = [];
-    let currentMessages = [];
-    let textDecryptCache = new Map();
-    let fileUrlCache = new Map();
+    let decryptCache = new Map();
+    let mediaRecorder = null;
+    let mediaStream = null;
+    let recordChunks = [];
+    let recordStart = 0;
+    let recordTimer = null;
+    let recording = false;
+
+    function qs(sel){ return document.querySelector(sel); }
 
     function escapeHtml(str = "") {
-      return String(str).replace(/[&<>"']/g, m => ({
-        "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+      return String(str).replace(/[&"']/g, m => ({
+        "&":"&amp;","":"&gt;",'"':"&quot;","'":"&#39;"
       }[m]));
     }
 
@@ -628,47 +856,15 @@
       return "https://ui-avatars.com/api/?background=4f8cff&color=ffffff&name=" + encodeURIComponent(name || "User");
     }
 
-    function buildChatId(uidA, uidB) {
-      return [uidA, uidB].sort().join("__");
-    }
-
-    function formatBytes(bytes = 0) {
-      if (bytes < 1024) return bytes + " B";
-      if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
-      if (bytes < 1024 * 1024 * 1024) return (bytes / 1024 / 1024).toFixed(1) + " MB";
-      return (bytes / 1024 / 1024 / 1024).toFixed(1) + " GB";
-    }
-
-    function safeFileName(name = "file") {
-      return name.replace(/[^\w.\-]+/g, "_").slice(0, 120);
-    }
-
-    function fmtDateTime(ts) {
-      if (!ts?.toDate) return "sending...";
-      return new Intl.DateTimeFormat("en-US", {
-        month:"short", day:"numeric", hour:"numeric", minute:"2-digit"
-      }).format(ts.toDate());
-    }
-
-    function fmtDayLabel(ts) {
-      if (!ts?.toDate) return "Today";
-      const d = ts.toDate();
-      const now = new Date();
-      if (d.toDateString() === now.toDateString()) return "Today";
-      const y = new Date(now);
-      y.setDate(now.getDate() - 1);
-      if (d.toDateString() === y.toDateString()) return "Yesterday";
-      return new Intl.DateTimeFormat("en-US", { month:"short", day:"numeric", year:"numeric" }).format(d);
-    }
-
-    function tsToMs(ts) {
-      return ts?.toMillis ? ts.toMillis() : 0;
+    function buildChatId(a, b) {
+      return [a, b].sort().join("__");
     }
 
     function showLogin(message = "") {
       loginScreen.classList.remove("hidden");
       appScreen.classList.add("hidden");
       loginStatus.textContent = message;
+      setComposerVisible(false);
     }
 
     function showApp() {
@@ -676,11 +872,27 @@
       appScreen.classList.remove("hidden");
     }
 
-    function setComposerVisible(visible) {
-      messageInput.classList.toggle("hidden", !visible);
-      sendBtn.classList.toggle("hidden", !visible);
-      attachBtn.classList.toggle("hidden", !visible);
-      deleteAllBtn.classList.toggle("hidden", !visible);
+    function fmtDateTime(ts) {
+      if (!ts?.toDate) return "sending...";
+      const d = ts.toDate();
+      return new Intl.DateTimeFormat("en-US", {
+        month:"short", day:"numeric", hour:"numeric", minute:"2-digit"
+      }).format(d);
+    }
+
+    function fmtDayLabel(ts) {
+      if (!ts?.toDate) return "Today";
+      const d = ts.toDate();
+      const today = new Date();
+      if (d.toDateString() === today.toDateString()) return "Today";
+      const yesterday = new Date();
+      yesterday.setDate(today.getDate() - 1);
+      if (d.toDateString() === yesterday.toDateString()) return "Yesterday";
+      return new Intl.DateTimeFormat("en-US", { month:"short", day:"numeric", year:"numeric" }).format(d);
+    }
+
+    function timeMs(ts) {
+      return ts?.toMillis ? ts.toMillis() : 0;
     }
 
     function autoGrow() {
@@ -688,196 +900,103 @@
       messageInput.style.height = Math.min(messageInput.scrollHeight, 160) + "px";
     }
 
-    function clearObjectUrls() {
-      for (const item of fileUrlCache.values()) {
-        try { URL.revokeObjectURL(item.url); } catch(e){}
-      }
-      fileUrlCache.clear();
-    }
-
-    function resetConversationUI() {
-      activeChatId = null;
-      activeOtherUid = null;
-      activeOtherProfile = null;
-      currentMessages = [];
-      textDecryptCache = new Map();
-      clearObjectUrls();
-      updateConversationHeader(null);
-      setComposerVisible(false);
-      messagesEl.innerHTML = `
-        <div class="empty">
-          <div>
-            <h3>Messenger Ready</h3>
-            <div>Pehle left side se chat select karein.</div>
-          </div>
-        </div>
-      `;
-      uploadProgress.classList.add("hidden");
-      uploadProgress.textContent = "";
-      messageInput.value = "";
-      autoGrow();
+    function setComposerVisible(visible) {
+      [messageInput, sendBtn, recordBtn, recordInfo].forEach(el => el.classList.toggle("hidden", !visible));
+      deleteAllBtn.classList.toggle("hidden", !visible);
     }
 
     function renderMeCard(user) {
       meCard.innerHTML = `
-        <img class="avatar avatar-lg" src="${escapeHtml(avatarURL(user.name, user.photoURL))}" alt="me" />
-        <div style="min-width:0;">
-          <div style="font-weight:800;">${escapeHtml(user.name || "No Name")}</div>
-          <div class="sub">${escapeHtml(user.email || "")}</div>
-        </div>
+        
+        
+          ${escapeHtml(user.name || "No Name")}
+          ${escapeHtml(user.email || "")}
+        
       `;
     }
 
-    function statusHtml(profile) {
-      if (!profile) return "";
-      if (profile.online) return `<span class="online">● Online</span>`;
-      if (profile.lastSeen?.toDate) return `<span class="offline">Last seen ${escapeHtml(fmtDateTime(profile.lastSeen))}</span>`;
-      return `<span class="offline">Offline</span>`;
+    function renderStatusLine(user) {
+      if (user?.online) return ● Online;
+      if (user?.lastSeen?.toDate) return Last seen ${escapeHtml(fmtDateTime(user.lastSeen))};
+      return Offline;
     }
 
-    function updateConversationHeader(profile) {
+    function updateConversationHeader(profile = null) {
       if (!profile) {
         convAvatar.src = "";
         convName.textContent = "Select a chat";
-        convSub.textContent = "User select karein.";
+        convSub.textContent = "User choose karein, phir private chat open hogi.";
         return;
       }
       convAvatar.src = avatarURL(profile.name, profile.photoURL);
       convName.textContent = profile.name || "Unknown User";
-      convSub.innerHTML = `${escapeHtml(profile.email || "")}<br>${statusHtml(profile)}`;
+      convSub.innerHTML = ${escapeHtml(profile.email || "")}${renderStatusLine(profile)};
     }
 
     function scrollBottom() {
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
 
+    function showEmptyMessages(title, text) {
+      messagesEl.innerHTML = `
+        
+          
+            ${escapeHtml(title)}
+            ${escapeHtml(text)}
+          
+        
+      `;
+    }
+
+    function updateRecordInfo(seconds = 0) {
+      recordInfo.textContent = recording ? Recording ${seconds}s : "Voice off";
+    }
+
     function bufToBase64(buffer) {
       const bytes = new Uint8Array(buffer);
       let binary = "";
       const chunk = 0x8000;
-      for (let i = 0; i < bytes.length; i += chunk) {
-        binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
-      }
-      return btoa(binary);
+      for (let i = 0; i  ({ id:d.id, ...d.data() }));
     }
 
-    function base64ToBuf(base64) {
-      const binary = atob(base64);
-      const bytes = new Uint8Array(binary.length);
-      for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
-      return bytes.buffer;
+    async function getUserProfile(uid) {
+      const snap = await getDoc(doc(db, USERS, uid));
+      return snap.exists() ? { uid:snap.id, ...snap.data() } : null;
     }
 
-    async function exportPublicKeyJwk(key) {
-      return crypto.subtle.exportKey("jwk", key);
-    }
+    async function ensureChatDoc(otherProfile) {
+      const chatId = buildChatId(currentUser.uid, otherProfile.uid);
+      const ref = doc(db, CHATS, chatId);
+      const snap = await getDoc(ref);
 
-    async function exportPrivateKeyJwk(key) {
-      return crypto.subtle.exportKey("jwk", key);
-    }
-
-    async function importPublicKeyJwk(jwk) {
-      return crypto.subtle.importKey(
-        "jwk",
-        jwk,
-        { name: "RSA-OAEP", hash: "SHA-256" },
-        true,
-        ["encrypt"]
-      );
-    }
-
-    async function importPrivateKeyJwk(jwk) {
-      return crypto.subtle.importKey(
-        "jwk",
-        jwk,
-        { name: "RSA-OAEP", hash: "SHA-256" },
-        true,
-        ["decrypt"]
-      );
-    }
-
-    async function generateUserKeyPair() {
-      return crypto.subtle.generateKey(
-        {
-          name: "RSA-OAEP",
-          modulusLength: 2048,
-          publicExponent: new Uint8Array([1, 0, 1]),
-          hash: "SHA-256"
-        },
-        true,
-        ["encrypt", "decrypt"]
-      );
-    }
-
-    function privateKeyStorageKey(uid) {
-      return PRIVATE_KEY_PREFIX + uid;
-    }
-
-    async function ensureLocalKeyPair(uid) {
-      const existing = localStorage.getItem(privateKeyStorageKey(uid));
-      if (existing) {
-        const privateJwk = JSON.parse(existing);
-        const privateKey = await importPrivateKeyJwk(privateJwk);
-        return { privateKey, privateJwk, created: false };
+      if (!snap.exists()) {
+        await setDoc(ref, {
+          chatId,
+          participants: [currentUser.uid, otherProfile.uid].sort(),
+          participantMap: {
+          
+              uid: currentUser.uid,
+              name: currentProfile.name,
+              email: currentProfile.email,
+              photoURL: currentProfile.photoURL
+            },
+          
+              uid: otherProfile.uid, in
+              name: otherProfile.name || "No Name",
+              email: otherProfile.email || "",
+              photoURL: otherProfile.photoURL || ""
+            }
+          },
+          lastPreview: "🔒 Encrypted chat",
+          lastMessageType: "text",
+          lastSenderId: "",
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+          lastMessageAt: serverTimestamp()
+        });
       }
 
-      const pair = await generateUserKeyPair();
-      const publicJwk = await exportPublicKeyJwk(pair.publicKey);
-      const privateJwk = await exportPrivateKeyJwk(pair.privateKey);
-      localStorage.setItem(privateKeyStorageKey(uid), JSON.stringify(privateJwk));
-      return {
-        privateKey: pair.privateKey,
-        privateJwk,
-        publicJwk,
-        created: true
-      };
-    }
-
-    async function ensureProfileAndKeys(firebaseUser, rotate = false) {
-      if (rotate) localStorage.removeItem(privateKeyStorageKey(firebaseUser.uid));
-
-      const local = await ensureLocalKeyPair(firebaseUser.uid);
-      let publicJwk = local.publicJwk;
-
-      const userRef = doc(db, USERS, firebaseUser.uid);
-      const snap = await getDoc(userRef);
-      const oldData = snap.exists() ? snap.data() : null;
-
-      if (!publicJwk && oldData?.publicKeyJwk) {
-        publicJwk = oldData.publicKeyJwk;
-      }
-
-      if (!publicJwk) {
-        localStorage.removeItem(privateKeyStorageKey(firebaseUser.uid));
-        const fresh = await ensureLocalKeyPair(firebaseUser.uid);
-        currentPrivateKey = fresh.privateKey;
-        publicJwk = fresh.publicJwk;
-      } else {
-        currentPrivateKey = local.privateKey;
-      }
-
-      await setDoc(userRef, {
-        uid: firebaseUser.uid,
-        name: firebaseUser.displayName || "No Name",
-        email: firebaseUser.email || "",
-        emailLower: normalizeEmail(firebaseUser.email || ""),
-        photoURL: firebaseUser.photoURL || "",
-        publicKeyJwk: publicJwk,
-        online: true,
-        lastSeen: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-        createdAt: oldData?.createdAt || serverTimestamp()
-      }, { merge: true });
-
-      currentProfile = {
-        uid: firebaseUser.uid,
-        name: firebaseUser.displayName || "No Name",
-        email: firebaseUser.email || "",
-        emailLower: normalizeEmail(firebaseUser.email || ""),
-        photoURL: firebaseUser.photoURL || "",
-        publicKeyJwk: publicJwk,
-        online: true
-      };
+      return chatId;
     }
 
     async function touchPresence(isOnline = true) {
@@ -893,196 +1012,153 @@
       }
     }
 
-    async function encryptBufferForParticipants(arrayBuffer, participantProfiles) {
-      const aesKey = await crypto.subtle.generateKey(
-        { name: "AES-GCM", length: 256 },
-        true,
-        ["encrypt", "decrypt"]
-      );
-      const iv = crypto.getRandomValues(new Uint8Array(12));
-      const cipherBuffer = await crypto.subtle.encrypt(
-        { name: "AES-GCM", iv },
-        aesKey,
-        arrayBuffer
-      );
-      const rawAes = await crypto.subtle.exportKey("raw", aesKey);
+    async function sendEncryptedText(text) {
+      if (!activeOtherProfile || !activeChatId) return;
+      const clean = text.trim();
+      if (!clean) return;
 
-      const keys = {};
-      for (const p of participantProfiles) {
-        if (!p?.uid || !p?.publicKeyJwk) continue;
-        const publicKey = await importPublicKeyJwk(p.publicKeyJwk);
-        const wrapped = await crypto.subtle.encrypt(
-          { name: "RSA-OAEP" },
-          publicKey,
-          rawAes
-        );
-        keys[p.uid] = bufToBase64(wrapped);
-      }
+      const encoded = new TextEncoder().encode(clean);
+      const encrypted = await encryptBytesForParticipants(encoded.buffer, [currentProfile, activeOtherProfile]);
 
-      return {
-        iv: bufToBase64(iv.buffer),
-        keys,
-        cipherBuffer
-      };
-    }
-
-    async function unwrapAesKey(msg) {
-      const wrapped = msg.keys?.[currentUser.uid];
-      if (!wrapped) throw new Error("No wrapped key for current user");
-      const rawAes = await crypto.subtle.decrypt(
-        { name: "RSA-OAEP" },
-        currentPrivateKey,
-        base64ToBuf(wrapped)
-      );
-      return crypto.subtle.importKey(
-        "raw",
-        rawAes,
-        { name: "AES-GCM" },
-        false,
-        ["decrypt"]
-      );
-    }
-
-    async function decryptTextMessage(msg) {
-      const cacheKey = currentUser.uid + "::" + msg.id;
-      if (textDecryptCache.has(cacheKey)) return textDecryptCache.get(cacheKey);
-
-      try {
-        const aesKey = await unwrapAesKey(msg);
-        const plain = await crypto.subtle.decrypt(
-          { name: "AES-GCM", iv: new Uint8Array(base64ToBuf(msg.iv)) },
-          aesKey,
-          base64ToBuf(msg.cipher)
-        );
-        const text = new TextDecoder().decode(plain);
-        const result = { ok: true, text };
-        textDecryptCache.set(cacheKey, result);
-        return result;
-      } catch (err) {
-        console.error("Decrypt text error", err);
-        const result = { ok: false, text: "🔒 Message locked" };
-        textDecryptCache.set(cacheKey, result);
-        return result;
-      }
-    }
-
-    async function decryptAttachmentToObjectURL(msg) {
-      if (fileUrlCache.has(msg.id)) return fileUrlCache.get(msg.id);
-
-      const encryptedBlob = await getBlob(ref(storage, msg.storagePath));
-      const encryptedBuffer = await encryptedBlob.arrayBuffer();
-      const aesKey = await unwrapAesKey(msg);
-
-      const plainBuffer = await crypto.subtle.decrypt(
-        { name: "AES-GCM", iv: new Uint8Array(base64ToBuf(msg.iv)) },
-        aesKey,
-        encryptedBuffer
-      );
-
-      const plainBlob = new Blob([plainBuffer], {
-        type: msg.mimeType || "application/octet-stream"
+      await addDoc(collection(db, CHATS, activeChatId, "messages"), {
+        type: "text",
+        senderId: currentUser.uid,
+        iv: encrypted.iv,
+        cipher: encrypted.cipher,
+        keys: encrypted.keys,
+        createdAt: serverTimestamp()
       });
 
-      const objectUrl = URL.createObjectURL(plainBlob);
-      const fileInfo = {
-        url: objectUrl,
-        name: msg.fileName || "file",
-        type: msg.mimeType || "application/octet-stream"
-      };
-      fileUrlCache.set(msg.id, fileInfo);
-      return fileInfo;
+      await setDoc(doc(db, CHATS, activeChatId), {
+        lastPreview: "🔒 Encrypted message",
+        lastMessageType: "text",
+        lastSenderId: currentUser.uid,
+        updatedAt: serverTimestamp(),
+        lastMessageAt: serverTimestamp()
+      }, { merge: true });
+
+      messageInput.value = "";
+      autoGrow();
     }
 
-    async function findUserByEmail(email) {
-      const q = query(
-        collection(db, USERS),
-        where("emailLower", "==", normalizeEmail(email))
-      );
-      const snap = await getDocs(q);
-      return snap.docs.map(d => ({ uid: d.id, ...d.data() }));
-    }
-
-    async function getUserProfile(uid) {
-      const snap = await getDoc(doc(db, USERS, uid));
-      if (!snap.exists()) return null;
-      return { uid: snap.id, ...snap.data() };
-    }
-
-    async function ensureChatDoc(otherProfile) {
-      const chatId = buildChatId(currentUser.uid, otherProfile.uid);
-      const refDoc = doc(db, CHATS, chatId);
-      const snap = await getDoc(refDoc);
-
-      if (!snap.exists()) {
-        await setDoc(refDoc, {
-          chatId,
-          participants: [currentUser.uid, otherProfile.uid].sort(),
-          participantMap: {
-            [currentUser.uid]: {
-              uid: currentUser.uid,
-              name: currentProfile.name,
-              email: currentProfile.email,
-              photoURL: currentProfile.photoURL
-            },
-            [otherProfile.uid]: {
-              uid: otherProfile.uid,
-              name: otherProfile.name || "No Name",
-              email: otherProfile.email || "",
-              photoURL: otherProfile.photoURL || ""
-            }
-          },
-          lastPreview: "🔒 New private chat",
-          lastMessageType: "text",
-          lastSenderId: "",
-          createdAt: serverTimestamp(),
-          updatedAt: serverTimestamp(),
-          lastMessageAt: serverTimestamp()
-        });
+    async function sendEncryptedVoice(blob, durationSec) {
+      if (!activeOtherProfile || !activeChatId) return;
+      const buffer = await blob.arrayBuffer();
+      if (buffer.byteLength > 450000) {
+        alert("Voice zyada badi hai. Thori short voice record karein.");
+        return;
       }
 
-      return chatId;
+      const encrypted = await encryptBytesForParticipants(buffer, [currentProfile, activeOtherProfile]);
+
+      await addDoc(collection(db, CHATS, activeChatId, "messages"), {
+        type: "voice",
+        senderId: currentUser.uid,
+        mimeType: blob.type || "audio/webm",
+        durationSec,
+        iv: encrypted.iv,
+        cipher: encrypted.cipher,
+        keys: encrypted.keys,
+        createdAt: serverTimestamp()
+      });
+
+      await setDoc(doc(db, CHATS, activeChatId), {
+        lastPreview: "🔒 Encrypted voice",
+        lastMessageType: "voice",
+        lastSenderId: currentUser.uid,
+        updatedAt: serverTimestamp(),
+        lastMessageAt: serverTimestamp()
+      }, { merge: true });
     }
 
-    function cleanupSubscriptions() {
-      if (chatsUnsub) { chatsUnsub(); chatsUnsub = null; }
-      if (messagesUnsub) { messagesUnsub(); messagesUnsub = null; }
-      if (otherUserUnsub) { otherUserUnsub(); otherUserUnsub = null; }
+    async function deleteSingleMessage(messageId) {
+      if (!activeChatId) return;
+      const ok = confirm("Yeh message delete karna hai?");
+      if (!ok) return;
+      await deleteDoc(doc(db, CHATS, activeChatId, "messages", messageId));
+      decryptCache.delete(currentUser.uid + "::" + messageId);
+      await refreshLastPreviewAfterDelete();
+    }
+
+    async function refreshLastPreviewAfterDelete() {
+      if (!activeChatId) return;
+      const q = query(collection(db, CHATS, activeChatId, "messages"), orderBy("createdAt", "desc"), limit(1));
+      const snap = await getDocs(q);
+      if (snap.empty) {
+        await setDoc(doc(db, CHATS, activeChatId), {
+          lastPreview: "No messages",
+          lastMessageType: "text",
+          lastSenderId: "",
+          updatedAt: serverTimestamp(),
+          lastMessageAt: serverTimestamp()
+        }, { merge: true });
+      } else {
+        const last = snap.docs[0].data();
+        await setDoc(doc(db, CHATS, activeChatId), {
+          lastPreview: last.type === "voice" ? "🔒 Encrypted voice" : "🔒 Encrypted message",
+          lastMessageType: last.type || "text",
+          lastSenderId: last.senderId || "",
+          updatedAt: serverTimestamp(),
+          lastMessageAt: last.createdAt || serverTimestamp()
+        }, { merge: true });
+      }
+    }
+
+    async function deleteAllMessages() {
+      if (!activeChatId) return;
+      const ok = confirm("Poora conversation delete karna hai?");
+      if (!ok) return;
+      const snap = await getDocs(collection(db, CHATS, activeChatId, "messages"));
+      const docs = snap.docs;
+
+      for (let i = 0; i  batch.delete(d.ref));
+        await batch.commit();
+      }
+
+      decryptCache = new Map();
+      await setDoc(doc(db, CHATS, activeChatId), {
+        lastPreview: "No messages",
+        lastMessageType: "text",
+        lastSenderId: "",
+        updatedAt: serverTimestamp(),
+        lastMessageAt: serverTimestamp()
+      }, { merge: true });
+
+      showEmptyMessages("No messages yet", "Apna pehla private message bhejein.");
     }
 
     function renderSearchResult(user) {
       if (!user) {
-        searchResult.innerHTML = `<div class="tiny">User nahi mila.</div>`;
+        searchResult.innerHTML = User nahi mila.;
         return;
       }
-
       searchResult.innerHTML = `
-        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border:1px solid var(--border);border-radius:18px;background:#0d152b;">
-          <div style="display:flex;align-items:center;gap:12px;min-width:0;">
-            <img class="avatar" src="${escapeHtml(avatarURL(user.name, user.photoURL))}" alt="user" />
-            <div style="min-width:0;">
-              <div style="font-weight:800;">${escapeHtml(user.name || "No Name")}</div>
-              <div class="sub">${escapeHtml(user.email || "")}</div>
-            </div>
-          </div>
-          <button id="startChatBtn" class="btn btn-primary">Message</button>
-        </div>
+        
+          
+            
+            
+              ${escapeHtml(user.name || "No Name")}
+              ${escapeHtml(user.email || "")}
+            
+          
+          Message
+        
       `;
-
-      document.getElementById("startChatBtn").addEventListener("click", async () => {
+      qs("#startMsgBtn").addEventListener("click", async () => {
         const chatId = await ensureChatDoc(user);
-        await openConversation(chatId, user.uid);
+        await openConversation(chatId, user.uid || user.id);
       });
     }
 
     function renderChatList(chats) {
       if (!chats.length) {
         chatList.innerHTML = `
-          <div class="empty">
-            <div>
-              <h3>No chats yet</h3>
-              <div>Kisi Gmail se search karke chat start karein.</div>
-            </div>
-          </div>
+          
+            
+              No chats yet
+              Kisi Gmail se search karke nayi private chat start karein.
+            
+          
         `;
         return;
       }
@@ -1092,164 +1168,600 @@
         const other = chat.participantMap?.[otherUid] || {};
         const active = chat.chatId === activeChatId ? "active" : "";
         return `
-          <div class="chat-item ${active}" data-chat-id="${escapeHtml(chat.chatId)}" data-other-uid="${escapeHtml(otherUid || "")}">
-            <div class="chat-item-left">
-              <img class="avatar" src="${escapeHtml(avatarURL(other.name, other.photoURL))}" alt="u" />
-              <div style="min-width:0;">
-                <div class="chat-name">${escapeHtml(other.name || "Unknown User")}</div>
-                <div class="chat-preview">${escapeHtml(chat.lastPreview || "🔒 Private chat")}</div>
-              </div>
-            </div>
-            <div class="chat-meta">${escapeHtml(fmtDateTime(chat.updatedAt))}</div>
-          </div>
+          
+            
+              
+              
+                ${escapeHtml(other.name || "Unknown User")}
+                ${escapeHtml(chat.lastPreview || "🔒 Encrypted chat")}
+              
+            ${escapeHtml(fmtDateTime(chat.updatedAt))}
+          
         `;
       }).join("");
 
-      [...chatList.querySelectorAll(".chat-item")].forEach(item => {
+      [...document.querySelectorAll(".chat-item")].forEach(item => {
         item.addEventListener("click", async () => {
           await openConversation(item.dataset.chatId, item.dataset.otherUid);
         });
       });
     }
 
-    async function renderFilePreview(messageId) {
-      const msg = currentMessages.find(m => m.id === messageId);
-      if (!msg) return;
-
-      const holder = document.getElementById("preview-" + messageId);
-      if (!holder) return;
-
-      holder.innerHTML = `<div class="tiny">Opening...</div>`;
-
-      try {
-        const fileInfo = await decryptAttachmentToObjectURL(msg);
-
-        if (fileInfo.type.startsWith("image/")) {
-          holder.innerHTML = `
-            <div class="file-preview">
-              <img src="${escapeHtml(fileInfo.url)}" alt="${escapeHtml(fileInfo.name)}" />
-            </div>
-          `;
-          return;
-        }
-
-        if (fileInfo.type.startsWith("video/")) {
-          holder.innerHTML = `
-            <div class="file-preview">
-              <video controls preload="metadata" src="${escapeHtml(fileInfo.url)}"></video>
-            </div>
-          `;
-          return;
-        }
-
-        if (fileInfo.type.startsWith("audio/")) {
-          holder.innerHTML = `
-            <div class="file-preview">
-              <audio controls preload="metadata" src="${escapeHtml(fileInfo.url)}"></audio>
-            </div>
-          `;
-          return;
-        }
-
-        holder.innerHTML = `
-          <div class="file-preview">
-            <a href="${escapeHtml(fileInfo.url)}" download="${escapeHtml(fileInfo.name)}" class="btn btn-soft" style="display:inline-flex;text-decoration:none;">
-              Download ${escapeHtml(fileInfo.name)}
-            </a>
-          </div>
-        `;
-      } catch (err) {
-        console.error(err);
-        holder.innerHTML = `<div class="tiny">File decrypt/open failed.</div>`;
-      }
-    }
-
     async function renderMessages(list) {
-      currentMessages = list;
-
       if (!list.length) {
-        messagesEl.innerHTML = `
-          <div class="empty">
-            <div>
-              <h3>No messages yet</h3>
-              <div>Apna pehla private message bhejein.</div>
-            </div>
-          </div>
-        `;
+        showEmptyMessages("No messages yet", "Apna pehla private message bhejein.");
         return;
       }
 
-      let html = "";
-      let lastDay = "";
-
+      const fragments = [];
+      let prevDay = "";
       for (const msg of list) {
         const day = fmtDayLabel(msg.createdAt);
-        if (day !== lastDay) {
-          html += `<div class="date-divider">${escapeHtml(day)}</div>`;
-          lastDay = day;
+        if (day !== prevDay) {
+          fragments.push(${escapeHtml(day)});
+          prevDay = day;
         }
 
         const mine = msg.senderId === currentUser.uid;
         const sender = mine ? currentProfile : activeOtherProfile;
+        const decrypted = await decryptMessagePayload(msg, window.__pmPrivateKey, currentUser.uid);
 
         let body = "";
-
         if (msg.type === "text") {
-          const dec = await decryptTextMessage(msg);
-          body = `<div class="msg-text">${escapeHtml(dec.text)}</div>`;
-        } else if (msg.type === "file") {
-          body = `
-            <div class="file-card">
-              <div style="font-weight:800;">📎 ${escapeHtml(msg.fileName || "file")}</div>
-              <div class="tiny">${escapeHtml(msg.mimeType || "application/octet-stream")} · ${escapeHtml(formatBytes(msg.fileSize || 0))}</div>
-              <div style="margin-top:8px;">
-                <button class="btn btn-soft open-file-btn" data-id="${escapeHtml(msg.id)}">Open</button>
-              </div>
-              <div id="preview-${escapeHtml(msg.id)}"></div>
-            </div>
-          `;
+          body = decrypted.ok ? ${escapeHtml(decrypted.text)} : 🔒 Message locked;
+        } else if (msg.type === "voice") {
+          body = decrypted.ok ? `
+            
+              
+                🎤 Voice message
+                ${escapeHtml(String(msg.durationSec || 0))}s
+              
+              
+            
+           : 🔒 Voice locked`;
         } else {
-          body = `<div class="msg-text">Unsupported message</div>`;
+          body = Unsupported message;
         }
 
-        html += `
-          <div class="row ${mine ? "me" : ""}">
-            <img class="msg-avatar" src="${escapeHtml(avatarURL(sender?.name, sender?.photoURL))}" alt="a" />
-            <div class="bubble">
-              <div class="sender-line">${escapeHtml(sender?.name || "User")} · ${escapeHtml(sender?.email || "")}</div>
+        fragments.push(`
+          
+            
+            
+              ${escapeHtml(sender?.name || "User")} · ${escapeHtml(sender?.email || "")}
               ${body}
-              <div class="msg-meta">
-                <span>${escapeHtml(fmtDateTime(msg.createdAt))}</span>
-                ${mine ? `<button class="link-btn delete-msg-btn" data-id="${escapeHtml(msg.id)}">Delete</button>` : ``}
-              </div>
-            </div>
-          </div>
-        `;
+              
+                ${escapeHtml(fmtDateTime(msg.createdAt))}
+                ${mine ? Delete : ``}
+              
+            
+          
+        `);
       }
 
-      messagesEl.innerHTML = html;
+      messagesEl.innerHTML = fragments.join("");
       scrollBottom();
-
-      [...messagesEl.querySelectorAll(".delete-msg-btn")].forEach(btn => {
+      [...messagesEl.querySelectorAll("[data-del-id]")].forEach(btn => {
         btn.addEventListener("click", async () => {
-          await deleteSingleMessage(btn.dataset.id);
-        });
-      });
-
-      [...messagesEl.querySelectorAll(".open-file-btn")].forEach(btn => {
-        btn.addEventListener("click", async () => {
-          await renderFilePreview(btn.dataset.id);
+          await deleteSingleMessage(btn.dataset.delId);
         });
       });
     }
 
     function listenChats() {
-      if (chatsUnsub) chatsUnsub();
+      if (chatUnsub) chatUnsub();
+      const q = query(collection(db, CHATS), where("participants", "array-contains", currentUser.uid));
+      chatUnsub = onSnapshot(q, snap => {
+        chatCache = snap.docs.map(d => ({ chatId:d.id, ...d.data() }))
+          .sort((a,b) => timeMs(b.updatedAt) - timeMs(a.updatedAt));
+        renderChatList(chatCache);
+      }, err => {
+        console.error(err);
+        chatList.innerHTML = Chat list load error: ${escapeHtml(err.message || String(err))};
+      });
+    }
 
-      const q = query(
-        collection(db, CHATS),
-        where("participants", "array-contains", currentUser.uid)
-      );
+    async function openConversation(chatId, otherUid) {
+      activeChatId = chatId;
+      activeOtherUid = otherUid;
+      decryptCache = new Map();
 
-      chatsUnsub = onSnapshot(q, snap => {
-        chatCache = snap
+      const other = await getUserProfile(otherUid);
+      activeOtherProfile = other;
+      updateConversationHeader(other);
+      setComposerVisible(true);
+      renderChatList(chatCache);
+
+      if (otherUserUnsub) otherUserUnsub();
+      otherUserUnsub = onSnapshot(doc(db, USERS, otherUid), snap => {
+        if (!snap.exists()) return;
+        activeOtherProfile = { uid:snap.id, ...snap.data() };
+        updateConversationHeader(activeOtherProfile);
+      });
+
+      if (messagesUnsub) messagesUnsub();
+      const q = query(collection(db, CHATS, chatId, "messages"), orderBy("createdAt", "asc"));
+      messagesUnsub = onSnapshot(q, async snap => {
+        const list = snap.docs.map(d => ({ id:d.id, ...d.data() }));
+        await renderMessages(list);
+      }, err => {
+        console.error(err);
+        showEmptyMessages("Error", "Messages load nahi ho rahe.");
+      });
+    }
+
+    async function doSearch() {
+      const email = normalizeEmail(searchEmail.value);
+      if (!email) {
+        searchResult.innerHTML = Pehle Gmail likhein.;
+        return;
+      }
+      searchResult.innerHTML = Searching...;
+      try {
+        const users = await findUserByEmail(email);
+        const target = users.find(u => (u.uid || u.id) !== currentUser.uid) || null;
+        if (!target) {
+          if (email === normalizeEmail(currentProfile.email)) {
+            searchResult.innerHTML = Yeh aap ka apna Gmail hai.;
+          } else {
+            searchResult.innerHTML = Is Gmail par user nahi mila.;
+          }
+          return;
+        }
+        renderSearchResult(target);
+      } catch (err) {
+        console.error(err);
+        searchResult.innerHTML = Search failed: ${escapeHtml(err.message || String(err))};
+      }
+    }
+
+    function resetRecordingUI() {
+      recording = false;
+      recordBtn.classList.remove("recording");
+      if (recordTimer) {
+        clearInterval(recordTimer);
+        recordTimer = null;
+      }
+      updateRecordInfo(0);
+    }
+
+    function cleanupMedia() {
+      if (mediaStream) {
+        mediaStream.getTracks().forEach(track => track.stop());
+        mediaStream = null;
+      }
+      mediaRecorder = null;
+      recordChunks = [];
+    }
+
+    async function startRecording() {
+      if (!activeChatId) return;
+      if (!navigator.mediaDevices || !window.MediaRecorder) {
+        alert("Is browser me voice recording supported nahi hai.");
+        return;
+      }
+      try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        recordChunks = [];
+        recordStart = Date.now();
+        const preferred = MediaRecorder.isTypeSupported("audio/webm;codecs=opus") ? "audio/webm;codecs=opus" : "audio/webm";
+        mediaRecorder = new MediaRecorder(mediaStream, {
+          mimeType: preferred,
+          audioBitsPerSecond: 24000
+        });
+
+        mediaRecorder.ondataavailable = e => {
+          if (e.data && e.data.size > 0) recordChunks.push(e.data);
+        };
+
+        mediaRecorder.onerror = e => {
+          console.error("MediaRecorder error", e.error || e);
+          alert("Voice record error aaya hai.");
+          resetRecordingUI();
+          cleanupMedia();
+        };
+
+        mediaRecorder.onstop = async () => {
+          try {
+            const durationSec = Math.max(1, Math.round((Date.now() - recordStart) / 1000));
+            const blob = new Blob(recordChunks, { type: preferred.includes("webm") ? "audio/webm" : preferred });
+            if (blob.size  {
+          const sec = Math.max(1, Math.round((Date.now() - recordStart) / 1000));
+          updateRecordInfo(sec);
+          if (sec >= 20 && mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+          }
+        }, 500);
+      } catch (err) {
+        console.error(err);
+        alert("Mic permission allow karein.");
+        resetRecordingUI();
+        cleanupMedia();
+      }
+    }
+
+    function stopRecording() {
+      if (mediaRecorder && mediaRecorder.state === "recording") {
+        mediaRecorder.stop();
+      }
+    }
+
+    async function doLogin() {
+      loginStatus.textContent = "Signing in...";
+      googleBtn.disabled = true;
+      try {
+        await setPersistence(auth, browserLocalPersistence);
+        await signInWithPopup(auth, provider);
+      } catch (err) {
+        console.error(err);
+        loginStatus.textContent = "Login failed: " + (err?.message || String(err));
+      } finally {
+        googleBtn.disabled = false;
+      }
+    }
+
+    async function doLogout() {
+      try {
+        await touchPresence(false);
+      } catch (e) {}
+      try {
+        await signOut(auth);
+      } catch (err) {
+        console.error(err);
+        alert("Logout failed.");
+      }
+    }
+
+    async function rotateKeys() {
+      if (!currentUser) return;
+      const ok = confirm("Nayi keys banengi. Purane encrypted messages unlock na hon. Continue?");
+      if (!ok) return;
+      try {
+        loginStatus.textContent = "Refreshing keys...";
+        const privateKey = await ensureProfileAndKeys(currentUser, true);
+        window.__pmPrivateKey = privateKey;
+        loginStatus.textContent = "Keys refreshed.";
+        alert("Keys refresh ho gayi hain.");
+      } catch (err) {
+        console.error(err);
+        alert("Keys refresh failed.");
+      }
+    }
+
+    function cleanupSubscriptions() {
+      if (chatUnsub) { chatUnsub(); chatUnsub = null; }
+      if (messagesUnsub) { messagesUnsub(); messagesUnsub = null; }
+      if (otherUserUnsub) { otherUserUnsub(); otherUserUnsub = null; }
+    }
+
+    function resetAppState() {
+      activeChatId = null;
+      activeOtherUid = null;
+      activeOtherProfile = null;
+      chatCache = [];
+      decryptCache = new Map();
+      cleanupSubscriptions();
+      renderChatList([]);
+      updateConversationHeader(null);
+      showEmptyMessages("Private Messenger Ready", "Pehle left side se chat select karein ya Gmail search karke naya conversation shuru karein.");
+      searchResult.innerHTML = "";
+      searchEmail.value = "";
+      messageInput.value = "";
+      autoGrow();
+      setComposerVisible(false);
+      resetRecordingUI();
+      cleanupMedia();
+    }
+
+    googleBtn.addEventListener("click", doLogin);
+    searchBtn.addEventListener("click", doSearch);
+    refreshBtn.addEventListener("click", rotateKeys);
+    logoutBtn.addEventListener("click", doLogout);
+    deleteAllBtn.addEventListener("click", deleteAllMessages);
+    sendBtn.addEventListener("click", async () => {
+      await sendEncryptedText(messageInput.value);
+    });
+
+    recordBtn.addEventListener("click", async () => {
+      if (!recording) {
+        await startRecording();
+      } else {
+        stopRecording();
+      }
+    });
+
+    searchEmail.addEventListener("keydown", e => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        doSearch();
+      }
+    });
+
+    messageInput.addEventListener("input", autoGrow);
+    messageInput.addEventListener("keydown", async e => {
+      if (e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        await sendEncryptedText(messageInput.value);
+      }
+    });
+
+    window.addEventListener("beforeunload", () => {
+      cleanupSubscriptions();
+      cleanupMedia();
+      if (currentUser) {
+        navigator.sendBeacon?.("/", "");
+      }
+    });
+
+    document.addEventListener("visibilitychange", () => {
+      if (!currentUser) return;
+      touchPresence(!document.hidden);
+    });
+
+    onAuthStateChanged(auth, async user => {
+      cleanupSubscriptions();
+      if (!user) {
+        currentUser = null;
+        currentProfile = null;
+        resetAppState();
+        showLogin("");
+        return;
+      }
+
+      try {
+        currentUser = user;
+        const privateKey = await ensureProfileAndKeys(user, false);
+        window.__pmPrivateKey = privateKey;
+        showApp();
+        renderMeCard({
+          name: user.displayName || "No Name",
+          email: user.email || "",
+          photoURL: user.photoURL || ""
+        });
+        resetAppState();
+        listenChats();
+        await touchPresence(true);
+      } catch (err) {
+        console.error(err);
+        showLogin("Startup failed: " + (err?.message || String(err)));
+      }
+    });
+
+    autoGrow();
+    setComposerVisible(false);
+    /* ========= EMOJI REACTIONS ========= */
+
+function enableEmojiReactions(){
+
+  document.querySelectorAll(".bubble").forEach(msg => {
+
+    if(msg.querySelector(".react-btn")) return;
+
+    const reactBtn = document.createElement("button");
+    reactBtn.className = "react-btn";
+    reactBtn.innerHTML = "😊";
+
+    const picker = document.createElement("div");
+    picker.className = "emoji-picker";
+
+    const emojis = ["❤️","😂","🔥","👍","😮","😢","😍","👏"];
+
+    emojis.forEach(em => {
+
+      const emoji = document.createElement("div");
+      emoji.className = "emoji";
+      emoji.innerHTML = em;
+
+      emoji.onclick = () => {
+
+        let bar = msg.querySelector(".reaction-bar");
+
+        if(!bar){
+          bar = document.createElement("div");
+          bar.className = "reaction-bar";
+          msg.appendChild(bar);
+        }
+
+        const reaction = document.createElement("div");
+        reaction.className = "reaction";
+        reaction.innerHTML = em;
+
+        bar.appendChild(reaction);
+
+        picker.classList.remove("show");
+      };
+
+      picker.appendChild(emoji);
+    });
+
+    reactBtn.onclick = (e) => {
+      e.stopPropagation();
+      picker.classList.toggle("show");
+    };
+
+    document.addEventListener("click", () => {
+      picker.classList.remove("show");
+    });
+
+    msg.appendChild(reactBtn);
+    msg.appendChild(picker);
+
+  });
+
+}
+
+setInterval(enableEmojiReactions, 1000);
+  
+
+    ←
+    Back
+
+
+
+.lux-back-btn{
+    position:fixed;
+    top:14px;
+    left:14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:8px 14px;
+    border:none;
+    border-radius:20px;
+    background:linear-gradient(135deg,#001a4d,#003b8e,#005eff);
+    color:#fff;
+    font-size:17px;
+    font-weight:700;
+    letter-spacing:0.6px;
+    cursor:pointer;
+    z-index:99999;
+    overflow:hidden;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.35),
+        0 0 18px rgba(0,94,255,0.35),
+        inset 0 1px 1px rgba(255,255,255,0.15);
+
+    backdrop-filter:blur(8px);
+    transition:all 0.35s ease;
+}
+
+/* Shine Effect */
+.lux-back-btn::before{
+    content:'';
+    position:absolute;
+    top:-120%;
+    left:-40%;
+    width:70%;
+    height:300%;
+    background:rgba(255,255,255,0.18);
+    transform:rotate(25deg);
+    transition:0.8s;
+}
+
+.lux-back-btn:hover::before{
+    left:140%;
+}
+
+/* Hover Effect */
+.lux-back-btn:hover{
+    transform:translateY(-3px) scale(1.04);
+
+    box-shadow:
+        0 12px 32px rgba(0,0,0,0.45),
+        0 0 24px rgba(0,123,255,0.45),
+        inset 0 1px 1px rgba(255,255,255,0.18);
+}
+
+/* Arrow Box */
+.arrow{
+    width:36px;
+    height:36px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:linear-gradient(135deg,#ffffff,#dbe9ff);
+
+    color:#003b8e;
+    font-size:20px;
+    font-weight:bold;
+
+    box-shadow:
+        inset 0 1px 2px rgba(255,255,255,0.9),
+        0 3px 8px rgba(0,0,0,0.18);
+
+    transition:all 0.3s ease;
+}
+
+/* Arrow Hover */
+.lux-back-btn:hover .arrow{
+    transform:translateX(-4px) rotate(-6deg);
+
+    background:linear-gradient(135deg,#ffffff,#bcd6ff);
+
+    color:#005eff;
+}
+
+/* Text */
+.text{
+    position:relative;
+    top:1px;
+    text-shadow:0 1px 3px rgba(0,0,0,0.3);
+}
+  /* ===== MODERN EMOJI REACTIONS ===== */
+
+.react-btn{
+    position:absolute;
+    right:-12px;
+    bottom:-12px;
+    width:34px;
+    height:34px;
+    border:none;
+    border-radius:50%;
+    background:linear-gradient(135deg,#4f8cff,#7c5cff);
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow:0 4px 14px rgba(0,0,0,.25);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.25s;
+    z-index:5;
+}
+
+.react-btn:hover{
+    transform:scale(1.12);
+}
+
+.bubble{
+    position:relative;
+}
+
+.emoji-picker{
+    position:absolute;
+    bottom:48px;
+    right:0;
+    background:#111933;
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:8px;
+    display:none;
+    gap:8px;
+    align-items:center;
+    box-shadow:0 10px 25px rgba(0,0,0,.35);
+    z-index:10;
+}
+
+.emoji-picker.show{
+    display:flex;
+}
+
+.emoji{
+    font-size:24px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.emoji:hover{
+    transform:scale(1.25);
+}
+
+.reaction-bar{
+    display:flex;
+    gap:6px;
+    margin-top:10px;
+    flex-wrap:wrap;
+}
+
+.reaction{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:999px;
+    padding:4px 10px;
+    font-size:15px;
+}
+
+
+yeh code sabh dobara eik Sath likhna hai mazeed hi add krne hain asan no firebase rule authentication Lage gue gain sabh 1 to.1.gmail.aur.sath.file.atchment video file picture upload send sabh eikmsath code likhna mistake na ho
