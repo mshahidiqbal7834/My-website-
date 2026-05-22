@@ -1420,36 +1420,6 @@
         return;
       }
 
-      const fragments = [];
-      let prevDay = "";
-      for (const msg of list) {
-        const day = fmtDayLabel(msg.createdAt);
-        if (day !== prevDay) {
-          fragments.push(`<div class="date-divider">${escapeHtml(day)}</div>`);
-          prevDay = day;
-        }
-
-        const mine = msg.senderId === currentUser.uid;
-        const sender = mine ? currentProfile : activeOtherProfile;
-        const decrypted = await decryptMessagePayload(msg, window.__pmPrivateKey, currentUser.uid);
-
-        let body = "";
-        if (msg.type === "text") {
-          body = decrypted.ok ? `<div class="msg-text">${escapeHtml(decrypted.text)}</div>` : `<div class="msg-text">🔒 Message locked</div>`;
-        } else if (msg.type === "voice") {
-          body = decrypted.ok ? `
-            <div class="voice-box">
-              <div class="voice-top">
-                <div class="voice-label">🎤 Voice message</div>
-                <div>${escapeHtml(String(msg.durationSec || 0))}s</div>
-              </div>
-              <audio controls preload="none" src="${escapeHtml(decrypted.blobUrl)}"></audio>
-            </div>
-          ` : `<div class="msg-text">🔒 Voice locked</div>`;
-        } else {
-          body = `<div class="msg-text">Unsupported message</div>`;
-        }
-
         fragments.push(`
           <div class="row ${mine ? "me" : ""}">
             <img class="msg-avatar" src="${escapeHtml(avatarURL(sender?.name, sender?.photoURL))}" alt="a">
