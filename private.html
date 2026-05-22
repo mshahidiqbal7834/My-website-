@@ -1414,6 +1414,83 @@
         } else {
           body = `<div class="msg-text">Unsupported message</div>`;
         }
+        async function renderMessages(list) {
+      if (!list.length) {
+        showEmptyMessages("No messages yet", "Apna pehla private message bhejein.");
+        return;
+      }
+
+      const fragments = [];
+      let prevDay = "";
+      for (const msg of list) {
+        const day = fmtDayLabel(msg.createdAt);
+        if (day !== prevDay) {
+          fragments.push(`<div class="date-divider">${escapeHtml(day)}</div>`);
+          prevDay = day;
+        }
+
+        const mine = msg.senderId === currentUser.uid;
+        const sender = mine ? currentProfile : activeOtherProfile;
+        const decrypted = await decryptMessagePayload(msg, window.__pmPrivateKey, currentUser.uid);
+
+        let body = "";
+        if (msg.type === "text") {
+          body = decrypted.ok ? `<div class="msg-text">${escapeHtml(decrypted.text)}</div>` : `<div class="msg-text">🔒 Message locked</div>`;
+        } else if (msg.type === "voice") {
+          body = decrypted.ok ? `
+            <div class="voice-box">
+              <div class="voice-top">
+                <div class="voice-label">🎤 Voice message</div>
+                <div>${escapeHtml(String(msg.durationSec || 0))}s</div>
+              </div>
+              <audio controls preload="none" src="${escapeHtml(decrypted.blobUrl)}"></audio>
+            </div>
+          ` : `<div class="msg-text">🔒 Voice locked</div>`;
+        } else {
+          body = `<div class="msg-text">Unsupported message</div>`;
+        }
+
+        fragments.push(`
+          <div class="row ${mine ? "me" : ""}">
+            <img class="msg-avatar" src="${escapeHtml(avatarURL(sender?.name, sender?.photoURL))}" alt="a">
+            <div class="bubble">
+              <div class="sender-line">${escapeHtml(sender?.name || "User")} · ${escapeHtml(sender?.email || "")}</div>
+              ${body}
+              <div class="msg-meta">
+                <span>${escapeHtml(fmtDateTime(msg.createdAt))}</span>
+                ${mine ? `<button class="link-btn" data-del-id="${escapeHtml(msg.id)}">Delete</button>` : ``}
+              </div>
+            </div>
+          </div>
+        `);
+      }
+
+      messagesEl.innerHTML = fragments.join("");
+      scrollBottom();
+      [...messagesEl.querySelectorAll("[data-del-id]")].forEach(btn => {
+        btn.addEventListener("click", async () => {
+          await deleteSingleMessage(btn.dataset.delId);
+        });
+      });
+    }
+
+    function listenChats() {
+      if (chatUnsub) chatUnsub();
+      const q = query(collection(db, CHATS), where("participants", "array-contains", currentUser.uid));
+      chatUnsub = onSnapshot(q, snap => {
+        chatCache = snap.docs.map(d => ({ chatId:d.id, ...d.data() }))
+          .sort((a,b) => timeMs(b.updatedAt) - timeMs(a.updatedAt));
+        renderChatList(chatCache);
+      }, err => {
+        console.error(err);
+        chatList.innerHTML = `<div class="tiny">Chat list load error: ${escapeHtml(err.message || String(err))}</div>`;
+      });
+    }
+
+    async function openConversation(chatId, otherUid) {
+      activeChatId = chatId;
+      activeOtherUid = otherUid;
+      decryptCache = new Map();
 
         fragments.push(`
           <div class="row ${mine ? "me" : ""}">
