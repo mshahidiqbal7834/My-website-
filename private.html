@@ -1369,19 +1369,8 @@
             </div>
             <div class="chat-meta"><div>${escapeHtml(fmtDateTime(chat.updatedAt))}</div></div>
           </div>
-          <div class="chat-compose">
-  <button type="button" id="attachBtn" class="attach-btn">📎</button>
-
-  <input
-    type="file"
-    id="mediaPicker"
-    accept="image/*,video/*,audio/*"
-    hidden
-  >
-
-  <input type="text" id="messageInput" placeholder="Type a message...">
-  <button type="button" id="sendBtn">Send</button>
-</div>
+          <button type="button" id="attachBtn" class="attach-btn">📎</button>
+<input type="file" id="mediaPicker" accept="image/*,video/*,audio/*" hidden>
 
         `;
       }).join("");
