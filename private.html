@@ -499,6 +499,37 @@
       width:100%;
       height:40px;
     }
+    .file-box{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      min-width:220px;
+    }
+    .file-box img{
+      max-width:260px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .file-box video{
+      max-width:260px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.1);
+    }
+    .file-pill{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border-radius:14px;
+      background:rgba(255,255,255,.05);
+      border:1px solid var(--border);
+      font-size:13px;
+      text-decoration:none;
+      color:#fff;
+    }
+    .file-pill span.ic{
+      font-size:18px;
+    }
     .helper{
       padding:0 18px 12px;
       font-size:12px;
@@ -509,7 +540,7 @@
       border-top:1px solid var(--border);
       display:flex;
       align-items:flex-end;
-      gap:12px;
+      gap:10px;
       background:rgba(255,255,255,.02);
       flex-wrap:wrap;
     }
@@ -523,6 +554,7 @@
       cursor:pointer;
       transition:.2s ease;
       font-size:20px;
+      flex:0 0 auto;
     }
     .icon-btn:hover{
       transform:translateY(-1px);
@@ -533,6 +565,10 @@
       border-color:rgba(255,90,112,.35);
       color:#ffb7c0;
       box-shadow:0 0 0 8px rgba(255,90,112,.08);
+    }
+    .icon-btn.busy{
+      opacity:.6;
+      cursor:wait;
     }
     .composer textarea{
       flex:1;
@@ -557,11 +593,12 @@
       color:#fff;
       font-size:20px;
       font-weight:800;
+      flex:0 0 auto;
     }
     .record-info{
-      min-width:110px;
+      min-width:100px;
       color:var(--muted);
-      font-size:13px;
+      font-size:12px;
       text-align:center;
       padding-bottom:4px;
     }
@@ -634,8 +671,8 @@
         <div class="badge">🔒 Secure Private Chat</div>
         <h1>Gmail se login, 1 to 1 private messaging</h1>
         <p>
-          Yeh page public chat se alag private messenger ke liye hai. Is me private messages
-          aur short voice notes browser side par encrypt hote hain taake 3rd banda content na padh sake.
+          Yeh page public chat se alag private messenger ke liye hai. Is me private messages,
+          short voice notes aur files browser side par encrypt hote hain taake 3rd banda content na padh sake.
         </p>
         <div class="hero-grid">
           <div class="hero-box">
@@ -651,8 +688,8 @@
             <p>Message content AES + RSA se encrypt hoga.</p>
           </div>
           <div class="hero-box">
-            <h3>Voice + Delete + Time</h3>
-            <p>Voice record, single delete, delete all aur time/date sab hai.</p>
+            <h3>Voice + Files + Delete</h3>
+            <p>Voice record, image/video/file bhejna, single delete, delete all aur time/date sab hai.</p>
           </div>
         </div>
       </div>
@@ -739,10 +776,12 @@
         </main>
 
         <div class="helper">
-          Enter = send, Shift + Enter = new line. Voice record ke liye mic dabayein. Short voice best rehti hai.
+          Enter = send, Shift + Enter = new line. 🎙️ = voice record, 📎 = photo/video/file attach.
         </div>
 
         <footer class="composer">
+          <button id="attachBtn" class="icon-btn hidden" title="Attach file">📎</button>
+          <input id="fileInput" type="file" accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.zip" hidden />
           <button id="recordBtn" class="icon-btn hidden" title="Record voice">🎙️</button>
           <div id="recordInfo" class="record-info hidden">Voice off</div>
           <textarea id="messageInput" class="hidden" placeholder="Type your private message..."></textarea>
@@ -817,10 +856,13 @@
     const sendBtn = document.getElementById("sendBtn");
     const recordBtn = document.getElementById("recordBtn");
     const recordInfo = document.getElementById("recordInfo");
+    const attachBtn = document.getElementById("attachBtn");
+    const fileInput = document.getElementById("fileInput");
 
     const USERS = "pm_users_v1";
     const CHATS = "pm_chats_v1";
     const PRIVATE_KEY_PREFIX = "pm_private_jwk_v1_";
+    const MAX_PAYLOAD_BYTES = 650000; // keeps encrypted+base64 doc under Firestore's 1MB limit
 
     let currentUser = null;
     let currentProfile = null;
@@ -901,7 +943,7 @@
     }
 
     function setComposerVisible(visible) {
-      [messageInput, sendBtn, recordBtn, recordInfo].forEach(el => el.classList.toggle("hidden", !visible));
+      [messageInput, sendBtn, recordBtn, recordInfo, attachBtn].forEach(el => el.classList.toggle("hidden", !visible));
       deleteAllBtn.classList.toggle("hidden", !visible);
     }
 
@@ -1123,8 +1165,8 @@
           return result;
         }
 
-        if (msg.type === "voice") {
-          const blob = new Blob([plain], { type: msg.mimeType || "audio/webm" });
+        if (msg.type === "voice" || msg.type === "file") {
+          const blob = new Blob([plain], { type: msg.mimeType || "application/octet-stream" });
           const url = URL.createObjectURL(blob);
           const result = { ok:true, blobUrl:url };
           decryptCache.set(cacheKey, result);
@@ -1233,7 +1275,7 @@
     async function sendEncryptedVoice(blob, durationSec) {
       if (!activeOtherProfile || !activeChatId) return;
       const buffer = await blob.arrayBuffer();
-      if (buffer.byteLength > 450000) {
+      if (buffer.byteLength > MAX_PAYLOAD_BYTES) {
         alert("Voice zyada badi hai. Thori short voice record karein.");
         return;
       }
@@ -1260,6 +1302,53 @@
       }, { merge: true });
     }
 
+    async function sendEncryptedFile(file) {
+      if (!activeOtherProfile || !activeChatId || !file) return;
+
+      if (file.size > MAX_PAYLOAD_BYTES) {
+        alert("Yeh file zyada badi hai (max ~" + Math.round(MAX_PAYLOAD_BYTES / 1024) + "KB). Chhoti file try karein.");
+        return;
+      }
+
+      attachBtn.classList.add("busy");
+      attachBtn.disabled = true;
+      try {
+        const buffer = await file.arrayBuffer();
+        const encrypted = await encryptBytesForParticipants(buffer, [currentProfile, activeOtherProfile]);
+
+        await addDoc(collection(db, CHATS, activeChatId, "messages"), {
+          type: "file",
+          senderId: currentUser.uid,
+          mimeType: file.type || "application/octet-stream",
+          fileName: file.name || "file",
+          fileSize: file.size,
+          iv: encrypted.iv,
+          cipher: encrypted.cipher,
+          keys: encrypted.keys,
+          createdAt: serverTimestamp()
+        });
+
+        const kind = (file.type || "").startsWith("image/") ? "🖼️ Photo"
+          : (file.type || "").startsWith("video/") ? "🎬 Video"
+          : (file.type || "").startsWith("audio/") ? "🎵 Audio"
+          : "📎 File";
+
+        await setDoc(doc(db, CHATS, activeChatId), {
+          lastPreview: "🔒 " + kind,
+          lastMessageType: "file",
+          lastSenderId: currentUser.uid,
+          updatedAt: serverTimestamp(),
+          lastMessageAt: serverTimestamp()
+        }, { merge: true });
+      } catch (err) {
+        console.error(err);
+        alert("File bhejna fail ho gaya.");
+      } finally {
+        attachBtn.classList.remove("busy");
+        attachBtn.disabled = false;
+      }
+    }
+
     async function deleteSingleMessage(messageId) {
       if (!activeChatId) return;
       const ok = confirm("Yeh message delete karna hai?");
@@ -1283,8 +1372,11 @@
         }, { merge: true });
       } else {
         const last = snap.docs[0].data();
+        const preview = last.type === "voice" ? "🔒 Encrypted voice"
+          : last.type === "file" ? "🔒 Encrypted file"
+          : "🔒 Encrypted message";
         await setDoc(doc(db, CHATS, activeChatId), {
-          lastPreview: last.type === "voice" ? "🔒 Encrypted voice" : "🔒 Encrypted message",
+          lastPreview: preview,
           lastMessageType: last.type || "text",
           lastSenderId: last.senderId || "",
           updatedAt: serverTimestamp(),
@@ -1379,6 +1471,43 @@
       });
     }
 
+    function renderFileBody(msg, decrypted) {
+      if (!decrypted.ok) return `<div class="msg-text">🔒 File locked</div>`;
+      const mime = msg.mimeType || "";
+      const name = escapeHtml(msg.fileName || "file");
+      const url = decrypted.blobUrl;
+
+      if (mime.startsWith("image/")) {
+        return `
+          <div class="file-box">
+            <img src="${escapeHtml(url)}" alt="${name}">
+            <a class="file-pill" href="${escapeHtml(url)}" download="${name}"><span class="ic">⬇️</span> ${name}</a>
+          </div>
+        `;
+      }
+      if (mime.startsWith("video/")) {
+        return `
+          <div class="file-box">
+            <video controls preload="none" src="${escapeHtml(url)}"></video>
+            <a class="file-pill" href="${escapeHtml(url)}" download="${name}"><span class="ic">⬇️</span> ${name}</a>
+          </div>
+        `;
+      }
+      if (mime.startsWith("audio/")) {
+        return `
+          <div class="file-box">
+            <audio controls preload="none" src="${escapeHtml(url)}"></audio>
+            <a class="file-pill" href="${escapeHtml(url)}" download="${name}"><span class="ic">⬇️</span> ${name}</a>
+          </div>
+        `;
+      }
+      return `
+        <div class="file-box">
+          <a class="file-pill" href="${escapeHtml(url)}" download="${name}"><span class="ic">📎</span> ${name}</a>
+        </div>
+      `;
+    }
+
     async function renderMessages(list) {
       if (!list.length) {
         showEmptyMessages("No messages yet", "Apna pehla private message bhejein.");
@@ -1411,56 +1540,11 @@
               <audio controls preload="none" src="${escapeHtml(decrypted.blobUrl)}"></audio>
             </div>
           ` : `<div class="msg-text">🔒 Voice locked</div>`;
+        } else if (msg.type === "file") {
+          body = renderFileBody(msg, decrypted);
         } else {
           body = `<div class="msg-text">Unsupported message</div>`;
         }
-        async function renderMessages(list) {
-      if (!list.length) {
-        showEmptyMessages("No messages yet", "Apna pehla private message bhejein.");
-        return;
-      }
-
-        fragments.push(`
-          <div class="row ${mine ? "me" : ""}">
-            <img class="msg-avatar" src="${escapeHtml(avatarURL(sender?.name, sender?.photoURL))}" alt="a">
-            <div class="bubble">
-              <div class="sender-line">${escapeHtml(sender?.name || "User")} · ${escapeHtml(sender?.email || "")}</div>
-              ${body}
-              <div class="msg-meta">
-                <span>${escapeHtml(fmtDateTime(msg.createdAt))}</span>
-                ${mine ? `<button class="link-btn" data-del-id="${escapeHtml(msg.id)}">Delete</button>` : ``}
-              </div>
-            </div>
-          </div>
-        `);
-      }
-
-      messagesEl.innerHTML = fragments.join("");
-      scrollBottom();
-      [...messagesEl.querySelectorAll("[data-del-id]")].forEach(btn => {
-        btn.addEventListener("click", async () => {
-          await deleteSingleMessage(btn.dataset.delId);
-        });
-      });
-    }
-
-    function listenChats() {
-      if (chatUnsub) chatUnsub();
-      const q = query(collection(db, CHATS), where("participants", "array-contains", currentUser.uid));
-      chatUnsub = onSnapshot(q, snap => {
-        chatCache = snap.docs.map(d => ({ chatId:d.id, ...d.data() }))
-          .sort((a,b) => timeMs(b.updatedAt) - timeMs(a.updatedAt));
-        renderChatList(chatCache);
-      }, err => {
-        console.error(err);
-        chatList.innerHTML = `<div class="tiny">Chat list load error: ${escapeHtml(err.message || String(err))}</div>`;
-      });
-    }
-
-    async function openConversation(chatId, otherUid) {
-      activeChatId = chatId;
-      activeOtherUid = otherUid;
-      decryptCache = new Map();
 
         fragments.push(`
           <div class="row ${mine ? "me" : ""}">
@@ -1727,6 +1811,18 @@
       }
     });
 
+    attachBtn.addEventListener("click", () => {
+      if (!activeChatId) return;
+      fileInput.click();
+    });
+
+    fileInput.addEventListener("change", async (e) => {
+      const file = e.target.files[0];
+      fileInput.value = "";
+      if (!file) return;
+      await sendEncryptedFile(file);
+    });
+
     searchEmail.addEventListener("keydown", e => {
       if (e.key === "Enter") {
         e.preventDefault();
@@ -1745,9 +1841,6 @@
     window.addEventListener("beforeunload", () => {
       cleanupSubscriptions();
       cleanupMedia();
-      if (currentUser) {
-        navigator.sendBeacon?.("/", "");
-      }
     });
 
     document.addEventListener("visibilitychange", () => {
@@ -1786,23 +1879,6 @@
 
     autoGrow();
     setComposerVisible(false);
-    const fileInput = document.getElementById("fileInput");
-
-fileInput.addEventListener("change", async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
-
-  console.log(file);
-});
   </script>
-  <!-- chat input area ke niche -->
-
-<input type="file" id="fileInput"
-accept="image/*,video/*,audio/*" hidden>
-
-<button onclick="document.getElementById('fileInput').click()">
-📎
-</button>
-</script>
 </body>
 </html>
